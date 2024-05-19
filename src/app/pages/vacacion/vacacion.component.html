@@ -1,0 +1,60 @@
+<p-toast />
+
+<div class="card grid grid-cols-4 gap-4">
+    <div class="col-start-1">
+        <p>
+            <input pInputText type="text" placeholder="Buscar..."  (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
+        </p>
+    </div>
+    <div class="col-end-7">
+        <p-button icon="pi pi-plus" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
+    </div>
+    
+</div>
+<div class="card">
+    <p-table 
+        #dt2
+        [value]="vacacion"
+        [rows]="5"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped" 
+        [paginator]="true"
+        dataKey="idPersona"
+        [globalFilterFields]="['primerNombre','idVacacion']"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>NRO</th>
+                <th>F. DESDE</th>
+                <th>F. HASTA</th>
+                <th>F. REINTEGRO</th>
+                <th>DIAS FALTA</th>
+                <th>PERSONA</th>
+                <th>ACCION</th>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vacacion>
+            <tr>
+                <td>{{ vacacion.idVacacion }}</td>
+                <td>{{ vacacion.fechaDesde | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ vacacion.fechaHasta | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ vacacion.fechaReintegro | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ vacacion.diasFalta | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ vacacion.persona.primerNombre }}</td>
+                
+
+                <td>
+                    <div class="flex justify-content-center flex-wrap gap-3 mb-4">
+                        <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(vacacion)"></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" ></p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+

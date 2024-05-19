@@ -1,0 +1,188 @@
+<div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="pnombre" [(ngModel)]="persona.primerNombre" oninput="this.value = this.value.toUpperCase()" />
+            <label for="pnombre">P. Nombre</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="snombre" [(ngModel)]="persona.segundoNombre" oninput="this.value = this.value.toUpperCase()" />
+            <label for="snombre">S. Nombre</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="papellido" [(ngModel)]="persona.primerApellido" oninput="this.value = this.value.toUpperCase()" />
+            <label for="papellido">P. Apellido</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="sapellido" [(ngModel)]="persona.segundoApellido" oninput="this.value = this.value.toUpperCase()" />
+            <label for="sapellido">S. Apellido</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+        
+        <!-- <p-calendar 
+        inputId="calendar-24h" 
+        [(ngModel)]="persona.fechaNacimiento" 
+        [showTime]="true" 
+        hourFormat='24'
+        dateFormat="dd/mm/yy"
+        /> -->
+            <p-calendar  
+                [(ngModel)]="persona.fechaNacimiento" 
+                dateFormat="dd/mm/yy"
+            />
+            @if( persona.fechaNacimiento == null){
+                <label for="F.Nacimiento" class="font-bold block mb-2" >Fecha Nacimiento</label>
+            }
+            @else{
+                <label for="F.Nacimiento" class="font-bold block mb-2" >{{persona.fechaNacimiento | date: 'dd/MM/yyyy'}}</label>
+            }
+
+            
+        </p-floatLabel>
+    </div>
+    
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+            <p-calendar
+                [(ngModel)]="persona.fechaIngreso"
+                dateFormat="dd/mm/yy"  
+            />
+            @if( persona.fechaIngreso == null){
+                <label for="F.Ingreso" class="font-bold block mb-2" >F.Ingreso </label>
+            }
+            @else{
+                <label for="F.Ingreso" class="font-bold block mb-2" >{{persona.fechaIngreso | date: 'dd/MM/yyyy'}}</label>
+            }
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+            <p-calendar 
+                [(ngModel)]="persona.fechaRetiro" 
+                dateFormat="dd/mm/yy"
+            />
+            @if( persona.fechaRetiro == null){
+                <label for="F.Retiro" class="font-bold block mb-2" >F.Retiro </label>
+            }
+            @else{
+                <label for="F.Retiro" class="font-bold block mb-2" >{{persona.fechaRetiro | date: 'dd/MM/yyyy'}}</label>
+            }
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="ci" [(ngModel)]="persona.ci" />    
+            <label for="ci">CI</label>
+        </p-floatLabel>
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="cuenta" [(ngModel)]="persona.cuenta" oninput="this.value = this.value.toUpperCase()" />
+            <label for="cuenta">Cuenta</label>
+        </p-floatLabel>
+    </div>
+
+    <!-- <div class="flex align-items-center gap-3 mb-3">
+        <label for="pnombre">Tipo Contrato</label>
+        <p-dropdown 
+            [options]="tipoContrato" 
+            [(ngModel)]="persona.tipoContrato" 
+            optionLabel="tipo"
+            placeholder="TIPO CONTRATO" />
+    </div>-->
+    <!-- <div class="flex align-items-center gap-3 mb-3">
+        <label for="carg">Tipo Cargo</label>
+        <p-dropdown 
+            [options]="tipoCargo" 
+            [(ngModel)]="persona.cargo" 
+            optionLabel="tipo"
+            placeholder="TIPO CARGO" />
+    </div>  -->
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="tipoContrato" [(ngModel)]="persona.tipoContrato" oninput="this.value = this.value.toUpperCase()" />
+            <label for="tipoContrato">tipoContrato</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="cargo" [(ngModel)]="persona.cargo" oninput="this.value = this.value.toUpperCase()" />
+            <label for="cargo">Cargo</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [options]="sucursal" 
+                [(ngModel)]="persona.sucursal" 
+                optionLabel="nombre"
+                placeholder="TIPO SUCURSAL" />
+            <label for="pnombre">Tipo Sucursal</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="sueldo" [(ngModel)]="persona.sueldoBase" />
+            <label for="sueldo">Sueldo</label>
+        </p-floatLabel>
+    </div>
+<!--     <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="sueldo" [(ngModel)]="persona.genero" />        
+            <label for="genero">GENERO</label>
+        </p-floatLabel>
+    </div> -->
+    <div class="flex flex-wrap gap-3">
+        <div class="flex align-items-center">
+            <p-radioButton 
+                name="F" 
+                value="F" 
+                [(ngModel)]="persona.genero" 
+                />
+            <label for="ingredient1" class="ml-2">
+                F
+            </label>
+        </div>
+        
+        <div class="flex align-items-center">
+            <p-radioButton 
+                name="M" 
+                value="M" 
+                [(ngModel)]="persona.genero" 
+                />
+            <label for="M" class="ml-2">
+                M
+            </label>
+        </div>
+    </div>
+    
+</div>
+
+<div class="flex justify-content-end gap-2 mt-20">
+    <p-button label="CANCELAR" severity="secondary" (click)="close()" />
+    <p-button label="PROCESAR" (click)="operate()" />
+</div>
+

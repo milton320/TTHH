@@ -1,0 +1,25 @@
+<div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="monto" [(ngModel)]="vacacion.fechaDesde" oninput="this.value = this.value.toUpperCase()" />
+            <label for="monto">Monto</label>
+        </p-floatLabel>
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [options]="persona" 
+                [(ngModel)]="vacacion.persona" 
+                optionLabel="primerNombre"
+                placeholder="TIPO SUCURSAL" />
+            <label for="d">Tipo Persona </label>
+        </p-floatLabel>
+    </div>
+</div>
+
+<div class="flex justify-content-end gap-2 mt-20">
+    <p-button label="CANCELAR" severity="secondary" (click)="close()" />
+    <p-button label="PROCESAR" (click)="operate()" />
+</div>
+
