@@ -13,6 +13,7 @@ import { VacacionService } from '../../services/vacacion.service';
 import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
 import { VacacionDialogComponent } from './vacacion-dialog/vacacion-dialog.component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-vacacion',
@@ -55,6 +56,10 @@ export class VacacionComponent {
         this.messageService.add({ severity: 'info', summary: 'ACTUALIZADO', detail: 'Actualizado Correctamente' });
         this.updateTable()
       }
+      else if(data == 'DELETE!'){
+        this.messageService.add({ severity: 'error', summary: 'ELIMINADO', detail: 'Eliminacion Correctamente' });
+        this.updateTable()
+      }
     
     })        
   }
@@ -69,6 +74,16 @@ export class VacacionComponent {
       data: vacacion,
       modal:true
     })  
+  }
+
+  delete(idVacacion:any){
+    this.vacacionService.delete(idVacacion)
+    .pipe(switchMap(()=>this.vacacionService.findAll()))
+    .subscribe(data=>{
+      this.vacacionService.setVacionChange(data);
+      this.vacacionService.setMessageChange('DELETE!');
+
+    })
   }
 
 }

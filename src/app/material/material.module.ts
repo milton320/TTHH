@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
             CalendarModule,
             DropdownModule,
             FieldsetModule,
-            RadioButtonModule
+            RadioButtonModule,
+            InputSwitchModule
         ],
     providers:[],
     

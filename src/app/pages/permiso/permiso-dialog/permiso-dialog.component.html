@@ -1,1 +1,253 @@
-<p>permiso-dialog works!</p>
+<div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
+    
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [options]="persona" 
+                [(ngModel)]="permiso.persona" 
+                optionLabel="primerNombre"
+                placeholder="TIPO PERSONA" />
+            <label for="d">Tipo Persona </label>
+        </p-floatLabel>
+    </div>
+    <div class="flex flex-wrap gap-3">
+        <div class="flex align-items-center">
+            <p-radioButton 
+                name="SI" 
+                value="SI" 
+                [(ngModel)]="valorTipo" 
+                />
+            <label for="ingredient1" class="ml-2">
+                FECHA
+            </label>
+        </div>
+        
+        <div class="flex align-items-center">
+            <p-radioButton 
+                name="NO" 
+                value="NO" 
+                [(ngModel)]="valorTipo" 
+                />
+            <label for="NO" class="ml-2">
+                HORA
+            </label>
+        </div>
+       
+    </div>
+</div>
+<div class="grid grid-cols-4 gap-3 mt-10 mb-20">
+    @if(valorTipo =='SI'){
+        <p>VALORES POR FECHA</p>
+        <div class="flex align-items-center gap-3 mb-2">
+            <label for="dfalta">CON GOCE</label>
+            <p-inputSwitch [(ngModel)]="permiso.tipoPermiso" />
+            <label for="dfalta">SIN GOCE</label>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    [(ngModel)]="permiso.fechaDesde" 
+                    dateFormat="dd/mm/yy"
+                />
+                @if( permiso.fechaDesde == null){
+                    <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
+                }
+                @else{
+                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde | date: 'dd/MM/yyyy'}}</label>
+                }
+    
+                
+            </p-floatLabel>
+        </div>
+    
+        <div class="flex align-items-center gap-3 mb-3">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    [(ngModel)]="permiso.fechaHasta" 
+                    dateFormat="dd/mm/yy"
+                />
+                @if( permiso.fechaHasta == null){
+                    <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
+                }
+                @else{
+                    <label for="F.Hasta" class="font-bold block mb-2" >{{permiso.fechaHasta | date: 'dd/MM/yyyy'}}</label>
+                }
+    
+                
+            </p-floatLabel>
+        </div>
+    
+        <div class="flex align-items-center gap-3 mb-3">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    [(ngModel)]="permiso.fechaReintegro" 
+                    dateFormat="dd/mm/yy"
+                />
+                @if( permiso.fechaReintegro == null){
+                    <label for="F.Desde" class="font-bold block mb-2" >Fecha Reintegro</label>
+                }
+                @else{
+                    <label for="F.Reintegro" class="font-bold block mb-2" >{{permiso.fechaReintegro | date: 'dd/MM/yyyy'}}</label>
+                }
+    
+                
+            </p-floatLabel>
+        </div>
+    
+        <div class="flex align-items-center gap-3 mb-2">
+            <p-floatLabel>
+                <input pInputText id="dfalta" [(ngModel)]="permiso.diasFalta" oninput="this.value = this.value.toUpperCase()" />
+                <label for="dfalta">D.Falta</label>
+            </p-floatLabel>
+        </div>
+    }
+    @else {
+
+        <p>VALORES POR HORA</p>
+        <div class="flex align-items-center gap-3 mb-2">
+            <label for="dfalta">CON GOCE</label>
+            <p-inputSwitch [(ngModel)]="permiso.tipoPermiso" />
+            <label for="dfalta">SIN GOCE</label>
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+            <p-calendar 
+                inputId="calendar-24h" 
+                [(ngModel)]="permiso.fechaDesde" 
+                [showTime]="true" 
+                hourFormat='24'
+                dateFormat="dd/mm/yy"
+                /> 
+                @if( permiso.fechaDesde == null){
+                    <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
+                }
+                @else{
+                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde | date: 'dd/MM/yyyy'}}</label>
+                }
+    
+                
+            </p-floatLabel>
+        </div>
+    
+        <div class="flex align-items-center gap-3 mb-3">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    [(ngModel)]="permiso.fechaHasta" 
+                    dateFormat="dd/mm/yy"
+                />
+                @if( permiso.fechaHasta == null){
+                    <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
+                }
+                @else{
+                    <label for="F.Hasta" class="font-bold block mb-2" >{{permiso.fechaHasta | date: 'dd/MM/yyyy'}}</label>
+                }
+    
+                
+            </p-floatLabel>
+        </div>
+    
+        <div class="flex align-items-center gap-3 mb-3">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    [(ngModel)]="permiso.fechaReintegro" 
+                    dateFormat="dd/mm/yy"
+                />
+                @if( permiso.fechaReintegro == null){
+                    <label for="F.Desde" class="font-bold block mb-2" >Fecha Reintegro</label>
+                }
+                @else{
+                    <label for="F.Reintegro" class="font-bold block mb-2" >{{permiso.fechaReintegro | date: 'dd/MM/yyyy'}}</label>
+                }
+    
+                
+            </p-floatLabel>
+        </div>
+    
+        <div class="flex align-items-center gap-3 mb-2">
+            <p-floatLabel>
+                <input pInputText id="dfalta" [(ngModel)]="permiso.diasFalta" oninput="this.value = this.value.toUpperCase()" />
+                <label for="dfalta">D.Falta</label>
+            </p-floatLabel>
+        </div>
+    }
+    
+    
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="estadoPermiso" [(ngModel)]="permiso.estadoPermiso" oninput="this.value = this.value.toUpperCase()" />
+            <label for="estadoPermiso">ESTADO</label>
+        </p-floatLabel>
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="motivo" [(ngModel)]="permiso.motivo" oninput="this.value = this.value.toUpperCase()" />
+            <label for="motivo">MOTIVO</label>
+        </p-floatLabel>
+    </div>
+    @if(permiso.tipoPermiso == true)
+    {    
+        <div class="flex align-items-center gap-3 mb-2">
+            <p-floatLabel>
+                <input pInputText id="monto" [(ngModel)]="permiso.monto" oninput="this.value = this.value.toUpperCase()" />
+                <label for="monto">MONTO</label>
+            </p-floatLabel>
+        </div>
+
+    }
+
+</div>
+
+<div class="flex justify-content-end gap-2 mt-20">
+    <p-button label="CANCELAR" severity="secondary" (click)="close()" />
+    <p-button label="PROCESAR" (click)="operate()" />
+</div>
+

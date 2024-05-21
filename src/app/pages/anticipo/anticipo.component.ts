@@ -14,6 +14,7 @@ import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
 import { AnticipoDialogComponent } from './anticipo-dialog/anticipo-dialog.component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-anticipo',
@@ -45,7 +46,6 @@ export class AnticipoComponent implements OnInit {
 
     this.anticipoService.getMessageChange().subscribe(data=>
     {
-      console.log(data);
       if(data == 'CREATED')
       {
         this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
@@ -54,6 +54,10 @@ export class AnticipoComponent implements OnInit {
       else if(data == 'UPDATE!')
       {
         this.messageService.add({ severity: 'info', summary: 'ACTUALIZADO', detail: 'Actualizado Correctamente' });
+        this.updateTable()
+      }
+      else if(data == 'DELETE!'){
+        this.messageService.add({ severity: 'error', summary: 'ELIMINADO', detail: 'Eliminacion Correctamente' });
         this.updateTable()
       }
     
@@ -71,5 +75,12 @@ export class AnticipoComponent implements OnInit {
       modal:true
     })  
   }
-
+  delete(idAnticipo:any){
+    this.anticipoService.delete(idAnticipo)
+    .pipe(switchMap(()=>this.anticipoService.findAll()))
+    .subscribe(data=>{
+      this.anticipoService.setAnticipoChange(data);
+      this.anticipoService.setMessageChange('DELETE!');
+    })
+  }
 }

@@ -13,6 +13,7 @@ import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
 import { Dieta } from '../../model/dieta';
 import { DietaDialogComponent } from './dieta-dialog/dieta-dialog.component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-dieta',
@@ -55,6 +56,10 @@ export class DietaComponent implements OnInit {
         this.messageService.add({ severity: 'info', summary: 'ACTUALIZADO', detail: 'Actualizado Correctamente' });
         this.updateTable()
       }
+      else if(data == 'DELETE!'){
+        this.messageService.add({ severity: 'error', summary: 'ELIMINADO', detail: 'Eliminacion Correctamente' });
+        this.updateTable()
+      }
     
     })        
   }
@@ -71,4 +76,14 @@ export class DietaComponent implements OnInit {
       modal:true
     })  
   }
+  delete(idDieta:any){
+    this.dietaService.delete(idDieta)
+    .pipe(switchMap(()=>this.dietaService.findAll()))
+    .subscribe(data=>{
+      this.dietaService.setDietaChange(data);
+      this.dietaService.setMessageChange('DELETE!');
+
+    })
+  }
+
 }

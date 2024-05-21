@@ -57,8 +57,36 @@ ngOnInit(): void {
   
 } 
 
-operate(){}
+operate()
+  {
+    console.log('save');
+    if(this.vacacion !=null && this.vacacion.idVacacion >0 ){
+      //UPDATE
+      this.vacacionService
+      .update(this.vacacion.idVacacion, this.vacacion)
+      .pipe(switchMap(()=>this.vacacionService.findAll()))
+      .subscribe(data=>{
+        this.vacacionService.setVacionChange(data);
+        this.vacacionService.setMessageChange("UPDATE!")
+      })
+    }
+    else{
+    //INSERT
+    console.log(this.vacacion);
+    this.vacacionService
+    .save(this.vacacion)
+    .pipe(switchMap(()=>this.vacacionService.findAll()))
+    .subscribe(data=>{
+      this.vacacionService.setVacionChange(data);
+      this.vacacionService.setMessageChange('CREATED');
+      
+    });
+    }
+    this.close();
+  }
+close() {
+  this.ref.close();
+}
 
-close(){}
 
 }

@@ -6,6 +6,6 @@ export class Vacacion{
     fechaDesde:Date;
     fechaHasta:Date;
     fechaReintegro:Date;
-    diasFalta:Date;
+    diasFalta:String;
     fechaRegistro:Date;
 }

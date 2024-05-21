@@ -1,8 +1,83 @@
 <div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+        
+        <!-- <p-calendar 
+        inputId="calendar-24h" 
+        [(ngModel)]="persona.fechaNacimiento" 
+        [showTime]="true" 
+        hourFormat='24'
+        dateFormat="dd/mm/yy"
+        /> -->
+            <p-calendar  
+                [(ngModel)]="vacacion.fechaDesde" 
+                dateFormat="dd/mm/yy"
+            />
+            @if( vacacion.fechaDesde == null){
+                <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
+            }
+            @else{
+                <label for="F.Desde" class="font-bold block mb-2" >{{vacacion.fechaDesde | date: 'dd/MM/yyyy'}}</label>
+            }
+
+            
+        </p-floatLabel>
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+        
+        <!-- <p-calendar 
+        inputId="calendar-24h" 
+        [(ngModel)]="persona.fechaNacimiento" 
+        [showTime]="true" 
+        hourFormat='24'
+        dateFormat="dd/mm/yy"
+        /> -->
+            <p-calendar  
+                [(ngModel)]="vacacion.fechaHasta" 
+                dateFormat="dd/mm/yy"
+            />
+            @if( vacacion.fechaHasta == null){
+                <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
+            }
+            @else{
+                <label for="F.Hasta" class="font-bold block mb-2" >{{vacacion.fechaHasta | date: 'dd/MM/yyyy'}}</label>
+            }
+
+            
+        </p-floatLabel>
+    </div>
+
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+        
+        <!-- <p-calendar 
+        inputId="calendar-24h" 
+        [(ngModel)]="persona.fechaNacimiento" 
+        [showTime]="true" 
+        hourFormat='24'
+        dateFormat="dd/mm/yy"
+        /> -->
+            <p-calendar  
+                [(ngModel)]="vacacion.fechaReintegro" 
+                dateFormat="dd/mm/yy"
+            />
+            @if( vacacion.fechaReintegro == null){
+                <label for="F.Desde" class="font-bold block mb-2" >Fecha Reintegro</label>
+            }
+            @else{
+                <label for="F.Reintegro" class="font-bold block mb-2" >{{vacacion.fechaReintegro | date: 'dd/MM/yyyy'}}</label>
+            }
+
+            
+        </p-floatLabel>
+    </div>
+
     <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
-            <input pInputText id="monto" [(ngModel)]="vacacion.fechaDesde" oninput="this.value = this.value.toUpperCase()" />
-            <label for="monto">Monto</label>
+            <input pInputText id="dfalta" [(ngModel)]="vacacion.diasFalta" oninput="this.value = this.value.toUpperCase()" />
+            <label for="dfalta">D.Falta</label>
         </p-floatLabel>
     </div>
 
@@ -12,7 +87,7 @@
                 [options]="persona" 
                 [(ngModel)]="vacacion.persona" 
                 optionLabel="primerNombre"
-                placeholder="TIPO SUCURSAL" />
+                placeholder="TIPO PERSONA" />
             <label for="d">Tipo Persona </label>
         </p-floatLabel>
     </div>
