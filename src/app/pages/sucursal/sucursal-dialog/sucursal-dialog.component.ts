@@ -7,6 +7,7 @@ import { Sucursal } from '../../../model/sucursal';
 import { FormsModule } from '@angular/forms';
 import { SucursalService } from '../../../services/sucursal.service';
 import { switchMap } from 'rxjs';
+import moment from 'moment';
 
 @Component({
   selector: 'app-sucursal-dialog',
@@ -36,7 +37,7 @@ export class SucursalDialogComponent implements OnInit {
     }
     else
     {
-      this.sucursal.fechaRegistro = new Date();
+      this.sucursal.fechaRegistro = moment().format('YYYY-MM-DDTHH:mm:ss');
     }
   }
 

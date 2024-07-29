@@ -7,16 +7,16 @@ export class Persona{
     segundoApellido: string;
     ci: string;
     genero: string;
-    fechaNacimiento: Date;
+    fechaNacimiento: string;
     cuenta: string;
-    fechaIngreso: Date;
-    fechaRetiro: Date;
+    fechaIngreso: string;
+    fechaRetiro: string;
     tipoContrato: string;
     cargo: string;
     sueldoBase: number;
     idPersona: number;
     idSucursal: number;
     sucursal?:Sucursal;
-    fechaRegistro?:Date;
-    fechaActualizacion?:Date;
+    fechaRegistro?:string;
+    fechaActualizacion?:string;
 }

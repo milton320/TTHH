@@ -4,6 +4,7 @@ export class Anticipo{
     idAnticipo:number;
     monto:number;
     descripcion:String;
-    fechaRegistro:Date;
+    fechaRegistro:string;
     persona: Persona;
+    estado:boolean;
 }

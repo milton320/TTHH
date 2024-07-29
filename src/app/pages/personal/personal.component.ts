@@ -13,10 +13,11 @@ import { DialogModule } from 'primeng/dialog';
 import { SucursalService } from '../../services/sucursal.service';
 import { MaterialModule } from '../../material/material.module';
 import { PersonalDialogComponent } from './personal-dialog/personal-dialog.component';
+import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-personal',
   standalone: true,
-  imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule  ],
+  imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule,RouterOutlet,RouterLink  ],
   providers: [DialogService,DynamicDialogRef,MessageService],
   templateUrl: './personal.component.html',
   styleUrl: './personal.component.css'
@@ -31,7 +32,8 @@ export class PersonalComponent implements OnInit {
     private sucursalService: SucursalService,
     private _dialog :DialogModule,
     public dialogService: DialogService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private route: ActivatedRoute
     ){}
 
     ngOnInit(): void 
@@ -40,6 +42,10 @@ export class PersonalComponent implements OnInit {
       {
         this.persona = data
       });
+      
+      this.personaService.getPersonaChange().subscribe(data=>{
+        this.updateTable()
+      })
   
       this.personaService.getMessageChange().subscribe(data=>
       {
@@ -70,5 +76,8 @@ export class PersonalComponent implements OnInit {
       })  
     }
 
-
+    chekChildren(){
+      return this.route.children.length>0;
+    }
+        
 }

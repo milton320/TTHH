@@ -1,5 +1,5 @@
 export class Sucursal{
     nombre:string;
-    fechaRegistro: Date;
+    fechaRegistro: string;
     idSucursal: number;
 }

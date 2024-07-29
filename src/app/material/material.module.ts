@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { LOCALE_ID, NgModule } from "@angular/core";
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,15 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FieldsetModule } from 'primeng/fieldset';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { DividerModule } from 'primeng/divider';
+import { MessagesModule } from 'primeng/messages';
+
+
+import localePy from '@angular/common/locales/es-BO'
+import { registerLocaleData } from "@angular/common";
+registerLocaleData(localePy, 'es')
 
 
 @NgModule({
@@ -25,9 +34,13 @@ import { InputSwitchModule } from 'primeng/inputswitch';
             DropdownModule,
             FieldsetModule,
             RadioButtonModule,
-            InputSwitchModule
+            InputSwitchModule,
+            FloatLabelModule,
+            AutoCompleteModule,
+            DividerModule,
+            MessagesModule
         ],
-    providers:[],
+    providers:[{ provide: LOCALE_ID, useValue:'es'}],
     
 
 

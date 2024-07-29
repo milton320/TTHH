@@ -30,68 +30,68 @@ export class MenuComponent implements OnInit{
           {
             label: 'Personal',
             icon: 'pi pi-fw pi-id-card',
-            routerLink: ['/personal'],
+            routerLink: ['/pages/personal'],
           },
           {
             label: 'Sucursal',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/sucursal'],
+            routerLink: ['/pages/sucursal'],
           },
           {
             label: 'Anticipo',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/anticipo'],
+            routerLink: ['/pages/anticipo'],
           },
           {
             label: 'Dieta',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/dieta'],
+            routerLink: ['/pages/dieta'],
           },
           {
             label: 'Atraso',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/atraso'],
+            routerLink: ['/pages/atraso'],
           },
           
           {
             label: 'Falta',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/falta'],
+            routerLink: ['/pages/falta'],
           },
           {
             label: 'Justificativo Atraso',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/justificativo'],
+            routerLink: ['/pages/justificativo'],
           },
           {
             label: 'Justificativo Falta',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/justificativoFalta'],
+            routerLink: ['/pages/justificativoFalta'],
           },
           {
             label: 'Permiso',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/permiso'],
+            routerLink: ['/pages/permiso'],
           },
           {
             label: 'Planilla',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/planilla'],
+            routerLink: ['/pages/planilla'],
           },
           {
             label: 'Prestamo',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/prestamo'],
+            routerLink: ['/pages/prestamo'],
           },
           {
             label: 'Vacacion',
             icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/vacacion'],
+            routerLink: ['/pages/vacacion'],
           },
           {
             label: 'Reportes',
             icon: 'pi pi-fw pi-file',
-            routerLink: ['/reportes'],
+            routerLink: ['/pages/reportes'],
           }
         ],
       },

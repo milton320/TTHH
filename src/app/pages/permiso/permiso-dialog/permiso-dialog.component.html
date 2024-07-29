@@ -1,5 +1,14 @@
-<div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
-    
+<div class="grid grid-cols-4 gap-3 mt-10 mb-24">
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-autoComplete 
+                [(ngModel)]="permiso.persona" 
+                [suggestions]="filtrarPersonas" 
+                (completeMethod)="filterPersonas($event)"
+                field="ci" />
+            <label for="pnombre">Buscar por C.i.</label>
+        </p-floatLabel>
+    </div>  
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
             <p-dropdown 
@@ -35,7 +44,7 @@
        
     </div>
 </div>
-<div class="grid grid-cols-4 gap-3 mt-10 mb-20">
+<div class="grid gap-3 mt-10 mb-32">
     @if(valorTipo =='SI'){
         <p>VALORES POR FECHA</p>
         <div class="flex align-items-center gap-3 mb-2">
@@ -56,12 +65,14 @@
                 <p-calendar  
                     [(ngModel)]="permiso.fechaDesde" 
                     dateFormat="dd/mm/yy"
+                    [locale]="es"
+                    
                 />
                 @if( permiso.fechaDesde == null){
                     <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
                 }
                 @else{
-                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde | date: 'dd/MM/yyyy'}}</label>
+                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde | fechas}}</label>
                 }
     
                 
@@ -149,12 +160,13 @@
                 [showTime]="true" 
                 hourFormat='24'
                 dateFormat="dd/mm/yy"
+                
                 /> 
                 @if( permiso.fechaDesde == null){
                     <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
                 }
                 @else{
-                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde | date: 'dd/MM/yyyy'}}</label>
+                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde }}</label>
                 }
     
                 
@@ -222,7 +234,7 @@
     
     <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
-            <input pInputText id="estadoPermiso" [(ngModel)]="permiso.estadoPermiso" oninput="this.value = this.value.toUpperCase()" />
+            <input pInputText id="estadoPermiso" [(ngModel)]="permiso.estadoPermiso"  />
             <label for="estadoPermiso">ESTADO</label>
         </p-floatLabel>
     </div>

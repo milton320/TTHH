@@ -1,0 +1,112 @@
+<div class="card">
+
+    <form [formGroup]="form" class="example-container" (submit)="operate()">
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input pInputText id="idPermiso" formControlName="idPermiso" />
+                <label for="idPermiso">idPermiso</label>
+            </p-floatLabel>
+        </div>
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <p-dropdown 
+                    [options]="persona" 
+                    (ngModel)="permiso.persona" 
+                    formControlName="persona"
+                    optionLabel="primerNombre"
+                    optionValue="primerNombre"
+                    placeholder="" />
+                <label for="d">Tipo Persona </label>
+            </p-floatLabel>
+        </div>
+        <div class="flex align-items-center gap-3 mb-10">
+            <label for="dfalta">CON GOCE</label>
+            <p-inputSwitch formControlName="tipoPermiso" />
+            <label for="dfalta">SIN GOCE</label>
+        </div>
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    formControlName="fechaDesde"
+                    dateFormat="dd/mm/yy"
+                    
+                />
+                <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
+            </p-floatLabel>
+        </div>      
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    formControlName="fechaHasta"
+                    dateFormat="dd/mm/yy"
+                    
+                />
+                <label for="F.Desde" class="font-bold block mb-2" >Fecha Hasta</label>
+            </p-floatLabel>
+        </div>       
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+            
+            <!-- <p-calendar 
+            inputId="calendar-24h" 
+            [(ngModel)]="persona.fechaNacimiento" 
+            [showTime]="true" 
+            hourFormat='24'
+            dateFormat="dd/mm/yy"
+            /> -->
+                <p-calendar  
+                    formControlName="fechaReintegro"
+                    dateFormat="dd/mm/yy"
+                    
+                />
+                <label for="F.Desde" class="font-bold block mb-2" >Fecha Reintegro</label>
+            </p-floatLabel>
+        </div>   
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input pInputText id="dfalta" formControlName="diasFalta" />
+                <label for="dfalta">D.Falta</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input pInputText id="estadoPermiso" formControlName="estadoPermiso"  />
+                <label for="estadoPermiso">ESTADO</label>
+            </p-floatLabel>
+        </div>
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input pInputText id="motivo" formControlName="motivo" oninput="this.value = this.value.toUpperCase()" />
+                <label for="motivo">MOTIVO</label>
+            </p-floatLabel>
+        </div>
+
+
+
+        <div class="flex justify-content-end gap-2 mt-20">
+            <p-button label="CANCELAR"  type="button" severity="secondary" routerLink="/pages/permiso" />
+            <p-button label="PROCESAR"  type="submit"/>
+        </div>
+        
+        
+        
+    </form>
+</div>

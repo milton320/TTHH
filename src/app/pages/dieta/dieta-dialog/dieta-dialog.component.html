@@ -1,4 +1,14 @@
-<div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
+<div class="grid gap-3 mt-10 mb-20" >
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-autoComplete 
+                [(ngModel)]="dieta.persona" 
+                [suggestions]="filtrarPersonas" 
+                (completeMethod)="filterPersonas($event)"
+                field="ci" />
+            <label for="pnombre">Buscar por C.i.</label>
+        </p-floatLabel>
+    </div> 
     <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
             <input pInputText id="monto" [(ngModel)]="dieta.bono"  />
@@ -11,8 +21,8 @@
                 [options]="persona" 
                 [(ngModel)]="dieta.persona" 
                 optionLabel="primerNombre"
-               
-                placeholder="TIPO PERSONA"
+                [disabled]="true"
+                placeholder="Tipo Persona"
             />
             <label for="primerNombre">Tipo Persona</label>
         </p-floatLabel>

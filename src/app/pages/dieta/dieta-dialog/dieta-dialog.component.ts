@@ -10,6 +10,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PersonaService } from '../../../services/persona.service';
 import { DietaService } from '../../../services/dieta.service';
 import { switchMap } from 'rxjs';
+import moment from 'moment';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 
 
 @Component({
@@ -21,7 +23,7 @@ import { switchMap } from 'rxjs';
 })
 export class DietaDialogComponent implements OnInit, AfterViewInit {
   persona:Persona[]
-
+  filtrarPersonas: any[] | undefined;
   dieta:Dieta
 
 
@@ -47,7 +49,7 @@ export class DietaDialogComponent implements OnInit, AfterViewInit {
     }
     else
     {
-      this.dieta.fechaRegistro = new Date();
+      this.dieta.fechaRegistro = moment().format('YYYY-MM-DDTHH:mm:ss');
     }
     this.personaService.findAll().subscribe(data =>{ this.persona = data });
     console.log(this.dieta,"DIETA ONITIN");
@@ -86,5 +88,18 @@ export class DietaDialogComponent implements OnInit, AfterViewInit {
           
   close() {
     this.ref.close();
+  }
+  /** FILTRAR POR NOMBRES */
+  filterPersonas(event: AutoCompleteCompleteEvent){
+
+    let filtered: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < (this.persona as any[]).length; i++) {
+      let personas = (this.persona as any[])[i];
+      if (personas.ci.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(personas);
+      }
+    }
+    this.filtrarPersonas = filtered;
   }
 }

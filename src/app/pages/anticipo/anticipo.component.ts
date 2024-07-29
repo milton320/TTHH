@@ -72,7 +72,9 @@ export class AnticipoComponent implements OnInit {
     this.ref = this.dialogService.open(AnticipoDialogComponent, {
       header: 'ANTICIPOS',
       data: anticipo,
-      modal:true
+      modal:true,
+      contentStyle: { overflow: 'auto' },
+      
     })  
   }
   delete(idAnticipo:any){

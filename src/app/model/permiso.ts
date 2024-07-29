@@ -4,14 +4,14 @@ export class Permiso{
     idPermiso:number;
     persona:Persona;
     tipoPermiso:boolean;
-    fechaDesde:Date;
-    fechaHasta:Date;
+    fechaDesde:string;
+    fechaHasta:string;
     fechaReintegro:string;
     diasFalta:any;
     estadoPermiso: boolean;
     motivo:string;
     monto:number;
-    fechaRegistro?:Date;
+    fechaRegistro?:string;
     fechaModificacion?:string;
     fechaElliminacion?:string;
 

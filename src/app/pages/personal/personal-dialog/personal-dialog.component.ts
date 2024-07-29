@@ -11,22 +11,22 @@ import { Sucursal } from '../../../model/sucursal';
 import { switchMap } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { PrimeNGConfig } from 'primeng/api';
+import moment from 'moment';
+import { FechasPipe } from '../../../pipes/fechas.pipe';
 
 @Component({
   selector: 'app-personal-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule],
+  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule,FormsModule,FechasPipe],
   templateUrl: './personal-dialog.component.html',
   styleUrl: './personal-dialog.component.css'
 })
 export class PersonalDialogComponent implements OnInit {
   persona:Persona
 
-/*   datetime12h: Date[] | undefined;
-  datetime24h: Date[] | undefined;
-  time: Date[] | undefined; */
-
   sucursal: Sucursal[];
+  es: any;
 
 
   constructor( 
@@ -34,12 +34,13 @@ export class PersonalDialogComponent implements OnInit {
     public config: DynamicDialogConfig,
     private personaService: PersonaService,
     private sucursalService: SucursalService,
-    
+    private primengConfig: PrimeNGConfig
+
   )
   {}
 
   ngOnInit(): void {
-    console.log("~ this.dialogConfig.data:", this.config.data)
+  
     this.persona = {...this.config.data}
 
 
@@ -48,13 +49,24 @@ export class PersonalDialogComponent implements OnInit {
     }
     else
     {
-      this.persona.fechaRegistro = new Date();
+      this.persona.fechaRegistro = moment().format('YYYY-MM-DDTHH:mm:ss');
+      console.log(this.persona.fechaRegistro);
     }
 
-
-  
     this.sucursalService.findAll().subscribe(data =>{this.sucursal = data});
-  
+    
+
+    this.es = {
+            firstDayOfWeek: 1,
+            dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+            dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+            dayNamesMin: [ "D","L","M","X","J","V","S" ],
+            monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+            monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ],
+            today: 'Hoy',
+            clear: 'Borrar'
+        }
+    this.primengConfig.setTranslation(this.es)
     
   }
    /**REGISTRAR ACTUALIZAR */ 
@@ -73,6 +85,10 @@ export class PersonalDialogComponent implements OnInit {
     }
     else{
     //INSERT
+    console.log(this.persona.fechaIngreso = moment().format());
+    this.persona.fechaIngreso = moment().format('YYYY-MM-DDTHH:mm:ss');
+    this.persona.fechaRetiro= moment().format('YYYY-MM-DDTHH:mm:ss');
+    this.persona.fechaNacimiento= moment().format('YYYY-MM-DDTHH:mm:ss');
     console.log(this.persona);
     this.personaService
     .save(this.persona)

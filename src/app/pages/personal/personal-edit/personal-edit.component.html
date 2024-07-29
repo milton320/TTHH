@@ -1,0 +1,123 @@
+<div class="card grid grid-cols-4 gap-4">
+    
+</div>
+<div class="card grid grid-cols-4 gap-4">
+    <form [formGroup]="form" (submit)="operate()">
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="primerNombre" type="text" pInputText  formControlName="primerNombre"/>
+                <label for="primerNombre">P. Nombre</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="segundoNombre" type="text" pInputText  formControlName="segundoNombre"/>
+                <label for="segundoNombre">S. Nombre</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="primerApellido" type="text" pInputText  formControlName="primerApellido"/>
+                <label for="primerApellido">P. Apellido</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="segundoApellido" type="text" pInputText  formControlName="segundoApellido"/>
+                <label for="segundoApellido">S. Apellido</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="ci" type="text" pInputText  formControlName="ci"/>
+                <label for="ci">C.I.</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="genero" type="text" pInputText  formControlName="genero"/>
+                <label for="genero">C.I.</label>
+            </p-floatLabel>
+        </div>
+
+    
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <p-calendar formControlName="fechaNacimiento" />
+                <label for="birth_date">F. Nacimiento</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="cuenta" type="text" pInputText  formControlName="cuenta"/>
+                <label for="cuenta">Cuenta</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <p-calendar formControlName="fechaIngreso" />
+                <label for="fechaIngreso">F. Ingreso</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <p-calendar formControlName="fechaRetiro" />
+                <label for="fechaRetiro">F. Retiro</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="tipoContrato" type="text" pInputText  formControlName="tipoContrato"/>
+                <label for="tipoContrato">T.Contrato</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="cargo" type="text" pInputText  formControlName="cargo"/>
+                <label for="cargo">Cargo</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="sueldoBase" type="text" pInputText  formControlName="sueldoBase"/>
+                <label for="sueldoBase">S. base</label>
+            </p-floatLabel>
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-10">
+            <p-floatLabel>
+                <input id="idSucursal" type="text" pInputText  formControlName="idSucursal"/>
+                <label for="idSucursal">Sucursal</label>
+            </p-floatLabel>
+        </div>
+        
+            <div class="card flex justify-content-center">
+            <button 
+                pButton 
+                pRipple 
+                label="procesar" 
+                class="p-button-success">
+            </button>
+            
+            <button 
+                pButton 
+                pRipple 
+                label="cancelar" 
+                class="p-button-primary"
+               >
+            </button>
+        </div>
+    </form>
+</div>

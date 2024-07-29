@@ -13,29 +13,14 @@ import { PermisoComponent } from './pages/permiso/permiso.component';
 import { PlanillaComponent } from './pages/planilla/planilla.component';
 import { PrestamoComponent } from './pages/prestamo/prestamo.component';
 import { VacacionComponent } from './pages/vacacion/vacacion.component';
+import { PermisoEditComponent } from './pages/permiso/permiso-edit/permiso-edit.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: MainComponent,
-        children:[
-          { path: 'personal', component:PersonalComponent },
-          { path: 'sucursal', component:SucursalComponent,
-            children:[
-                { path: 'new', component:SucursalDialogComponent }
-              ] 
-          },
-          { path: 'anticipo', component:AnticipoComponent},
-          { path: 'atraso', component:AtrasoComponent},
-          { path: 'dieta', component:DietaComponent},
-          { path: 'falta', component:FaltaComponent},
-          { path: 'justificativo', component:JustificativoAtrasoComponent},
-          { path: 'justificativoFalta', component:JustificativoFaltaComponent},
-          { path: 'permiso', component:PermisoComponent},
-          { path: 'planilla', component:PlanillaComponent},
-          { path: 'prestamo', component:PrestamoComponent},
-          { path: 'vacacion', component:VacacionComponent},
-        ]
-      },
+  { 
+    path:'pages', 
+    component: MainComponent,
+    loadChildren:()=>import('./pages/pages.routes').then(x=>x.pagesRoutes) 
+  }
+  
       
 ];

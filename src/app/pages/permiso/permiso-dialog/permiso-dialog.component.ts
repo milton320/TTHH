@@ -11,11 +11,14 @@ import { SucursalService } from '../../../services/sucursal.service';
 import { Persona } from '../../../model/persona';
 import { switchMap } from 'rxjs';
 import { PermisoService } from '../../../services/permiso.service';
+import  moment from 'moment';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { FechasPipe } from '../../../pipes/fechas.pipe';
 
 @Component({
   selector: 'app-permiso-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule],
+  imports: [MaterialModule,CommonModule,RouterLink,FormsModule,FloatLabelModule,FechasPipe],
   templateUrl: './permiso-dialog.component.html',
   styleUrl: './permiso-dialog.component.css'
 })
@@ -24,10 +27,12 @@ export class PermisoDialogComponent implements OnInit{
   permiso: Permiso
 
   persona:Persona[];
+  filtrarPersonas: any[] | undefined;
 
   MILISENGUNDOS_POR_DIA = 1000 * 60 * 60 * 24;
   valorTipo = 'SI'
-
+  myMoment: moment.Moment = moment();
+  es: any;
 
 
 
@@ -62,12 +67,13 @@ export class PermisoDialogComponent implements OnInit{
     }
     else
     {
-      this.permiso.fechaRegistro = new Date();
+      this.permiso.fechaDesde = moment(new Date()).format('YYYY-MM-DDTHH:mm:ss')
     }
 
-
+    
   
     this.personaService.findAll().subscribe(data =>{this.persona = data});
+
   }
 
   /**REGISTRAR ACTUALIZAR */ 
@@ -89,9 +95,11 @@ export class PermisoDialogComponent implements OnInit{
     }
     else{
     //INSERT
+    /* console.log(this.permiso.fechaDesde ,"FECHA desde");
     let ts = this.diferenciaEntreDiasEnDias(this.permiso.fechaDesde, this.permiso.fechaHasta);
-    this.permiso.diasFalta = parseInt(ts.toString()) + 1;
-    console.log(ts.toString());
+    this.permiso.diasFalta = parseInt(ts.toString()) + 1; 
+    console.log(ts.toString());*/
+    console.log(moment(this.permiso.fechaRegistro).format('YYYY-MM-DDTHH:mm:ss')  ,"FECHA");
     this.permisoService
     .save(this.permiso)
     .pipe(switchMap(()=>this.permisoService.findAll()))
@@ -107,5 +115,20 @@ export class PermisoDialogComponent implements OnInit{
   close() {
     this.ref.close();
   }
+
+  /** FILTRAR POR NOMBRES */
+  filterPersonas(event: AutoCompleteCompleteEvent){
+
+    let filtered: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < (this.persona as any[]).length; i++) {
+      let personas = (this.persona as any[])[i];
+      if (personas.ci.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(personas);
+      }
+    }
+    this.filtrarPersonas = filtered;
+  }
+
 
 }

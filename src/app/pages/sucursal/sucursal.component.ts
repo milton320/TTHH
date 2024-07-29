@@ -56,8 +56,6 @@ export class SucursalComponent  implements OnInit{
       
     })
   
-
-
   } 
   updateTable(){
     this.sucursalService.findAll().subscribe(data => {
