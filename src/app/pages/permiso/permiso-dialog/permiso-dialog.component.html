@@ -65,7 +65,6 @@
                 <p-calendar  
                     [(ngModel)]="permiso.fechaDesde" 
                     dateFormat="dd/mm/yy"
-                    [locale]="es"
                     
                 />
                 @if( permiso.fechaDesde == null){
@@ -166,7 +165,7 @@
                     <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
                 }
                 @else{
-                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde }}</label>
+                    <label for="F.Desde" class="font-bold block mb-2" >{{permiso.fechaDesde | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
                 }
     
                 
@@ -183,15 +182,18 @@
             hourFormat='24'
             dateFormat="dd/mm/yy"
             /> -->
-                <p-calendar  
+                <p-calendar
+                    inputId="calendar-24h"   
                     [(ngModel)]="permiso.fechaHasta" 
+                    [showTime]="true" 
+                    hourFormat='24'
                     dateFormat="dd/mm/yy"
                 />
                 @if( permiso.fechaHasta == null){
                     <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
                 }
                 @else{
-                    <label for="F.Hasta" class="font-bold block mb-2" >{{permiso.fechaHasta | date: 'dd/MM/yyyy'}}</label>
+                    <label for="F.Hasta" class="font-bold block mb-2" >{{permiso.fechaHasta | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
                 }
     
                 
@@ -209,14 +211,17 @@
             dateFormat="dd/mm/yy"
             /> -->
                 <p-calendar  
-                    [(ngModel)]="permiso.fechaReintegro" 
+                    inputId="calendar-24h"
+                    [(ngModel)]="permiso.fechaReintegro"
+                    [showTime]="true" 
+                    hourFormat='24' 
                     dateFormat="dd/mm/yy"
                 />
                 @if( permiso.fechaReintegro == null){
                     <label for="F.Desde" class="font-bold block mb-2" >Fecha Reintegro</label>
                 }
                 @else{
-                    <label for="F.Reintegro" class="font-bold block mb-2" >{{permiso.fechaReintegro | date: 'dd/MM/yyyy'}}</label>
+                    <label for="F.Reintegro" class="font-bold block mb-2" >{{permiso.fechaReintegro | date: 'dd/MM/yyyy HH:mm:ss' }}</label>
                 }
     
                 
