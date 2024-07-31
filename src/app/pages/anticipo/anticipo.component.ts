@@ -63,6 +63,7 @@ export class AnticipoComponent implements OnInit {
     
     })        
   }
+  
   updateTable(){
     this.anticipoService.findAll().subscribe(data => {
       this.anticipo = data

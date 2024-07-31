@@ -30,17 +30,18 @@ export class PermisoDialogComponent implements OnInit{
   fechaIn:string
   fechaFn:string
   fechaReintegro: string
-
-
-
-  MILISENGUNDOS_POR_DIA = 1000 * 60 * 60 * 24;
   valorTipo = 'SI'
+
+
+
+  /*MILISENGUNDOS_POR_DIA = 1000 * 60 * 60 * 24;
+  
   myMoment: moment.Moment = moment();
   es: any;
 
 
 
-/*   diferenciaEntreDiasEnDias(a, b)
+   diferenciaEntreDiasEnDias(a, b)
   {
     var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate(),);
@@ -154,10 +155,6 @@ export class PermisoDialogComponent implements OnInit{
       this.permisoService.setMessageChange('CREATED');
     });
     }
-
-    
-    
-
     console.log(moment(this.fechaFn).diff(this.fechaIn, 'hours'), 'Dias de diferencias');
     
     }
@@ -196,7 +193,7 @@ export class PermisoDialogComponent implements OnInit{
       from.add(1, 'days');
     }
     return days;
-}
+  }
 
 
 }

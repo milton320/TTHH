@@ -1,1 +1,73 @@
-<p>prestamo-dialog works!</p>
+<div class="grid gap-3 mt-10 mb-20" >
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-autoComplete 
+                [(ngModel)]="prestamo.persona" 
+                [suggestions]="filtrarPersonas" 
+                (completeMethod)="filterPersonas($event)"
+                field="ci" />
+            <label for="pnombre">Buscar por C.i.</label>
+        </p-floatLabel>
+    </div>  
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="importe" [(ngModel)]="prestamo.importe" oninput="this.value = this.value.toUpperCase()" />
+            <label for="importe">Importe</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="tipoPrestamo" [(ngModel)]="prestamo.tipoPrestamo" oninput="this.value = this.value.toUpperCase()" />
+            <label for="importe">Tipo Prestamo</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="descripcion" [(ngModel)]="prestamo.descripcion" oninput="this.value = this.value.toUpperCase()" />
+            <label for="descripcion">Descripcion</label>
+        </p-floatLabel>
+    </div>
+        
+      
+    <p-divider align="left" type="solid">
+        <b>DATOS PERSONA</b>
+    </p-divider>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [loading]="true"
+                [options]="persona" 
+                [(ngModel)]="prestamo.persona" 
+                optionLabel="primerNombre"
+                placeholder="NOMBRE"
+                [disabled]="true" />
+                
+            <label for="pnombre">Nombre</label>
+        </p-floatLabel>
+    </div> 
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [loading]="true"
+                [options]="persona" 
+                [(ngModel)]="prestamo.persona" 
+                optionLabel="sueldoBase"
+                placeholder="SUELDO BASE"
+                [disabled]="true" />
+                
+            <label for="pnombre">Sueldo actual</label>
+        </p-floatLabel>
+    </div>
+    <!-- @if(sueldoEstado==false){
+        <p-messages 
+        [(value)]="messages" 
+        [enableService]="false" 
+         />
+    } -->
+    
+</div>
+<div class="flex justify-content-end gap-2 mt-20">
+    <p-button label="CANCELAR" severity="secondary" (click)="close()" />
+    <p-button label="PROCESAR" (click)="operate()" />
+</div>
+

@@ -1,1 +1,58 @@
-<p>prestamo works!</p>
+<p-toast />
+
+<div class="card grid grid-cols-4 gap-4">
+    <div class="col-start-1">
+        <p>
+            <input pInputText type="text" placeholder="Buscar..."  (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
+        </p>
+    </div>
+    <div class="col-end-7">
+        <p-button icon="pi pi-plus" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
+    </div>
+    
+</div>
+<div class="card">
+    <p-table 
+        #dt2
+        [value]="prestamo"
+        [rows]="5"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="p-datatable-striped" 
+        [paginator]="true"
+        dataKey="idPersona"
+        [globalFilterFields]="['primerNombre','persona.primerNombre','ci']"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>NRO</th>
+                <th>MONTO</th>
+                <th>TIPO PRESTAMO</th>
+                <th>DESCRIPCION</th>
+                <th>PERSONA</th>
+                <th>ACCION</th>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prestamo>
+            <tr>
+                <td>{{ prestamo.idPrestamo }}</td>
+                <td>{{ prestamo.importe }}</td>
+                <td>{{ prestamo.tipoPrestamo }}</td>
+                <td>{{ prestamo.descripcion }}</td>
+                <td>{{ prestamo.persona.primerNombre }}</td>
+                
+
+                <td>
+                    <div class="flex justify-content-center flex-wrap gap-3 mb-4">
+                        <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(prestamo)"></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="delete(prestamo.idPrestamo)" ></p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
