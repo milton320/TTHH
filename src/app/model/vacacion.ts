@@ -3,9 +3,9 @@ import { Persona } from "./persona";
 export class Vacacion{
     idVacacion:number;
     persona:Persona;
-    fechaDesde:Date;
-    fechaHasta:Date;
-    fechaReintegro:Date;
-    diasFalta:String;
-    fechaRegistro:Date;
+    fechaDesde:string;
+    fechaHasta:string;
+    fechaReintegro:string;
+    diasFalta: number;
+    fechaRegistro?:string;
 }

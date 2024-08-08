@@ -53,7 +53,7 @@ export class PersonalDialogComponent implements OnInit {
       console.log(this.persona.fechaRegistro);
     }
 
-    this.sucursalService.findAll().subscribe(data =>{this.sucursal = data});
+    this.sucursalService.findAllSucursal().subscribe(data =>{this.sucursal = data});
     
 
     this.es = {

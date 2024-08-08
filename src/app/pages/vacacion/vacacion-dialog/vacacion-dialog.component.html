@@ -1,4 +1,27 @@
-<div class="grid grid-cols-4 gap-3 mt-10 mb-20" >
+<div class="grid grid-cols-4 gap-3 mt-10 mb-24">
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-autoComplete 
+                [(ngModel)]="vacacion.persona" 
+                [suggestions]="filtrarPersonas" 
+                (completeMethod)="filterPersonas($event)"
+                field="ci" />
+            <label for="pnombre">Buscar por C.i.</label>
+        </p-floatLabel>
+    </div>  
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [options]="persona" 
+                [(ngModel)]="vacacion.persona" 
+                optionLabel="primerNombre"
+                placeholder="TIPO PERSONA" />
+            <label for="d">Tipo Persona </label>
+        </p-floatLabel>
+    </div>
+</div>
+
+<div class="grid gap-3 mt-10 mb-20" >
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
         
@@ -12,12 +35,13 @@
             <p-calendar  
                 [(ngModel)]="vacacion.fechaDesde" 
                 dateFormat="dd/mm/yy"
+                
             />
             @if( vacacion.fechaDesde == null){
                 <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
             }
             @else{
-                <label for="F.Desde" class="font-bold block mb-2" >{{vacacion.fechaDesde | date: 'dd/MM/yyyy'}}</label>
+                <label for="F.Desde" class="font-bold block mb-2" >{{vacacion.fechaDesde | fechas}}</label>
             }
 
             
@@ -78,17 +102,6 @@
         <p-floatLabel>
             <input pInputText id="dfalta" [(ngModel)]="vacacion.diasFalta" oninput="this.value = this.value.toUpperCase()" />
             <label for="dfalta">D.Falta</label>
-        </p-floatLabel>
-    </div>
-
-    <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-            <p-dropdown 
-                [options]="persona" 
-                [(ngModel)]="vacacion.persona" 
-                optionLabel="primerNombre"
-                placeholder="TIPO PERSONA" />
-            <label for="d">Tipo Persona </label>
         </p-floatLabel>
     </div>
 </div>

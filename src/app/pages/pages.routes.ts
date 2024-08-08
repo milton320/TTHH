@@ -15,6 +15,7 @@ import { PrestamoComponent } from './prestamo/prestamo.component';
 import { VacacionComponent } from './vacacion/vacacion.component';
 import { MainComponent } from './layout/main/main.component';
 import { PersonalEditComponent } from './personal/personal-edit/personal-edit.component';
+import { ReportComponent } from './report/report.component';
 
 
 
@@ -50,6 +51,7 @@ export const pagesRoutes: Routes = [
       { path: 'planilla', component:PlanillaComponent},
       { path: 'prestamo', component:PrestamoComponent},
       { path: 'vacacion', component:VacacionComponent},
+      { path: 'report', component:ReportComponent}
 
       
 ];

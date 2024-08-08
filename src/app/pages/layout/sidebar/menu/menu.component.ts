@@ -91,7 +91,7 @@ export class MenuComponent implements OnInit{
           {
             label: 'Reportes',
             icon: 'pi pi-fw pi-file',
-            routerLink: ['/pages/reportes'],
+            routerLink: ['/pages/report'],
           }
         ],
       },

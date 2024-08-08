@@ -17,6 +17,14 @@ export class SucursalService extends GenericService<Sucursal>{
     super(http, `${environment.HOST}/sucursales`);
   }
 
+  findAllSucursal(){
+    return this.http.get<Sucursal[]>(`${this.url}/sucursalAll`); 
+  }
+
+  generateReport(){
+    return this.http.get(`${this.url}/sucursalReport`, { responseType:'blob' }); 
+  }
+
 
 
   /************************** */

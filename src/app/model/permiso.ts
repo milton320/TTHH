@@ -15,7 +15,7 @@ export class Permiso{
     fechaModificacion?:string;
     fechaElliminacion?:string;
 
-    constructor(){
-        this.monto = 0
+    constructor(monto:number = 0){
+        this.monto = monto
     }
 }

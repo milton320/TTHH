@@ -186,7 +186,7 @@ export class PermisoDialogComponent implements OnInit{
     days = 0;
     
     while (!from.isAfter(to)) {
-      // Si no es sabado ni domingo
+      // Si no es domingo
       if (from.isoWeekday() !== 7) {
         days++;
       }
