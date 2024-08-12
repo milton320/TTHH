@@ -69,6 +69,7 @@ export class AnticipoComponent implements OnInit {
       this.anticipo = data
     });
   }
+  
   showDialog(anticipo?: Anticipo){
     this.ref = this.dialogService.open(AnticipoDialogComponent, {
       header: 'ANTICIPOS',

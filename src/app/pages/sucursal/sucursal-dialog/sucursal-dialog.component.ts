@@ -58,7 +58,7 @@ export class SucursalDialogComponent implements OnInit {
     }
     else{
     //INSERT
-    
+    console.log(this.sucursal);
     this.sucursalService
     .save(this.sucursal)
     .pipe(switchMap(()=>this.sucursalService.findAll()))

@@ -1,1 +1,48 @@
-<p>jatraso-dialog works!</p>
+<div class="grid gap-3 mt-10 mb-20" >
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-autoComplete 
+                [(ngModel)]="jusAtraso.persona" 
+                [suggestions]="filtrarPersonas" 
+                (completeMethod)="filterPersonas($event)"
+                field="ci" />
+            <label for="pnombre">Buscar por C.i.</label>
+        </p-floatLabel>
+    </div>  
+    <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText id="minutos" [(ngModel)]="jusAtraso.minuto" oninput="this.value = this.value.toUpperCase()" />
+            <label for="minutos">MINUTOS ATRASO</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input pInputText id="justificado" [(ngModel)]="jusAtraso.justificado" oninput="this.value = this.value.toUpperCase()" />
+            <label for="justificado">JUSTIFICADO</label>
+        </p-floatLabel>
+    </div>
+        
+      
+    <p-divider align="left" type="solid">
+        <b>DATOS PERSONA</b>
+    </p-divider>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [loading]="true"
+                [options]="persona" 
+                [(ngModel)]="jusAtraso.persona" 
+                optionLabel="primerNombre"
+                placeholder="NOMBRE"
+                [disabled]="true" />
+                
+            <label for="pnombre">Nombre</label>
+        </p-floatLabel>
+    </div> 
+
+</div>
+<div class="flex justify-content-end gap-2 mt-20">
+    <p-button label="CANCELAR" severity="secondary" (click)="close()" />
+    <p-button label="PROCESAR" (click)="operate()" />
+</div>
+

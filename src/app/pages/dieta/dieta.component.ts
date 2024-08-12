@@ -36,7 +36,7 @@ export class DietaComponent implements OnInit {
     private messageService: MessageService
     ){}
 
-    ngOnInit(): void 
+  ngOnInit(): void 
   {  
     this.dietaService.findAll().subscribe(data =>
     {

@@ -78,7 +78,7 @@ export class AnticipoDialogComponent implements OnInit {
       else{
       //INSERT
       console.log(this.anticipo);
-      console.log(this.anticipo.monto, this.anticipo.persona.sueldoBase);
+    
       
           
           this.anticipoService

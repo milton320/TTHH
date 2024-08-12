@@ -1,9 +1,9 @@
 import { Persona } from "./persona";
 
-export class Atraso{
+export class JusAtraso{
     idAtraso:number;
-    persona:Persona;
-    justificado:String;
+    persona: Persona;
     minuto:number;
+    justificado:boolean;
     fechaRegistro:string;
 }
