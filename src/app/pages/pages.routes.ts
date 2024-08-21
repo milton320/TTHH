@@ -16,11 +16,14 @@ import { VacacionComponent } from './vacacion/vacacion.component';
 import { MainComponent } from './layout/main/main.component';
 import { PersonalEditComponent } from './personal/personal-edit/personal-edit.component';
 import { ReportComponent } from './report/report.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { cetGuard } from '../guard/cert.guard';
+
 
 
 
 export const pagesRoutes: Routes = [
-  
+      { path: 'dashboard',component: DashboardComponent, canActivate: [cetGuard] },
       { path: 'personal', component:PersonalComponent,
         children:[
           {
@@ -29,29 +32,29 @@ export const pagesRoutes: Routes = [
           {
             path:'edit/:id', component:PersonalEditComponent,
           }
-        ]
+        ],canActivate: [cetGuard]
        },
       { path: 'sucursal', component:SucursalComponent,
         children:[
             { path: 'new', component:SucursalDialogComponent }
-          ] 
+          ],canActivate: [cetGuard]
       },
-      { path: 'anticipo', component:AnticipoComponent},
-      { path: 'atraso', component:AtrasoComponent},
-      { path: 'dieta', component:DietaComponent},
-      { path: 'falta', component:FaltaComponent},
-      { path: 'justificativo', component:JustificativoAtrasoComponent},
-      { path: 'justificativoFalta', component:JustificativoFaltaComponent},
+      { path: 'anticipo', component:AnticipoComponent ,canActivate: [cetGuard]},
+      { path: 'atraso', component:AtrasoComponent, canActivate: [cetGuard]},
+      { path: 'dieta', component:DietaComponent, canActivate: [cetGuard]},
+      { path: 'falta', component:FaltaComponent,canActivate: [cetGuard]},
+      { path: 'justificativo', component:JustificativoAtrasoComponent, canActivate: [cetGuard]},
+      { path: 'justificativoFalta', component:JustificativoFaltaComponent, canActivate: [cetGuard]},
       { path: 'permiso', component:PermisoComponent,
         children:[
           { path: 'new', component:PermisoEditComponent},
           { path: 'edit/:id', component:PermisoEditComponent}
-        ]
+        ], canActivate: [cetGuard]
       },
-      { path: 'planilla', component:PlanillaComponent},
-      { path: 'prestamo', component:PrestamoComponent},
-      { path: 'vacacion', component:VacacionComponent},
-      { path: 'report', component:ReportComponent}
+      { path: 'planilla', component:PlanillaComponent, canActivate: [cetGuard]},
+      { path: 'prestamo', component:PrestamoComponent, canActivate: [cetGuard]},
+      { path: 'vacacion', component:VacacionComponent, canActivate: [cetGuard]},
+      { path: 'report', component:ReportComponent, canActivate: [cetGuard]}
 
       
 ];

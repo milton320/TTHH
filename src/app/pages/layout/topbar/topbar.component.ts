@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppLayoutService } from '../../../services/app.layout.service';
+import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-topbar',
@@ -13,6 +14,7 @@ import { AppLayoutService } from '../../../services/app.layout.service';
 })
 export class TopbarComponent {
   items!: MenuItem[];
+  
 
   @ViewChild('menubutton') menuButton!: ElementRef;
 
@@ -20,6 +22,13 @@ export class TopbarComponent {
 
   @ViewChild('topbarmenu') menu!: ElementRef;
 
-  constructor(public layoutService: AppLayoutService) {}
+  constructor(public layoutService: AppLayoutService,
+    private loginService:LoginService
+
+  ) {}
+
+  logout(){
+    this.loginService.logout();
+  }
 
 }

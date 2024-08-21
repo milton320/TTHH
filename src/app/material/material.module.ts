@@ -16,6 +16,7 @@ import { DividerModule } from 'primeng/divider';
 import { MessagesModule } from 'primeng/messages';
 
 
+
 import localePy from '@angular/common/locales/es-BO'
 import { registerLocaleData } from "@angular/common";
 registerLocaleData(localePy, 'es')

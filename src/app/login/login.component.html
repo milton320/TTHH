@@ -1,0 +1,27 @@
+<div class="grid grid-cols-4 gap-3 mt-10 mb-24">
+    
+    <div class="card flex justify-content-center">
+        <div>
+            <p-floatLabel>
+                <input pInputText id="username" [(ngModel)]="username" />
+                <label for="username">Username</label>
+            </p-floatLabel>
+            <br>
+            <!-- <p-password [(ngModel)]="password" [toggleMask]="true" 
+                promptLabel="Introdusca contraseña"
+                weakLabel="débil"
+                mediumLabel="medio"
+                strongLabel="fuerte"
+    
+            /> -->
+            <p-floatLabel>
+                <p-password [(ngModel)]="password" [feedback]="false" />
+                <label for="password">Password</label>
+            </p-floatLabel>
+        </div>
+    </div>
+    <div class="flex justify-content-end gap-2 mt-20">
+
+        <p-button label="PROCESAR" (click)="login()" />
+    </div>
+</div>
