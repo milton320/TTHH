@@ -3,9 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { environment } from '../environments/environment.development';
 import { JwtModule } from '@auth0/angular-jwt';
+import { ServerErrorsInterceptor } from './interceptor/server-errors.interceptor';
 
 export function tokenGetter(){
   return sessionStorage.getItem(environment.TOKEN_NAME)
@@ -23,7 +24,13 @@ export const appConfig: ApplicationConfig = {
         },
       })
     ),
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi()), //para peticiones HTTP - Forma cuabndo el viaje el token jwt
+    /* {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorsInterceptor,
+      multi: true
+    } */
+
 
   ]
 };
