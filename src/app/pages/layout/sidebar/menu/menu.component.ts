@@ -33,7 +33,7 @@ export class MenuComponent implements OnInit{
       {
         label: 'Home',
         items: [
-          { label: 'Principal', icon: 'pi pi-fw pi-home', routerLink: ['dashboard'] },
+          { label: 'Principal', icon: 'pi pi-fw pi-home', routerLink: ['/pages/dashboard'] },
         ],
       },
       {

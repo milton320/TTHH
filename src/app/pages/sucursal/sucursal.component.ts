@@ -12,6 +12,9 @@ import {MessageService} from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
 import { switchMap } from 'rxjs';
+import { MenuService } from '../../services/menu.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-sucursal',
@@ -23,6 +26,8 @@ import { switchMap } from 'rxjs';
   
 })
 export class SucursalComponent  implements OnInit{
+  username: string
+
   sucursal!: Sucursal[];
   loading: boolean = true;
   ref: DynamicDialogRef 
@@ -31,10 +36,23 @@ export class SucursalComponent  implements OnInit{
       private sucursalService: SucursalService,
       private _dialog :DialogModule,
       public dialogService: DialogService,
-      private messageService: MessageService
+      private messageService: MessageService,
+      private menuService: MenuService
   ){}
 
   ngOnInit(): void {
+    /*** USUARIO  */
+    const helper = new JwtHelperService();
+    const token = sessionStorage.getItem(environment.TOKEN_NAME);
+    const decodedToken = helper.decodeToken(token);
+
+    this.username = decodedToken.sub;
+
+    this.menuService.getMenuByUser(this.username).subscribe(data=>this.menuService.setMenuChange(data)); 
+    
+    /***FON */
+
+
     this.sucursalService.findAll().subscribe(data => {
       this.sucursal = data
     });

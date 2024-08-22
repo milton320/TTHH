@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { MainComponent } from './pages/layout/main/main.component';
 
 import { LoginComponent } from './login/login.component';
+import { Not404Component } from './pages/not-404/not-404.component';
+
 
 
 export const routes: Routes = [
@@ -17,7 +19,7 @@ export const routes: Routes = [
     loadChildren:()=>import('./pages/pages.routes').then(x=>x.pagesRoutes) 
   },
   {
-    path:'not-404', component:LoginComponent
+    path:'not-404', component:Not404Component
   },
   {
     path:'**', redirectTo: 'not-404'

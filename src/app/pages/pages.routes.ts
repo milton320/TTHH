@@ -18,6 +18,7 @@ import { PersonalEditComponent } from './personal/personal-edit/personal-edit.co
 import { ReportComponent } from './report/report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { cetGuard } from '../guard/cert.guard';
+import { Not403Component } from './not-403/not-403.component';
 
 
 
@@ -54,7 +55,8 @@ export const pagesRoutes: Routes = [
       { path: 'planilla', component:PlanillaComponent, canActivate: [cetGuard]},
       { path: 'prestamo', component:PrestamoComponent, canActivate: [cetGuard]},
       { path: 'vacacion', component:VacacionComponent, canActivate: [cetGuard]},
-      { path: 'report', component:ReportComponent, canActivate: [cetGuard]}
+      { path: 'report', component:ReportComponent, canActivate: [cetGuard]},
+      { path: 'not-403', component:Not403Component}
 
       
 ];
