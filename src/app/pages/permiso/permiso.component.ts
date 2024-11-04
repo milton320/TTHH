@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
@@ -20,66 +20,13 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
   selector: 'app-permiso',
   standalone: true,
   imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule,RouterOutlet,RouterLink ],
-  providers: [DialogService,DynamicDialogRef,MessageService],
+  providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './permiso.component.html',
   styleUrl: './permiso.component.css'
 })
 export class PermisoComponent implements OnInit {
   permiso!: Permiso[]
-/* 
-  constructor(
-    private personaService: PersonaService,
-    private permisoService: PermisoService,
-    private _dialog :DialogModule,
-    public dialogService: DialogService,
-    private messageService: MessageService,
-    private route: ActivatedRoute
-    ){}
-  ngOnInit(): void 
-    { 
 
-      this.permisoService.findAll().subscribe(data =>
-        {
-          this.permiso = data
-        });
-    
-        this.permisoService.getMessageChange().subscribe(data=>
-        {
-          console.log(data);
-          if(data == 'CREATED')
-          {
-            this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
-            this.updateTable()
-          }
-          else if(data == 'UPDATE!')
-          {
-            this.messageService.add({ severity: 'info', summary: 'ACTUALIZADO', detail: 'Actualizado Correctamente' });
-            this.updateTable()
-          }
-          else if(data == 'DELETE!'){
-            this.messageService.add({ severity: 'error', summary: 'ELIMINADO', detail: 'Eliminacion Correctamente' });
-            this.updateTable()
-          }
-        
-        })
-     }
-     updateTable(){
-      this.permisoService.findAll().subscribe(data => {
-        this.permiso = data
-      });
-    }
-    delete(idPermiso:any){
-      this.permisoService.delete(idPermiso)
-      .pipe(switchMap(()=>this.permisoService.findAll()))
-      .subscribe(data=>{
-        this.permisoService.setPermisoChange(data);
-        this.permisoService.setMessageChange('DELETE!');
-      })
-    }
-    chekChildren(){
-      return this.route.children.length>0;
-    } */
-        
   //loading: boolean = true;
   ref: DynamicDialogRef 
   constructor(
@@ -88,7 +35,8 @@ export class PermisoComponent implements OnInit {
     private _dialog :DialogModule,
     public dialogService: DialogService,
     private messageService: MessageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService
     ){}
 
     ngOnInit(): void 
@@ -123,20 +71,20 @@ export class PermisoComponent implements OnInit {
         this.permiso = data
       });
     }
-    delete(idPermiso:any){
-      this.permisoService.delete(idPermiso)
-      .pipe(switchMap(()=>this.permisoService.findAll()))
-      .subscribe(data=>{
-        this.permisoService.setPermisoChange(data);
-        this.permisoService.setMessageChange('DELETE!');
-      })
-    }
+    
     showDialog(permiso?: Permiso){
       if(permiso == null){
         this.ref = this.dialogService.open(PermisoDialogComponent, {
           header: 'PERMISO ',
           data: permiso,
-          modal:true
+          modal:true,
+          width: '35vw',
+          maximizable:true,
+            contentStyle: { overflow: 'auto' },
+            breakpoints: {
+                '960px': '75vw',
+                '640px': '90vw'
+            },
         })  
       
       }else{
@@ -146,6 +94,30 @@ export class PermisoComponent implements OnInit {
           modal:true
         })  
       }
+    }
+    confirm2(event: Event, idPermiso:any) {
+      this.confirmationService.confirm({
+          target: event.target as EventTarget,
+          message: '¿Quieres Elminar este registro?',
+          icon: 'pi pi-info-circle',
+          acceptButtonStyleClass: 'p-button-danger p-button-sm',
+          accept: () => {
+              this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
+              console.log(idPermiso);
+              this.delete(idPermiso)
+          },
+          reject: () => {
+              this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'No Elminado', life: 3000 });
+          }
+      });
+    }
+    delete(idPermiso:any){
+      this.permisoService.delete(idPermiso)
+      .pipe(switchMap(()=>this.permisoService.findAll()))
+      .subscribe(data=>{
+        this.permisoService.setPermisoChange(data);
+        this.permisoService.setMessageChange('DELETE!');
+      })
     }
  
 

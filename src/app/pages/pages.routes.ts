@@ -19,6 +19,7 @@ import { ReportComponent } from './report/report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { cetGuard } from '../guard/cert.guard';
 import { Not403Component } from './not-403/not-403.component';
+import { BonoAntiguedadComponent } from './bono-antiguedad/bono-antiguedad.component';
 
 
 
@@ -56,6 +57,7 @@ export const pagesRoutes: Routes = [
       { path: 'prestamo', component:PrestamoComponent, canActivate: [cetGuard]},
       { path: 'vacacion', component:VacacionComponent, canActivate: [cetGuard]},
       { path: 'report', component:ReportComponent, canActivate: [cetGuard]},
+      { path: 'parametros', component:BonoAntiguedadComponent, canActivate: [cetGuard]},
       { path: 'not-403', component:Not403Component}
 
       

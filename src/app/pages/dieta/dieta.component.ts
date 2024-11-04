@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ import { switchMap } from 'rxjs';
   selector: 'app-dieta',
   standalone: true,
   imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule ],
-  providers: [DialogService,DynamicDialogRef,MessageService],
+  providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './dieta.component.html',
   styleUrl: './dieta.component.css'
 })
@@ -33,7 +33,8 @@ export class DietaComponent implements OnInit {
     private personaService: PersonaService,
     private _dialog :DialogModule,
     public dialogService: DialogService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
     ){}
 
   ngOnInit(): void 
@@ -76,6 +77,22 @@ export class DietaComponent implements OnInit {
       modal:true
     })  
   }
+  confirm2(event: Event, idDieta:any) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: '¿Quieres Elminar este registro?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm',
+        accept: () => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
+            console.log(idDieta);
+            this.delete(idDieta)
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'No Elminado', life: 3000 });
+        }
+    });
+  }
   delete(idDieta:any){
     this.dietaService.delete(idDieta)
     .pipe(switchMap(()=>this.dietaService.findAll()))
@@ -85,5 +102,6 @@ export class DietaComponent implements OnInit {
 
     })
   }
+  
 
 }

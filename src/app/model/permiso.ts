@@ -4,18 +4,18 @@ export class Permiso{
     idPermiso:number;
     persona:Persona;
     tipoPermiso:boolean;
+    tipoFechaHora:string;
     fechaDesde:string;
     fechaHasta:string;
-    fechaReintegro:string;
+    fechaReintegro?:string;
     diasFalta:any;
-    estadoPermiso: boolean;
     motivo:string;
     monto:number;
     fechaRegistro?:string;
     fechaModificacion?:string;
     fechaElliminacion?:string;
 
-    constructor(monto:number = 0){
-        this.monto = monto
-    }
+    constructor(monto: number = 0) { // Valor por defecto de 0, pero puedes pasar otro valor si es necesario
+        this.monto = monto;
+      }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MaterialModule } from '../../material/material.module';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ import { switchMap } from 'rxjs';
   selector: 'app-vacacion',
   standalone: true,
   imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule  ],
-  providers: [DialogService,DynamicDialogRef,MessageService],
+  providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './vacacion.component.html',
   styleUrl: './vacacion.component.css'
 })
@@ -33,7 +33,8 @@ export class VacacionComponent {
     private personaService: PersonaService,
     private _dialog :DialogModule,
     public dialogService: DialogService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
     ){}
 
   ngOnInit(): void 
@@ -72,11 +73,26 @@ export class VacacionComponent {
     this.ref = this.dialogService.open(VacacionDialogComponent, {
       header: 'VACACION',
       data: vacacion,
-      modal:true
+      modal:true,
+      maximizable:true
     })  
   }
-
-  delete(idVacacion:any){
+  confirm2(event: Event, idVacacion:any) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: '¿Quieres Elminar este registro?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm',
+        accept: () => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
+            this.eliminarLogica(idVacacion)
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'No Elminado', life: 3000 });
+        }
+    });
+  }
+/*   delete(idVacacion:any){
     this.vacacionService.delete(idVacacion)
     .pipe(switchMap(()=>this.vacacionService.findAll()))
     .subscribe(data=>{
@@ -84,6 +100,17 @@ export class VacacionComponent {
       this.vacacionService.setMessageChange('DELETE!');
 
     })
-  }
+  } */
+    // Método para eliminar vacación de manera lógica (opcional)
+    eliminarLogica(idVacacion: any){
+      this.vacacionService.deleteLogic(idVacacion)
+      .pipe(switchMap(()=>this.vacacionService.findAll()))
+      .subscribe(data=>{
+        console.log(data);
+        this.vacacionService.setVacionChange(data);
+        this.vacacionService.setMessageChange('DELETE!');
+  
+      })
+    }
 
 }

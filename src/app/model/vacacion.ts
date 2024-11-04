@@ -5,7 +5,10 @@ export class Vacacion{
     persona:Persona;
     fechaDesde:string;
     fechaHasta:string;
-    fechaReintegro:string;
+    descripcion:string;
+    diasVacacionAcumulados?:number;
+    diasVacacionUsados?:number;
+    diasVacacionDisponibles?:number;
     diasFalta: number;
     fechaRegistro?:string;
 }

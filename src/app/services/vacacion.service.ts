@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Vacacion } from '../model/vacacion';
 import { Subject } from 'rxjs';
 import { environment } from '../../environments/environment.development';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GenericService } from './generic.service';
 
 @Injectable({
@@ -18,6 +18,18 @@ export class VacacionService extends GenericService<Vacacion>{
     super( http, `${environment.HOST}/detalleVacaciones`)
    }
 
+   registroVacaciones(vacacion: Vacacion){
+    return this.http.post(`${this.url}/persona/registrarVacacion`, vacacion)
+   }
+
+// Método para calcular los días disponibles para una persona
+  calcularDiasDisponibles(idPersona: number){
+    return this.http.get<number>(`${this.url}/persona/${idPersona}/diasDisponibles`);
+  }
+
+  deleteLogic(id:number){
+    return this.http.delete<Vacacion>(`${this.url}/${id}`);
+  }
 
   /***** */
 

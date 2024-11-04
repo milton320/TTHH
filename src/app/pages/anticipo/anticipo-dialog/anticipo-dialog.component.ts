@@ -28,6 +28,7 @@ export class AnticipoDialogComponent implements OnInit {
   filtrarPersonas: any[] | undefined;
   sueldoEstado:boolean = true
   messages: Message[] | undefined;
+  totalAnticipo:number=0
 
 
   
@@ -42,9 +43,10 @@ export class AnticipoDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.messages = [{ severity: 'error', detail: 'EL ANTICIPO DEBE SER MENOR QUE EL SUELDO ACTUAL' }];
-    console.log("~ this.dialogConfig.data:", this.config.data)
     this.anticipo = {...this.config.data}
-
+    
+    this.totalAnticipo = this.anticipo.monto
+    
     if(this.anticipo != null && this.anticipo.idAnticipo > 0){
       console.log('UPDATE')
       
@@ -57,47 +59,73 @@ export class AnticipoDialogComponent implements OnInit {
     this.personaService.findAll().subscribe(data =>{this.persona = data});
 
   }
-
-     /**REGISTRAR ACTUALIZAR */ 
-  operate()
-  {
-    if(this.anticipo.monto < this.anticipo.persona.sueldoBase)
-    {
+  operate() {
+    // Verificar si el monto del anticipo es menor al sueldo base de la persona
+    if (this.anticipo.monto < this.anticipo.persona.sueldoBase) {
       console.log('save');
-      if(this.anticipo !=null && this.anticipo.idAnticipo >0 ){
-        //UPDATE
-        console.log(this.anticipo.monto);
-        this.anticipoService
-        .update(this.anticipo.idAnticipo, this.anticipo)
-        .pipe(switchMap(()=>this.anticipoService.findAll()))
-        .subscribe(data=>{
-          this.anticipoService.setAnticipoChange(data);
-          this.anticipoService.setMessageChange("UPDATE!")
-        })
+      
+      // Actualización (UPDATE)
+      if (this.anticipo != null && this.anticipo.idAnticipo > 0) {
+        this.updateAnticipo(); // Extraer la lógica de actualización en un método separado
+      } 
+      // Inserción (INSERT)
+      else {
+        this.anticipoService.nroAnticipos(this.anticipo.persona.idPersona).subscribe({
+          next: (anticiposExistentes) => {
+            if (anticiposExistentes.length > 0) {
+              this.messages = [{ severity: 'error', detail: 'La persona ya tiene un anticipo registrado' }];
+              this.sueldoEstado = false;
+            } else {
+              this.insertAnticipo(); // Extraer la lógica de inserción en un método separado
+            }
+          },
+          error: (e) => {
+            this.messages = [{ severity: 'error', detail: 'Error al verificar anticipos existentes' }];
+          }
+        });
       }
-      else{
-      //INSERT
-      console.log(this.anticipo);
-    
-      
-          
-          this.anticipoService
-          .save(this.anticipo)
-          .pipe(switchMap(()=>this.anticipoService.findAll()))
-          .subscribe(data=>{
-            this.anticipoService.setAnticipoChange(data);
-            this.anticipoService.setMessageChange('CREATED');
-            
-          });
-        }
-      
-      
-      this.close();
-    }
-    else{
-      this.sueldoEstado = false
+    } 
+    else {
+      this.sueldoEstado = false;
     }
   }
+  
+  private updateAnticipo() {
+    this.anticipoService
+      .update(this.anticipo.idAnticipo, this.anticipo)
+      .pipe(
+        switchMap(() => this.anticipoService.findAll())
+      )
+      .subscribe({
+        next: (data) => {
+          this.anticipoService.setAnticipoChange(data);
+          this.anticipoService.setMessageChange('UPDATE!');
+          this.close(); // Cerrar después de la actualización
+        },
+        error: (e) => {
+          this.anticipoService.setMessageChange('ERROR!');
+        }
+      });
+  }
+  
+  private insertAnticipo() {
+    this.anticipoService
+      .save(this.anticipo)
+      .pipe(
+        switchMap(() => this.anticipoService.findAll())
+      )
+      .subscribe({
+        next: (data) => {
+          this.anticipoService.setAnticipoChange(data);
+          this.anticipoService.setMessageChange('CREATED');
+          this.close(); // Cerrar después de la inserción
+        },
+        error: (e) => {
+          this.anticipoService.setMessageChange('ERROR!');
+        }
+      });
+  }
+  
      
   close() {
     this.ref.close();

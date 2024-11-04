@@ -1,4 +1,5 @@
-
+<p-toast />
+<p-confirmPopup />
 <div class="card grid grid-cols-4 gap-4">
     <div class="col-start-1">
         <p>
@@ -6,8 +7,21 @@
         </p>
     </div>
     <div class="col-end-7">
-        <p-button icon="pi pi-plus" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
+        <!-- <p-button icon="pi pi-sort-alt" [rounded]="true" severity="success" label="Registrar" (click)="confirm2($event)"></p-button> -->
+        <!-- <p-button icon="pi-history" [rounded]="true" severity="success" (click)="insertar()"></p-button> -->
+        <p-toast />
+        <p-confirmPopup>
+            <ng-template pTemplate="content" let-message>
+                <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+                    <i [class]="message.icon" class="text-6xl text-primary-500"></i>
+                    <p>{{ message.message }}</p>
+                </div>
+            </ng-template>
+        </p-confirmPopup>
+        <p-button icon="pi pi-sort-alt" [rounded]="true" severity="primary" label="Registrar" (onClick)="confirm($event)" />
     </div>
+    
+        
     
 </div>
 
@@ -22,24 +36,25 @@
         dataKey="idPersona"
         [globalFilterFields]="['bono','persona.primerNombre','idDieta']"
         [rowsPerPageOptions]="[5, 10, 20]"
+        class="p-datatable-sm"
     >
         <ng-template pTemplate="header">
             <tr>
                 <th>NRO</th>
                 <th>PERSONA</th>
-                <th>JUSTIFICADO</th>
-                <th>MINUTOS</th>
-                <th>FECHA</th>
+                <th>FECHA/HORA</th>
+
                 
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-atraso>
             <tr>
+                
                 <td>{{ atraso.idAtraso }}</td>
                 <td>{{ atraso.persona }}</td>
-                <td>{{ atraso.justificado }}</td>
-                <td>{{ atraso.minuto }}</td>
-                <td>{{ atraso.fechaRegistro }}</td>
+                <td>{{ atraso.fecha  }}</td>
+                
+                
 
                 <!-- <td>
                     <div class="flex justify-content-center flex-wrap gap-3 mb-4">
@@ -49,7 +64,27 @@
                 </td> -->
             </tr>
         </ng-template>
+        
+        <ng-template pTemplate="summary">
+            <div class="flex flex-row">
+                <div style="text-align:left">
+                    <p-button icon="pi pi-refresh" label="Recargar" (click)="updateTable()" severity="warning" />
+                </div>
+                <div>
+                    <p-progressSpinner
+                        [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"
+                        styleClass="w-1rem h-1rem" 
+                        strokeWidth="8" 
+                        fill="var(--surface-ground)" 
+                        animationDuration=".9s"
+                        [hidden]="loading"/>
+                    
+                </div>
+            </div>
+        </ng-template>
+        
     </p-table>
+    
 </div>
 
 

@@ -18,10 +18,16 @@
                 <p-password [(ngModel)]="password" [feedback]="false" />
                 <label for="password">Password</label>
             </p-floatLabel>
-        </div>
-    </div>
-    <div class="flex justify-content-end gap-2 mt-20">
+            <div class="flex justify-content-end gap-2 mt-20">
 
-        <p-button label="PROCESAR" (click)="login()" />
+                <p-button label="INICIAR" (click)="login()" />
+            </div>
+            <div class="flex justify-content-end gap-2 mt-20">
+
+                <p-button label="REGISTRAR" (click)="insert()" />
+            </div>
+        </div>
+
     </div>
+
 </div>

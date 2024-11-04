@@ -1,4 +1,4 @@
-<div class="grid grid-cols-4 gap-3 mt-10 mb-24">
+<div class="grid grid-cols-1 gap-3 mt-10 ">
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
             <p-autoComplete 
@@ -19,6 +19,9 @@
             <label for="d">Tipo Persona </label>
         </p-floatLabel>
     </div>
+    
+</div>
+<div class="grid grid-cols-4 gap-3 mt-10 ">
     <div class="flex flex-wrap gap-3">
         <div class="flex align-items-center">
             <p-radioButton 
@@ -46,7 +49,7 @@
 </div>
 
 
-<div class="grid gap-3 mt-10 mb-32">
+<div class="grid gap-3 mt-10 mb-96">
     @if(valorTipo =='SI'){
         <p>VALORES POR FECHA</p>
         <div class="flex align-items-center gap-3 mb-2">
@@ -67,7 +70,10 @@
                 <p-calendar  
                     [(ngModel)]="permiso.fechaDesde" 
                     dateFormat="dd/mm/yy"
-                    
+                    [showWeek]="true" 
+                    [minDate]="minDate" 
+                    [maxDate]="maxDate" 
+                    (onSelect)="onFechaDesdeChange($event)"
                 />
                 @if( permiso.fechaDesde == null){
                     <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
@@ -93,6 +99,10 @@
                 <p-calendar  
                     [(ngModel)]="permiso.fechaHasta" 
                     dateFormat="dd/mm/yy"
+                    [minDate]="fechaDesde()"
+                    [minDate]="minDate" 
+                    [maxDate]="maxDate" 
+                    (onSelect)="onFechaHastaChange($event)"
                 />
                 @if( permiso.fechaHasta == null){
                     <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
@@ -103,18 +113,16 @@
     
                 
             </p-floatLabel>
+            <!-- Mostrar mensaje de error si las fechas no son válidas -->
+            <div *ngIf="rangoFechasInvalido()">
+                {{ rangoFechasInvalido() }}
+            </div>
         </div>
-    
+    <!-- 
         <div class="flex align-items-center gap-3 mb-3">
             <p-floatLabel>
             
-            <!-- <p-calendar 
-            inputId="calendar-24h" 
-            [(ngModel)]="persona.fechaNacimiento" 
-            [showTime]="true" 
-            hourFormat='24'
-            dateFormat="dd/mm/yy"
-            /> -->
+
                 <p-calendar  
                     [(ngModel)]="permiso.fechaReintegro" 
                     dateFormat="dd/mm/yy"
@@ -128,14 +136,14 @@
     
                 
             </p-floatLabel>
-        </div>
+        </div> -->
     
-        <div class="flex align-items-center gap-3 mb-2">
+        <!-- <div class="flex align-items-center gap-3 mb-2">
             <p-floatLabel>
                 <input pInputText id="dfalta" [(ngModel)]="permiso.diasFalta" oninput="this.value = this.value.toUpperCase()" />
                 <label for="dfalta">D.Falta</label>
             </p-floatLabel>
-        </div>
+        </div> -->
     }
     @else {
 
@@ -161,6 +169,9 @@
                 [showTime]="true" 
                 hourFormat='24'
                 dateFormat="dd/mm/yy"
+                [minDate]="minDate" 
+                [maxDate]="maxDate" 
+                (onSelect)="onFechaDesdeChange($event)"
                 
                 /> 
                 @if( permiso.fechaDesde == null){
@@ -190,6 +201,10 @@
                     [showTime]="true" 
                     hourFormat='24'
                     dateFormat="dd/mm/yy"
+                    [minDate]="fechaDesde()"
+                    [minDate]="minDate" 
+                    [maxDate]="maxDate" 
+                    (onSelect)="onFechaHastaChange($event)"
                 />
                 @if( permiso.fechaHasta == null){
                     <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
@@ -202,16 +217,9 @@
             </p-floatLabel>
         </div>
     
-        <div class="flex align-items-center gap-3 mb-3">
+        <!-- <div class="flex align-items-center gap-3 mb-3">
             <p-floatLabel>
-            
-            <!-- <p-calendar 
-            inputId="calendar-24h" 
-            [(ngModel)]="persona.fechaNacimiento" 
-            [showTime]="true" 
-            hourFormat='24'
-            dateFormat="dd/mm/yy"
-            /> -->
+        
                 <p-calendar  
                     inputId="calendar-24h"
                     [(ngModel)]="permiso.fechaReintegro"
@@ -228,23 +236,23 @@
     
                 
             </p-floatLabel>
-        </div>
+        </div> -->
     
-        <div class="flex align-items-center gap-3 mb-2">
+        <!-- <div class="flex align-items-center gap-3 mb-2">
             <p-floatLabel>
                 <input pInputText id="dfalta" [(ngModel)]="permiso.diasFalta" oninput="this.value = this.value.toUpperCase()" />
                 <label for="dfalta">D.Falta</label>
             </p-floatLabel>
-        </div>
+        </div> -->
     }
     
     
-    <div class="flex align-items-center gap-3 mb-2">
+    <!-- <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
             <input pInputText id="estadoPermiso" [(ngModel)]="permiso.estadoPermiso"  />
             <label for="estadoPermiso">ESTADO</label>
         </p-floatLabel>
-    </div>
+    </div> -->
 
     <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
@@ -256,16 +264,27 @@
     {    
         <div class="flex align-items-center gap-3 mb-2">
             <p-floatLabel>
-                <input pInputText id="monto" [(ngModel)]="permiso.monto" oninput="this.value = this.value.toUpperCase()" />
+                <input pInputText id="monto" [(ngModel)]="permiso.monto" />
                 <label for="monto">MONTO</label>
             </p-floatLabel>
         </div>
-
     }
+    @else{
+        <div class="flex align-items-center gap-3 mb-2">
+            <p-floatLabel>
+                <input pInputText id="monto" [(ngModel)]="permiso.monto"/>
+                <label for="monto"></label>
+            </p-floatLabel>
+        </div>
+    }
+    
 
+</div><!-- Mostrar la cantidad de días hábiles -->
+<div>
+  <p>Número de días hábiles (Lunes a Sábado): {{ diasHabiles() }}</p>
 </div>
 
-<div class="flex justify-content-end gap-2 mt-20">
+<div class="flex justify-content-end gap-2">
     <p-button label="CANCELAR" severity="secondary" (click)="close()" />
     <p-button label="PROCESAR" (click)="operate()" />
 </div>

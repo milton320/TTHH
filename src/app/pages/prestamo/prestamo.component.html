@@ -1,5 +1,5 @@
 <p-toast />
-
+<p-confirmPopup />
 <div class="card grid grid-cols-4 gap-4">
     <div class="col-start-1">
         <p>
@@ -46,7 +46,7 @@
                 <td>
                     <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                         <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(prestamo)"></p-button>
-                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="delete(prestamo.idPrestamo)" ></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="confirm2($event,prestamo.idPrestamo)"></p-button>
                     </div>
                 </td>
             </tr>

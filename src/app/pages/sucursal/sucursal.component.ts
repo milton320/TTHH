@@ -8,7 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { SucursalDialogComponent } from './sucursal-dialog/sucursal-dialog.component';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
 import { switchMap } from 'rxjs';
@@ -20,7 +20,7 @@ import { environment } from '../../../environments/environment.development';
   selector: 'app-sucursal',
   standalone: true,
   imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,ToastModule,RippleModule],
-  providers: [DialogService,DynamicDialogRef,MessageService],
+  providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './sucursal.component.html',
   styleUrl: './sucursal.component.css',
   
@@ -37,7 +37,8 @@ export class SucursalComponent  implements OnInit{
       private _dialog :DialogModule,
       public dialogService: DialogService,
       private messageService: MessageService,
-      private menuService: MenuService
+      private menuService: MenuService,
+      private confirmationService: ConfirmationService
   ){}
 
   ngOnInit(): void {
@@ -97,6 +98,23 @@ export class SucursalComponent  implements OnInit{
       modal:true
   });
   
+  }
+
+  confirm2(event: Event, idPrestamo:any) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: '¿Quieres Elminar este registro?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm',
+        accept: () => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
+            console.log(idPrestamo);
+            this.delete(idPrestamo)
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'No Elminado', life: 3000 });
+        }
+    });
   }
   delete(idSucursal:any){
     this.sucursalService.delete(idSucursal)

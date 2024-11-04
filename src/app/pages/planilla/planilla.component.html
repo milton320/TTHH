@@ -1,1 +1,200 @@
-<p>planilla works!</p>
+<p-toast />
+<div class="card grid grid-cols-4 gap-4">
+    <div class="col-start-1">
+        <p>
+            <input pInputText type="text" placeholder="Buscar..."  (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
+        </p>
+    </div>
+    <div class="col-end-7">
+        <p-button  severity="primary" (click)="insertProcedure()" label="actualizar"/>
+    </div>
+    <div class="col-end-7">
+        <p-button icon="pi pi-bookmark" severity="success" (onClick)="showDialog()" label="Planilla"></p-button>
+    </div>
+
+    <!-- <div class="col-end-7">
+        <p-button  [rounded]="true" severity="success" (click)="personalNuevo()">Registrar</p-button>
+    </div> -->
+
+    
+    
+</div>
+<div class="card">
+    <p-table 
+        #dt2
+        [value]="planilla"
+        [rows]="20"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [paginator]="true"
+        dataKey="idSucursal"
+        [globalFilterFields]="['nombreCompleto','tipoCargo']"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>NRO</th>
+                <th>PERSONA</th>
+                <th>NACIONALIDAD</th>
+                <th>F. NAC</th>
+                <th>GENERO</th>
+                <th>CARGO</th>
+                <th>F.ING</th>
+                <th>DIAS PAG</th>
+                <th>HORAS PAG</th>
+                <th>SUELDO BASE</th>
+                <th>BONO ANTI</th>
+                <th>NRO</th>
+                <th>HRS EXTRAS BONO</th>
+                <th>BONO PROD</th>
+                <th>DOMINICALES</th>
+                <th>OTROS BONOS</th>
+                <th>TOTAL GANADO</th>
+                <th>GESTORA</th>
+                <th>RCIVA</th>
+                <th>OTROS DESC.</th>
+                <th>TOTAL DESC.</th>
+                <th>LIQUIDO PAGABLE</th>
+                <th>F. REGISTRO</th>
+
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-planilla>
+            <tr>
+                <td>{{ planilla.idPlanilla }}</td>
+                <td>{{ planilla.nombreCompleto }}</td>
+                <td>{{ planilla.nacionalidad }}</td>
+                <td>{{ planilla.fechaNacimiento| date: 'dd/MM/yyyy' }}</td>
+                <td>{{ planilla.genero }}</td>
+                <td>{{ planilla.tipoCargo }}</td>
+                <td>{{ planilla.fechaIngreso }}</td>
+                <td>{{ planilla.diasPagado}}</td>
+                <td>{{ planilla.horasPagadas }}</td>
+                <td>{{ planilla.sueldoBase }}</td>
+                <td>{{ planilla.bonoAntiguedad }}</td>
+                <td>{{ planilla.nro }}</td>
+                <td>{{ planilla.horasExMon}}</td>
+                <td>{{ planilla.bonoProd}}</td>
+                <td>{{ planilla.dominicales}}</td>
+                <td>{{ planilla.otrosBonos}}</td>
+                <td>{{ planilla.totalGanado}}</td>
+                <td>{{ planilla.gestora}}</td>
+                <td>{{ planilla.rciva}}</td>
+                <td>{{ planilla.otrosDescuentos}}</td>
+                <td>{{ planilla.totalDescuentos}}</td>
+                <td>{{ planilla.liquidoPagable}}</td>
+                <td>{{ planilla.fechaRegistro | date: 'dd/MM/yyyy' }}</td>
+
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-dialog 
+    header="DETALLE DE PLANILLAS" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false"
+    [maximizable]="true">
+    <div class="card grid grid-cols-4 gap-4">
+        <div class="col-start-1">
+            <p>
+                <input pInputText type="text" placeholder="Buscar..."  (input)="dt3.filterGlobal($any($event.target).value, 'contains')"/>
+            </p>
+        </div>   
+        <!-- <div class="col-end-7">
+            <p-button  [rounded]="true" severity="success" (click)="personalNuevo()">Registrar</p-button>
+        </div> -->
+    
+        
+        
+    </div>
+        <p>
+            <p-table 
+            #dt3
+            [value]="planillaTemp"
+            [rows]="20"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true"
+            dataKey="idTempPlanilla"
+            [globalFilterFields]="['nombreCompleto','idPersona']"
+            [rowsPerPageOptions]="[5, 10, 20]"
+            
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>NRO</th>
+                    <th>PERSONA</th>
+                    <th>NOMBRE COM.</th>
+                    <th>SUELDO BASE</th>
+                    <th>CARGO</th>
+                    <th>T. PLANILLA</th>
+                    <th>ANTIGUEDAD</th>
+                    <th>B. ANTIGUEDAD</th>
+                    <th>F.INGRESO</th>
+                    <th>ANTICIPO</th>
+                    <th>PRESTAMO</th>
+                    <th>MES</th>
+                    <th>ANIO</th>
+                    <th>DIAS FALTA</th>
+                    <th>DIAS TRABAJADO</th>
+                    <th>MIN FALTA</th>
+                    <th>PERMISO</th>
+                    
+    
+                    
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-planillaTemp>
+                <tr>
+                    <td>{{ planillaTemp.idTempPlanilla }}</td>
+                    <td>{{ planillaTemp.idPersona }}</td>
+                    <td>{{ planillaTemp.nombreCompleto }}</td>
+                    <td>{{ planillaTemp.sueldoBase }}</td>
+                    <td>{{ planillaTemp.cargo }}</td>
+                    <td>{{ planillaTemp.tipoPlanilla }}</td>
+                    <td>{{ planillaTemp.antiguedad }}</td>
+                    <td>{{ planillaTemp.bonoAntiguedad }}</td>
+                    <td>{{ planillaTemp.fechaIngreso | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ planillaTemp.anticipo }}</td>
+                    <td>{{ planillaTemp.prestamo }}</td>
+                    <td>{{ planillaTemp.mes }}</td>
+                    <td>{{ planillaTemp.anio }}</td>
+                    <td>{{ planillaTemp.diasFalta }}</td>
+                    <td>{{ planillaTemp.diasTrabajados}}</td>  
+                    <td>{{ planillaTemp.minAtrasados}}</td>
+                    <td>{{ planillaTemp.permiso}}</td>                        
+                </tr>
+            </ng-template>
+        </p-table>
+        </p>
+        <ng-template pTemplate="footer">
+            <p-button 
+                label="Cancel" 
+                [text]="true" 
+                severity="secondary" 
+                (onClick)="visible = false" />
+            <p-button 
+                label="Registrar" 
+                [outlined]="true" 
+                severity="secondary" 
+                (onClick)="confirm2()"
+              />
+        </ng-template>
+</p-dialog>
+<p-confirmDialog>
+    <ng-template pTemplate="message" let-message>
+        <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border">
+            <i class="pi pi-exclamation-circle text-6xl text-primary-500"></i>
+            <p>{{ message.message }}</p>
+        </div>
+    </ng-template>
+</p-confirmDialog>
+
+
+    
+
+
+    

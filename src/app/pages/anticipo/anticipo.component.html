@@ -1,5 +1,5 @@
 <p-toast />
-
+<p-confirmPopup />
 <div class="card grid grid-cols-4 gap-4">
     <div class="col-start-1">
         <p>
@@ -14,13 +14,14 @@
 <div class="card">
     <p-table 
         #dt2
+        class="p-datatable-sm"
         [value]="anticipo"
         [rows]="5"
         [tableStyle]="{ 'min-width': '50rem' }"
         styleClass="p-datatable-striped" 
         [paginator]="true"
         dataKey="idPersona"
-        [globalFilterFields]="['primerNombre','persona.primerNombre','ci']"
+        [globalFilterFields]="['persona.primerNombre','ci']"
         [rowsPerPageOptions]="[5, 10, 20]"
     >
         <ng-template pTemplate="header">
@@ -44,7 +45,7 @@
                 <td>
                     <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                         <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(anticipo)"></p-button>
-                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="delete(anticipo.idAnticipo)" ></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="confirm2($event,anticipo.idAnticipo)" ></p-button>
                     </div>
                 </td>
             </tr>

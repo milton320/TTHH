@@ -28,11 +28,7 @@ export class PersonaService extends GenericService<Persona>{
     return this.http.get<Persona[]>(this.url); 
   }
 
-  findAllPersona<Persona>(){
-    return new Promise ((resolve, reject )=>{
-      this.http.get<Persona[]>(this.urlP).subscribe(data=>resolve(data)); 
-    })
-  }
+
 
   findById(id:number){
     return this.http.get<Persona>(`${this.url}/${id}`)

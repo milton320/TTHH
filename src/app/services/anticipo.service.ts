@@ -18,7 +18,9 @@ export class AnticipoService extends GenericService<Anticipo> {
     super(http, `${environment.HOST}/detalleAnticipos`)
   }
 
-
+  nroAnticipos(idPersona:number){
+    return this.http.get<Anticipo[]>(`${this.url}/nroAnticipos?id_persona=${idPersona}`)
+  }
 
   /************************** */
 

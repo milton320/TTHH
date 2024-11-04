@@ -6,6 +6,8 @@ import { MaterialModule } from '../material/material.module';
 import { LoginService } from '../services/login.service';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '../../environments/environment.development';
+import { Login } from '../model/login';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,8 @@ import { environment } from '../../environments/environment.development';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent  {
+  loginData: Login;
   username:string
   password:string
 
@@ -28,6 +31,20 @@ export class LoginComponent {
       sessionStorage.setItem(environment.TOKEN_NAME, data.access_token);
       this.router.navigate(['pages/dashboard']);
     
+    });
+
+  }
+  insert(){
+    
+
+    //INSERT
+    console.log(this.loginData);
+    this.loginService
+    .save(this.loginData)
+
+    .subscribe(data=>{
+
+
     });
 
   }

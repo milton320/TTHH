@@ -1,1 +1,103 @@
-<p>justificativo-falta works!</p>
+<p-toast />
+<div class="card grid grid-cols-4 gap-4">
+    <div class="col-start-1">
+        <p>
+            <input pInputText type="text" placeholder="Buscar..."  (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
+        </p>
+    </div>
+    <div class="col-end-7">
+        <!-- <p-button icon="pi pi-bookmark" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
+        <p-button icon="pi pi-bookmark" [rounded]="true" severity="primary" (click)="meses()"></p-button> -->
+        <!-- <form [formGroup]="formGroup">
+            <p-dropdown
+              [(ngModel)]="selectedMeses" 
+              formControlName="selectedMeses"
+              [options]="mesAnios"
+              optionLabel="mes"
+              placeholder="SELECCIONE MES"
+            />
+            <p-button label="REGISTRAR" (click)="operate(selectedMeses)" />
+        </form> -->
+        <!-- <p-button icon="pi pi-bookmark" severity="success" label="CALCULAR" (click)="calcularAtrasos()"></p-button> -->
+        <!-- <p-button label="REGISTRAR" (click)="operate()" /> -->
+        <p-toast />
+        <p-confirmPopup>
+            <ng-template pTemplate="content" let-message>
+                <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+                    <i [class]="message.icon" class="text-6xl text-primary-500"></i>
+                    <p>{{ message.message }}</p>
+                </div>
+            </ng-template>
+        </p-confirmPopup>
+        <p-button icon="pi pi-sort-alt" [rounded]="true" severity="primary" label="Registrar" (onClick)="confirm($event)" />
+    </div>
+    
+</div>
+<div class="card">
+    <p-table 
+        #dt2
+        [value]="justFalta"
+        [rows]="10"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [paginator]="true"
+        dataKey="idAtraso"
+        [globalFilterFields]="['idFalta','estado','persona.primerNombre','nombreCompleto','nombreSucursal','fechaMes','estado']"
+        [rowsPerPageOptions]="[5, 10, 20]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th>NRO</th>
+                <th>NOMBRES</th>
+                <th>SUCURSAL</th>
+                <th>F. FALTA</th>
+                <th>FECHA_MES</th>
+                <th>ESTADO</th>
+                <th>MES</th>
+                <th>ANIO</th>
+                <th>MIN. ATRASO</th>
+                <th>ACCION</th>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-justFalta>
+            <tr>
+                <td>{{ justFalta.persona.idPersona }}</td>
+                <td>{{ justFalta.nombreCompleto }}</td>
+                <td>{{ justFalta.nombreSucursal }}</td>                
+                <td>{{ justFalta.fechaFalta | date: 'dd/MM/yyyy HH:mm:ss'  }}</td>
+                <td>{{ justFalta.fechaMes | date: 'dd/MM/yyyy'}}</td>
+                <td>
+                    @if(justFalta.estado =='presente'){
+                        <p-tag severity="success" [value]="justFalta.estado"/>
+                    }
+                    @else if(justFalta.estado =='dia no laboral'){
+                        <p-tag severity="secondary" [value]="justFalta.estado"/>
+                    }
+                    @else if(justFalta.estado =='ausente'){
+                        <p-tag severity="danger" [value]="justFalta.estado"/>
+                    }@else if(justFalta.estado =='no aplica'){
+                        <p-tag severity="warning" [value]="justFalta.estado"/>
+                    }@else if(justFalta.estado =='feriado'){
+                        <p-tag severity="contrast" [value]="justFalta.estado"/>
+                    }
+                    @else if(justFalta.estado =='vacacion'){
+                        <p-tag severity="contrast" [value]="justFalta.estado"/>
+                    }
+                    @else if(justFalta.estado =='cumpleaños'){
+                        <p-tag severity="contrast" [value]="justFalta.estado"/>
+                    }
+                    
+                </td>                
+                <td>{{ justFalta.mes }}</td>                
+                <td>{{ justFalta.anio }}</td>
+                <td>{{ justFalta.minutosAtraso }}</td>
+                
+                <td>
+                    <div class="flex flex-wrap gap-3 justify-content-center">
+                        <p-button icon="pi pi-check" [rounded]="true" (click)="showDialog(justFalta)"></p-button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

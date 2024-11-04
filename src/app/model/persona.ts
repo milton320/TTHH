@@ -1,6 +1,9 @@
 import { Sucursal } from "./sucursal";
+import { TipoCargo } from "./tipoCargo";
+import { TipoContrato } from "./tipoContrato";
 
 export class Persona{
+    idPersona: number;
     primerNombre: string;
     segundoNombre: string;
     primerApellido: string;
@@ -10,13 +13,19 @@ export class Persona{
     fechaNacimiento: string;
     cuenta: string;
     fechaIngreso: string;
-    fechaRetiro: string;
-    tipoContrato: string;
-    cargo: string;
     sueldoBase: number;
-    idPersona: number;
-    idSucursal: number;
-    sucursal?:Sucursal;
+    tipoContrato: TipoContrato;
+    tipoCargo: TipoCargo;
+    totalVacacion: number;
+    totalVacacionUs: number;
+    nacionalidad:string
+    sucursal:Sucursal;
     fechaRegistro?:string;
     fechaActualizacion?:string;
+    estado:boolean;
+
+    constructor(){
+        this.totalVacacion = 0;
+        this.totalVacacionUs = 0
+    }
 }

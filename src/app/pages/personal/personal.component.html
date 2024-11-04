@@ -1,4 +1,5 @@
 <p-toast />
+<p-confirmPopup />
 <router-outlet></router-outlet>
 <div [hidden]="chekChildren()">    
     <div class="card grid grid-cols-4 gap-4">
@@ -12,21 +13,26 @@
         </div>
         
     </div>
+    
     <div class="card">
         <p-table 
             #dt2
+            class="p-datatable-sm"
             [value]="persona"
-            [rows]="5"
-            [tableStyle]="{ 'min-width': '50rem' }"
+            [rows]="10"
+            styleClass="p-datatable-striped" 
+            [tableStyle]="{ 'min-width': 'rem' }"
             styleClass="p-datatable-striped" 
             [paginator]="true"
             dataKey="idPersona"
             [globalFilterFields]="['primerNombre','sucursal.nombre','ci']"
             [rowsPerPageOptions]="[5, 10, 20]"
         >
-            <ng-template pTemplate="header">
+            <ng-template pTemplate="header" >
                 <tr>
-                    <th>NRO</th>
+                    <th pSortableColumn="idPersona" style="width:20%">
+                        NRO <p-sortIcon field="idPersona" />
+                    </th>
                     <th>P.NOMBRE</th>
                     <th>S.NOMBRE</th>
                     <th>P.APELLIDO</th>
@@ -36,11 +42,10 @@
                     <th>F. NAC.</th>
                     <th>CUENTA</th>
                     <th>F.INGRESO</th>
-                    <th>F.RETIRO</th>
                     <th>TIPO CONTRATO</th>
-                    <th>SUELDO BASE</th>
+                    <th>TIPO CARGO</th>
+                    <th>SUELDO</th>
                     <th>SUCURSAL</th>
-                    
                     <th>ACCION</th>
                     
                 </tr>
@@ -56,15 +61,15 @@
                     <td>{{ persona.genero }}</td>
                     <td>{{ persona.fechaNacimiento | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ persona.cuenta }}</td>
-                    <td>{{ persona.fechaIngreso | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ persona.fechaRetiro | date: 'dd/MM/yyyy'}}</td>
-                    <td>{{ persona.tipoContrato }}</td>
+                    <td>{{ persona.fechaIngreso | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{ persona.tipoContrato.descripcion }}</td>
+                    <td>{{ persona.tipoCargo.descripcion }}</td>
                     <td>{{ persona.sueldoBase }}</td>
                     <td>{{ persona.sucursal.nombre }}</td>
                     <td>
                         <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                             <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(persona)"></p-button>
-                            <p-button icon="pi pi-trash" [rounded]="true" severity="danger" ></p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="confirm2($event,persona.idPersona)" ></p-button>
                         </div>
                     </td>
                 </tr>

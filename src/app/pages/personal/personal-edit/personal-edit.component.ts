@@ -103,9 +103,9 @@ export class PersonalEditComponent implements OnInit {
           fechaNacimiento: new FormControl(data.fechaNacimiento),
           cuenta: new FormControl(data.cuenta),
           fechaIngreso: new FormControl(data.fechaIngreso),
-          fechaRetiro: new FormControl(data.fechaRetiro),
+          
           tipoContrato: new FormControl(data.tipoContrato),
-          cargo: new FormControl(data.cargo),
+          cargo: new FormControl(data.tipoCargo),
           sueldoBase: new FormControl(data.sueldoBase),
           idPersona: new FormControl(data.idPersona),
           idSucursal: new FormControl(data.sucursal.idSucursal),    
@@ -127,9 +127,9 @@ export class PersonalEditComponent implements OnInit {
     persona.fechaNacimiento = this.form.value['fechaNacimiento']
     persona.cuenta = this.form.value['cuenta']
     persona.fechaIngreso = this.form.value['fechaIngreso']
-    persona.fechaRetiro = this.form.value['fechaRetiro']
+    
     persona.tipoContrato = this.form.value['tipoContrato']
-    persona.cargo = this.form.value['cargo']
+    persona.tipoCargo = this.form.value['cargo']
     persona.sueldoBase = this.form.value['sueldoBase']
     persona.idPersona = this.form.value['idPersona']
     persona.sucursal = this.form.value['idSucursal']
@@ -151,5 +151,13 @@ export class PersonalEditComponent implements OnInit {
     }
      
   }
+  delete(idSucursal:any){
+    this.sucursalService.delete(idSucursal)
+    .pipe(switchMap(()=>this.sucursalService.findAll()))
+    .subscribe(data=>{
+      this.sucursalService.setSucursalChange(data);
+      this.sucursalService.setMessageChange('DELETE!');
 
+    })
+  }
 }

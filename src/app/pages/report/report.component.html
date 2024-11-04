@@ -1,11 +1,46 @@
-<div>
-    <div class="card grid grid-cols-4 gap-4">
-        <h1>REPORTS</h1>
+<div class="card ">
+    
+    <p-divider align="left" type="solid">
+        <b>Reportes</b>
         
+    </p-divider>
+    <div class="">
+        <p>SUCURSALES</p>
+        <p-button label="SUCURSALES PDF" (click)="downloadReport('bar')"/>        
     </div>
-    <div class="card grid grid-cols-4 gap-4">
-        <p-button label="View PDF" (click)="viewReport('line')"/>
-        <p-button label="Download PDF" (click)="downloadReport('bar')"/>        
+
+    <p-divider align="left" type="solid">
+        <b>Reportes</b>
+    </p-divider>
+    
+    <div class="">
+        <p>PLANILLA DE SUELDOS PLANTEL PERMANENTE XLS</p>
+        <p-button label="Planilla XLS" (click)="planillatXls('bar')"/>        
     </div>
+    <div class="">
+        <p>PLANILLA DE SUELDOS PLANTEL PERMANENTE PDF</p>
+        <p-button label="Planilla PDF" (click)="planillatPdf('bar')"/>        
+    </div>
+    <div class="">
+        <p>PLANILLA TXT REPORT</p>
+        <p-button label="PLANILLA TXT" (click)="generateReportTxt('bar')"/>        
+    </div>
+    <p-divider align="left" type="solid">
+        <b>BOLETAS DE PAGO</b>
+    </p-divider>
+    <div class="">
+        <p>AGUINALDO REPORT </p>
+        <p-button label="AGUINALDO PDF" (click)="generateReportBoleta('bar')"/>        
+    </div>
+    <p-divider align="left" type="solid">
+        <b>AGUINALDO</b>
+    </p-divider>
+    <div class="">
+        <p>AGUINALDO REPORT </p>
+        <p-button label="AGUINALDO PDF" (click)="aguinaldoReportpdf('bar')"/>        
+    </div>
+        
 </div>
+
+
 

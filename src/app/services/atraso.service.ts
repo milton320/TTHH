@@ -18,19 +18,23 @@ export class AtrasoService  extends GenericService<Atraso>{
     super(http, `${environment.HOST}/atrasosService`)
    }
 
-   saveOtherAtraso(atraso: Atraso){
+  saveOtherAtraso(atraso: Atraso){
     return this.http.post(this.urlP, atraso)
   }
+  
   findAllOtherAtraso(){
     return this.http.get<Atraso[]>(this.urlP); 
   }
+  
+  saveExterno(){
+    return this.http.get<Atraso[]>(`${this.url}/transferirDatos`)
+  }
 
-
-   setDietaChange(data: Atraso[]){
+  setAtrasoChange(data: Atraso[]){
     this.atrasoChange.next(data);
   }
 
-  getDietaChange(){
+  getAtrasoChange(){
     return this.atrasoChange.asObservable();
   }
 

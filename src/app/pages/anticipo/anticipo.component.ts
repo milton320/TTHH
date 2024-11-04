@@ -12,7 +12,7 @@ import { Anticipo } from '../../model/anticipo';
 import { AnticipoService } from '../../services/anticipo.service';
 import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AnticipoDialogComponent } from './anticipo-dialog/anticipo-dialog.component';
 import { switchMap } from 'rxjs';
 
@@ -20,7 +20,7 @@ import { switchMap } from 'rxjs';
   selector: 'app-anticipo',
   standalone: true,
   imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule ],
-  providers: [DialogService,DynamicDialogRef,MessageService],
+  providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './anticipo.component.html',
   styleUrl: './anticipo.component.css'
 })
@@ -28,13 +28,15 @@ export class AnticipoComponent implements OnInit {
   anticipo!: Anticipo[]
   loading: boolean = true;
   ref: DynamicDialogRef
+  
 
   constructor(
     private anticipoService: AnticipoService,
     private personaService: PersonaService,
     private _dialog :DialogModule,
     public dialogService: DialogService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
     ){}
 
   ngOnInit(): void 
@@ -59,6 +61,13 @@ export class AnticipoComponent implements OnInit {
       else if(data == 'DELETE!'){
         this.messageService.add({ severity: 'error', summary: 'ELIMINADO', detail: 'Eliminacion Correctamente' });
         this.updateTable()
+      }else if(data == 'ERROR!'){
+        this.messageService.add({ severity: 'warn', summary: 'ATENCION', detail: 'Error. Intente nuevamente' });
+        this.updateTable()
+      }
+      else if(data == 'LOAD!'){
+        this.messageService.add({ severity: 'secondary', summary: 'CARGA DE DATOS', detail: 'Carga de datos correctamente' });
+        this.updateTable()
       }
     
     })        
@@ -78,6 +87,21 @@ export class AnticipoComponent implements OnInit {
       contentStyle: { overflow: 'auto' },
       
     })  
+  }
+  
+  confirm2(event: Event, idAnticipo:any) {
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: '¿Quieres Elminar este registro?',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-sm',
+        accept: () => {
+            this.delete(idAnticipo)
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'No Elminado', life: 3000 });
+        }
+    });
   }
   delete(idAnticipo:any){
     this.anticipoService.delete(idAnticipo)

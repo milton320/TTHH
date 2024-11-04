@@ -14,6 +14,11 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DividerModule } from 'primeng/divider';
 import { MessagesModule } from 'primeng/messages';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ChipsModule } from 'primeng/chips';
 
 
 
@@ -39,7 +44,11 @@ registerLocaleData(localePy, 'es')
             FloatLabelModule,
             AutoCompleteModule,
             DividerModule,
-            MessagesModule
+            MessagesModule,
+            ConfirmPopupModule,
+            TagModule,
+            ProgressSpinnerModule,
+            ChipsModule
         ],
     providers:[{ provide: LOCALE_ID, useValue:'es'}],
     

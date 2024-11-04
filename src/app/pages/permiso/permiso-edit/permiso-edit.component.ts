@@ -62,12 +62,12 @@ export class PermisoEditComponent  implements OnInit{
         this.form = new FormGroup({
           idPermiso: new FormControl(data.idPermiso),
           persona:new FormControl(data.persona.primerNombre),
-          tipoPermiso: new FormControl(data.estadoPermiso),
+          /* tipoPermiso: new FormControl(data.estadoPermiso), */
           fechaDesde: new FormControl(data.fechaDesde),
           fechaHasta: new FormControl(data.fechaHasta),
           fechaReintegro: new FormControl(data.fechaReintegro),
           diasFalta: new FormControl(data.diasFalta),
-          estadoPermiso: new FormControl(data.estadoPermiso),
+/*           estadoPermiso: new FormControl(data.estadoPermiso), */
           motivo: new FormControl(data.motivo),
           monto: new FormControl(data.motivo),
         })

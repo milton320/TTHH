@@ -1,5 +1,6 @@
 <router-outlet></router-outlet>
 <p-toast />
+<p-confirmPopup />
 <!-- [hidden]="chekChildren()" -->
 <div >
     <div class="card grid grid-cols-4 gap-4">
@@ -33,9 +34,9 @@
                     <th>TIPO PERMISO</th>
                     <th>F.DESDE</th>
                     <th>F.HASTA</th>
-                    <th>F.REINTEGRO</th>
-                    <th>DIAS FALTA</th>
-                    <th>ESTADO</th>
+                    <!-- <th>F.REINTEGRO</th> -->
+                    <th>DIAS/HRS FALTA</th>
+                    
                     <th>MOTIVO</th>
                     <th>MONTO</th>
                     
@@ -55,16 +56,16 @@
                     }    
                     <td>{{ permiso.fechaDesde | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
                     <td>{{ permiso.fechaHasta | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
-                    <td>{{ permiso.fechaReintegro | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
-                    <td>{{ permiso.diasFalta | number : '1.2-2' }}</td>
-                    <td>{{ permiso.estadoPermiso }}</td>
+                    <!-- <td>{{ permiso.fechaReintegro | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
+                    <td>{{ permiso.diasFalta | number : '1.2-2' }} {{ permiso.tipoFechaHora}}</td>
+                    
                     <td>{{ permiso.motivo }}</td>
                     <td>{{ permiso.monto }}</td>
     
                     <td>
                         <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                             <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(permiso)"></p-button>
-                            <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="delete(permiso.idPermiso)"></p-button>
+                            <p-button icon="pi pi-trash" [rounded]="true" severity="danger"  (click)="confirm2($event,permiso.idPermiso)"></p-button>
                         </div>
                     </td>
                 </tr>

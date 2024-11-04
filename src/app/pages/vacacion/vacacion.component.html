@@ -1,5 +1,5 @@
 <p-toast />
-
+<p-confirmPopup />
 <div class="card grid grid-cols-4 gap-4">
     <div class="col-start-1">
         <p>
@@ -40,15 +40,15 @@
                 <td>{{ vacacion.idVacacion }}</td>
                 <td>{{ vacacion.fechaDesde | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ vacacion.fechaHasta | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ vacacion.fechaReintegro | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ vacacion.diasFalta  }}</td>
+                <td>{{ vacacion.descripcion }}</td>
+                <td>{{ vacacion.diasVacacionUsados  }}</td>
                 <td>{{ vacacion.persona.primerNombre }}</td>
                 
 
                 <td>
                     <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                         <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(vacacion)"></p-button>
-                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="delete(vacacion.idVacacion)"></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger"  (click)="confirm2($event,vacacion.idVacacion)"></p-button>
                     </div>
                 </td>
             </tr>

@@ -59,36 +59,23 @@ export class MenuComponent implements OnInit{
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/dieta'],
           },
-          {
-            label: 'Atraso',
-            icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/pages/atraso'],
-          },
           
+          /* 
           {
             label: 'Falta',
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/falta'],
-          },
-          {
+          }, */
+          /* {
             label: 'Justificativo Atraso',
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/justificativo'],
-          },
-          {
-            label: 'Justificativo Falta',
-            icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/pages/justificativoFalta'],
-          },
+          }, */
+          
           {
             label: 'Permiso',
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/permiso'],
-          },
-          {
-            label: 'Planilla',
-            icon: 'pi pi-fw pi-check-square',
-            routerLink: ['/pages/planilla'],
           },
           {
             label: 'Prestamo',
@@ -101,9 +88,29 @@ export class MenuComponent implements OnInit{
             routerLink: ['/pages/vacacion'],
           },
           {
+            label: 'Servicio',
+            icon: 'pi pi-fw pi-check-square',
+            routerLink: ['/pages/atraso'],
+          },
+          {
+            label: 'Just. Falta/Atraso',
+            icon: 'pi pi-fw pi-check-square',
+            routerLink: ['/pages/justificativoFalta'],
+          },
+          {
+            label: 'Planilla',
+            icon: 'pi pi-fw pi-check-square',
+            routerLink: ['/pages/planilla'],
+          },
+          {
             label: 'Reportes',
             icon: 'pi pi-fw pi-file',
             routerLink: ['/pages/report'],
+          },
+          {
+            label: 'Parametros',
+            icon: 'pi pi-fw pi-file',
+            routerLink: ['/pages/parametros'],
           }
         ],
       },
