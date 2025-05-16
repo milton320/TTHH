@@ -1,6 +1,115 @@
+<div class="max-w-6xl mx-auto  p-10 bg-white rounded-3xl shadow-xl border border-gray-200">
+  <div class="flex items-center space-x-6 mb-10">
+    <div class="bg-indigo-600 text-white w-16 h-16 flex items-center justify-center rounded-full text-3xl font-semibold shadow-md">
+      {{ infoPersona?.username.charAt(0) | uppercase }}
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold text-gray-900">Bienvenido, {{ infoPersona?.nombre_completo }}</h2>
+      <p class="text-base text-gray-500">Usuario: {{ infoPersona?.username }}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-800 text-sm">
+    <div><span class="font-semibold">📅 Fecha de Ingreso:</span> {{ infoPersona?.fecha_ingreso }}</div>
+    <div><span class="font-semibold">🎂 Fecha de Nacimiento:</span> {{ infoPersona?.fecha_nacimiento }}</div>
+    <div><span class="font-semibold">🆔 C.I.:</span> {{ infoPersona?.ci }} {{ infoPersona?.extencion }}</div>
+    <div><span class="font-semibold">🌍 Nacionalidad:</span> {{ infoPersona?.nacionalidad }}</div>
+    <div><span class="font-semibold">🏦 Nro de Cuenta:</span> {{ infoPersona?.cuenta }}</div>
+    <div><span class="font-semibold">👔 Cargo:</span> {{ infoPersona?.cargo }}</div>
+    <div><span class="font-semibold">📌 Tipo de Planilla:</span> {{ infoPersona?.tipo_planilla }}</div>
+    <div><span class="font-semibold">💼 Sueldo Base:</span> Bs {{ infoPersona?.sueldo_base }}</div>
+    <div><span class="font-semibold">🛑 Días de Falta:</span> {{ infoPersona?.dias_falta }}</div>
+    <div><span class="font-semibold">⏱️ Minutos Atrasados:</span> {{ infoPersona?.min_atrasados }}</div>
+    <div><span class="font-semibold">🏖️ Total Vacaciones:</span> {{ infoPersona?.total_vacacion || 0 }} días</div>
+    <div><span class="font-semibold">🕒 Antigüedad:</span> {{ infoPersona?.anios_atiguedad || 0 }} años, {{ infoPersona?.meses_atiguedad || 0 }} meses, {{ infoPersona?.dias_atiguedad || 0 }} días</div>
+    <div><span class="font-semibold">🚻 Género:</span> {{ infoPersona?.generoPersona == 'F' ? 'FEMENINO':'MASCULINO' }}</div>
+  </div>
+
+  @if (this.role == 'ADMIN') {
     
-<p-card header="Bienvenido">
-    <p class="m-0">
-        {{ username }} rol: {{ role}}
-    </p>
-</p-card>
+      <div class="mt-10">
+  <h3 class="text-xl font-semibold text-indigo-700 mb-4">📊 Estadísticas del Mes</h3>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+    <!-- Tabla: Persona con más faltas -->
+    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+      <p class="font-bold text-indigo-700 mb-2">🚫 Persona con más Faltas</p>
+      <table class="min-w-full text-sm text-left border-collapse">
+        <thead>
+          <tr class="bg-indigo-100 text-indigo-700">
+            <th class="px-3 py-2 border-b">Días Falta</th>
+            <th class="px-3 py-2 border-b">Nombre</th>
+            <th class="px-3 py-2 border-b">Mes/Año</th>
+            <th class="px-3 py-2 border-b">Sucursal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cantidadFalta" class="hover:bg-indigo-100">
+            <td class="px-3 py-2 border-b">{{ item.dias_falta }}</td>
+            <td class="px-3 py-2 border-b">{{ item.nombre_completo }}</td>
+            <td class="px-3 py-2 border-b">{{ item.mes }}/{{ item.anio }}</td>
+            <td class="px-3 py-2 border-b">{{ item.nombre }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tabla: Persona con más minutos atrasados -->
+    <div class="bg-red-50 p-4 rounded-xl border border-red-200">
+      <p class="font-bold text-red-700 mb-2">⏰ Persona con más Minutos Atrasados</p>
+      <table class="min-w-full text-sm text-left border-collapse">
+        <thead>
+          <tr class="bg-red-100 text-red-700">
+            <th class="px-3 py-2 border-b">Min. Atraso</th>
+            <th class="px-3 py-2 border-b">Nombre</th>
+            <th class="px-3 py-2 border-b">Mes/Año</th>
+            <th class="px-3 py-2 border-b">Sucursal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cantidadAtraso" class="hover:bg-red-100">
+            <td class="px-3 py-2 border-b">{{ item.min_atrasados | tiempoHM  }}</td>
+            <td class="px-3 py-2 border-b">{{ item.nombre_completo }}</td>
+            <td class="px-3 py-2 border-b">{{ item.mes }}/{{ item.anio }}</td>
+            <td class="px-3 py-2 border-b">{{ item.nombre }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+    
+      <div class="mt-10">
+        <h3 class="text-xl font-semibold text-indigo-700 mb-4">🏢 Distribución del Personal</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <!-- Por Sucursal -->
+          <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+            <p class="font-bold text-blue-700 mb-2">Por Sucursal</p>
+            <div *ngFor="let item of sucursalPersona" class="mb-2 p-2 bg-white rounded shadow-sm">
+              <p><span class="font-semibold">Cantidad:</span> {{ item.cantidad }}</p>
+              <p><span class="font-semibold">Sucursal:</span> {{ item.nombre }}</p>
+            </div>
+          </div>
+          <!-- Por Contrato -->
+          <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+            <p class="font-bold text-green-700 mb-2">Por Contrato</p>
+            <div *ngFor="let item of cantidadContrato" class="mb-2 p-2 bg-white rounded shadow-sm">
+              <p><span class="font-semibold">Cantidad:</span> {{ item.cantidad }}</p>
+              <p><span class="font-semibold">Tipo:</span> {{ item.descripcion }}</p>
+            </div>
+          </div>
+          <!-- Por Género -->
+          <div class="bg-pink-50 p-4 rounded-xl border border-pink-200">
+            <p class="font-bold text-pink-700 mb-2">Por Género</p>
+            <div *ngFor="let item of cantidadGenero" class="mb-2 p-2 bg-white rounded shadow-sm">
+              <p><span class="font-semibold">Cantidad:</span> {{ item.cantidad }}</p>
+              <p><span class="font-semibold">Género:</span> {{ item.genero == 'F'?'FEMENINO':'MASCULINO' }}</p>
+            </div>
+          </div>
+        </div>
+      </div> 
+  }
+
+</div>

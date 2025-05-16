@@ -6,6 +6,7 @@
             <input pInputText type="text" placeholder="Buscar..." oninput="this.value = this.value.toUpperCase()" (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
         </p>
     </div>
+    
     <div class="col-end-7">
         <!-- <p-button icon="pi pi-sort-alt" [rounded]="true" severity="success" label="Registrar" (click)="confirm2($event)"></p-button> -->
         <!-- <p-button icon="pi-history" [rounded]="true" severity="success" (click)="insertar()"></p-button> -->
@@ -18,14 +19,19 @@
                 </div>
             </ng-template>
         </p-confirmPopup>
-        <p-button icon="pi pi-sort-alt" [rounded]="true" severity="primary" label="Registrar" (onClick)="confirm($event)" />
-    </div>
-    
         
+        <!-- boton para registrar servicio externo -->
+        <p-button icon="pi pi-sort-alt" [rounded]="true" severity="primary" label="Registrar" (onClick)="confirm($event)" [disabled]="isLoading" />
+    </div>
+    <p>PROGRESO: </p>
+    <p-progressBar [value]="progressValue" />
+    
+    <p-toast />
     
 </div>
 
 <div class="card">
+
     <p-table 
         #dt2
         [value]="atraso"
@@ -43,8 +49,6 @@
                 <th>NRO</th>
                 <th>PERSONA</th>
                 <th>FECHA/HORA</th>
-
-                
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-atraso>
@@ -64,7 +68,6 @@
                 </td> -->
             </tr>
         </ng-template>
-        
         <ng-template pTemplate="summary">
             <div class="flex flex-row">
                 <div style="text-align:left">
@@ -82,9 +85,7 @@
                 </div>
             </div>
         </ng-template>
-        
     </p-table>
-    
 </div>
 
 

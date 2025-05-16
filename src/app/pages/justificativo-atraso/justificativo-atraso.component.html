@@ -14,7 +14,7 @@
 <div class="card">
     <p-table 
         #dt2
-        [value]="justAtraso"
+        [value]="atraso"
         [rows]="5"
         [tableStyle]="{ 'min-width': '50rem' }"
         styleClass="p-datatable-striped" 
@@ -27,18 +27,32 @@
             <tr>
                 <th>NRO</th>
                 <th>PERSONA</th>
-                <th>MINUTOS ATRASADOS</th>
+                <th>FECHA</th>
                 <th>JUSTIFICADO</th>
-                <th>ACCION</th>
-                
+                <th>ESTADO</th>
+                <th>MES</th>
+                <th>AÑO</th>
+                <th>HORA</th>
+                <th>MINUTO</th>
+                <th>MINUTOS ATRASADO</th>
+                <th>DIA</th>                
+                <th>ACCION</th>        
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-justAtraso>
             <tr>
                 <td>{{ justAtraso.idAtraso }}</td>
-                <td>{{ justAtraso.persona.primerNombre  }} {{ justAtraso.persona.segundoNombre}}</td>
-                <td>{{ justAtraso.minuto }}</td>
+                <td>{{ justAtraso.persona}}</td>
+                <td>{{ justAtraso.fecha }}</td>
                 <td>{{ justAtraso.justificado }}</td>
+
+                <td>{{ justAtraso.estado }}</td>
+                <td>{{ justAtraso.mes }}</td>
+                <td>{{ justAtraso.anio }}</td>
+                <td>{{ justAtraso.hora }}</td>
+                <td>{{ justAtraso.minuto }}</td>
+                <td>{{ justAtraso.minutosAtrasado }}</td>
+                <td>{{ justAtraso.dia }}</td>
                 
 
                 <td>

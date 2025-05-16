@@ -19,11 +19,20 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ChipsModule } from 'primeng/chips';
-
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ChipModule } from 'primeng/chip';
+import { ProgressBarModule } from 'primeng/progressbar';
+// For dynamic progressbar demo
+import { ToastModule } from 'primeng/toast';
+import { StepsModule } from 'primeng/steps';
+import { StepperModule } from 'primeng/stepper';
+import { AccordionModule } from 'primeng/accordion';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 import localePy from '@angular/common/locales/es-BO'
 import { registerLocaleData } from "@angular/common";
+import { CardModule } from "primeng/card";
 registerLocaleData(localePy, 'es')
 
 
@@ -48,12 +57,20 @@ registerLocaleData(localePy, 'es')
             ConfirmPopupModule,
             TagModule,
             ProgressSpinnerModule,
-            ChipsModule
+            ChipsModule,
+            InputNumberModule,
+            ChipModule,
+            ProgressBarModule,
+            ToastModule,
+            StepsModule,
+            StepperModule,
+            AccordionModule,
+            OverlayPanelModule,
+            CardModule 
+            
         ],
     providers:[{ provide: LOCALE_ID, useValue:'es'}],
     
-
-
 })
 
 export class MaterialModule{

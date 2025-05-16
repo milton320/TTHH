@@ -19,75 +19,62 @@
             <label for="d">Tipo Persona </label>
         </p-floatLabel>
     </div>
+    <p-messages  [closable]="false" >
+    {{ vacacion?.persona?.totalVacacion ?? 0 }}
+    </p-messages>
+    
+    @if(vacacion.idVacacion >0){
+        <p>{{ this.vacacionAntigua }}</p>
+    }
+    
 </div>
+<p-tag severity="success" value="{{ vacacion?.persona?.totalVacacion ?? 0 }}" [rounded]="true" />
 
-<div class="grid gap-3 mt-10 mb-24" >
+<p *ngIf="vacacion?.persona?.totalVacacion > 0; else noVacaciones">
+    TIENE VACACIONES
+</p>
+<ng-template #noVacaciones>
+    <p>NO TIENE VACACIONES</p>
+</ng-template>
+<div *ngIf="vacacion?.persona?.totalVacacion > 0" class="grid gap-3 mt-10 mb-24">
     <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-        
-        <!-- <p-calendar 
-        inputId="calendar-24h" 
-        [(ngModel)]="persona.fechaNacimiento" 
-        [showTime]="true" 
-        hourFormat='24'
-        dateFormat="dd/mm/yy"
-        /> -->
-            <p-calendar  
-                [(ngModel)]="vacacion.fechaDesde" 
-                dateFormat="dd/mm/yy"
-                [showWeek]="true" 
-                [minDate]="minDate" 
-                [maxDate]="maxDate" 
-                (onSelect)="onFechaDesdeChange($event)"
-                
-            />
-            @if( vacacion.fechaDesde == null){
-                <label for="F.Desde" class="font-bold block mb-2" >Fecha Desde</label>
-            }
-            @else{
-                <label for="F.Desde" class="font-bold block mb-2" >{{vacacion.fechaDesde | fechas}}</label>
-            }
-
-            
-        </p-floatLabel>
+      <p-floatLabel>
+        <p-calendar  
+          [(ngModel)]="vacacion.fechaDesde" 
+          dateFormat="dd/mm/yy"
+          [showWeek]="true" 
+          [minDate]="minDate" 
+          [maxDate]="maxDate" 
+          (onSelect)="onFechaDesdeChange($event)"
+        />
+        <label for="F.Desde" class="font-bold block mb-2">
+          {{ vacacion.fechaDesde == null ? 'Fecha Desde' : (vacacion.fechaDesde | fechas) }}
+        </label>
+      </p-floatLabel>
     </div>
-
+  
     <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-        
-        <!-- <p-calendar 
-        inputId="calendar-24h" 
-        [(ngModel)]="persona.fechaNacimiento" 
-        [showTime]="true" 
-        hourFormat='24'
-        dateFormat="dd/mm/yy"
-        /> -->
-            <p-calendar  
-                [(ngModel)]="vacacion.fechaHasta" 
-                dateFormat="dd/mm/yy"
-                [minDate]="fechaDesde()"
-                [minDate]="minDate" 
-                [maxDate]="maxDate" 
-                (onSelect)="onFechaHastaChange($event)"
-            />
-            @if( vacacion.fechaHasta == null){
-                <label for="F.Hasta" class="font-bold block mb-2" >Fecha Hasta</label>
-            }
-            @else{
-                <label for="F.Hasta" class="font-bold block mb-2" >{{vacacion.fechaHasta | date: 'dd/MM/yyyy'}}</label>
-            }
-
-            
-        </p-floatLabel>
+      <p-floatLabel>
+        <p-calendar  
+          [(ngModel)]="vacacion.fechaHasta" 
+          dateFormat="dd/mm/yy"
+          [minDate]="fechaDesde()"
+          [maxDate]="maxDate" 
+          (onSelect)="onFechaHastaChange($event)"
+        />
+        <label for="F.Hasta" class="font-bold block mb-2">
+          {{ vacacion.fechaHasta == null ? 'Fecha Hasta' : (vacacion.fechaHasta | date: 'dd/MM/yyyy') }}
+        </label>
+      </p-floatLabel>
     </div>
-
+  
     <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-            <input pInputText id="descripcion" [(ngModel)]="vacacion.descripcion" oninput="this.value = this.value.toUpperCase()" />
-            <label for="descripcion">Descripcion</label>
-        </p-floatLabel>
+      <p-floatLabel>
+        <input pInputText id="descripcion" [(ngModel)]="vacacion.descripcion" oninput="this.value = this.value.toUpperCase()" />
+        <label for="descripcion">Descripcion</label>
+      </p-floatLabel>
     </div>
-</div>
+  </div>
 
 <div class="flex justify-content-end gap-2 mt-20">
     <p-button label="CANCELAR" severity="secondary" (click)="close()" />

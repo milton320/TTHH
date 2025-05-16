@@ -27,6 +27,7 @@
             <label for="primerNombre">Tipo Persona</label>
         </p-floatLabel>
     </div> 
+    <p-messages *ngIf="!montoEstado" [(value)]="messages" [enableService]="false"></p-messages>
 </div>
 
 <div class="flex justify-content-end gap-2 mt-20">

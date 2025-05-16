@@ -13,6 +13,7 @@ import { JustificativoAtrasoService } from '../../services/justificativo-atraso.
 import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
 import { JatrasoDialogComponent } from './jatraso-dialog/jatraso-dialog.component';
+import { AtrasoService } from '../../services/atraso.service';
 
 @Component({
   selector: 'app-justificativo-atraso',
@@ -25,9 +26,11 @@ import { JatrasoDialogComponent } from './jatraso-dialog/jatraso-dialog.componen
 export class JustificativoAtrasoComponent implements OnInit{
   justAtraso!: JusAtraso[];
   ref: DynamicDialogRef
+  atraso!: JusAtraso[];
 
   constructor(
     private justAtrasoService:JustificativoAtrasoService,
+    private atrasoService: AtrasoService,
     private personaService: PersonaService,
     private _dialog :DialogModule,
     public dialogService: DialogService,
@@ -35,9 +38,10 @@ export class JustificativoAtrasoComponent implements OnInit{
     ) {}
 
   ngOnInit(){
-    this.justAtrasoService.findAll().subscribe(data=>{
-      this.justAtraso = data;
-    });
+    this.justAtrasoService.findAllOtherAtraso().subscribe( data =>{
+      this.atraso = data;
+    }
+  )
 
     this.justAtrasoService.getMessageChange().subscribe(data=>
       {

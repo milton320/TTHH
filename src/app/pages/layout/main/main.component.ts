@@ -91,6 +91,7 @@ export class MainComponent implements OnDestroy {
   }
 
   hideMenu() {
+    console.log('HIDE MENU');
     this.layoutService.state.overlayMenuActive = false;
     this.layoutService.state.staticMenuMobileActive = false;
     this.layoutService.state.menuHoverActive = false;

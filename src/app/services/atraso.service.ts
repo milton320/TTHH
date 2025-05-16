@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 })
 export class AtrasoService  extends GenericService<Atraso>{
 
-  private urlP: string ='http://localhost:8080/tempAtrasos' 
+  private urlP: string =`${environment.HOST}/tempAtrasos` 
   private atrasoChange: Subject<Atraso[]>=new Subject<Atraso[]>();
   private messageChange: Subject<string>= new Subject<string>();
 
@@ -18,12 +18,21 @@ export class AtrasoService  extends GenericService<Atraso>{
     super(http, `${environment.HOST}/atrasosService`)
    }
 
+
+  //REGISTRAR desde atraso component 
   saveOtherAtraso(atraso: Atraso){
     return this.http.post(this.urlP, atraso)
   }
   
+  //llamada desde atraso component 
   findAllOtherAtraso(){
     return this.http.get<Atraso[]>(this.urlP); 
+  }
+
+  //llamada a mesAnioAll
+
+  findMesAnioAtraso(){
+    return this.http.get<any>(`${this.urlP}/mesAnioAll`); 
   }
   
   saveExterno(){

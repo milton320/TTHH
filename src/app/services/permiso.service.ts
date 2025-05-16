@@ -22,6 +22,7 @@ export class PermisoService extends GenericService<Permiso>{
   /***** */
 
   setPermisoChange(data: Permiso[]){
+    
     this.permisoChange.next(data);
   }
 

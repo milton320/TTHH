@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment.development';
 })
 export class JustificativoAtrasoService extends GenericService<JusAtraso>{
   private justificadoAtrasoChange: Subject<JusAtraso[]> = new Subject<JusAtraso[]>();
+  private urlP: string ='http://localhost:8080/tempAtrasos' 
   private messageChange: Subject<string> = new Subject<string>();
 
   constructor( protected override http:HttpClient) {
@@ -17,6 +18,10 @@ export class JustificativoAtrasoService extends GenericService<JusAtraso>{
    }
 
    /************************** */
+    findAllOtherAtraso(){
+       return this.http.get<JusAtraso[]>(this.urlP); 
+     }
+     
 
 
   setJustificativoAtrasoChange(data: JusAtraso[]){

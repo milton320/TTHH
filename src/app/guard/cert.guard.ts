@@ -21,7 +21,6 @@ export const cetGuard=(route: ActivatedRouteSnapshot, state:RouterStateSnapshot)
     //2) verificar si el token no ha expirado
     const helper = new JwtHelperService();
     const token =  sessionStorage.getItem(environment.TOKEN_NAME);
-    console.log(token);
 
     if(!helper.isTokenExpired(token)){
         //3) verificar si tienes el rol necesario para accesder a ese componente 'PAGINA'

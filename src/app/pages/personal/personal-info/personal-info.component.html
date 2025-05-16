@@ -1,0 +1,94 @@
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl p-8 ">
+    
+  
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+      
+      <div>
+        <p class="font-semibold">ID PERSONA:</p>
+        <p>{{ persona.idPersona }}</p>
+      </div>
+  
+      <div class="sm:col-span-2">
+        <p class="font-semibold">NOMBRE COMPLETO:</p>
+        <p>{{ persona.primerNombre }} {{ persona.segundoNombre }} {{ persona.primerApellido }} {{ persona.segundoApellido }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">CÉDULA DE IDENTIDAD:</p>
+        <p>{{ persona.ci }} {{ persona.documentoIdentidad.abreviacionCI }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">GÉNERO:</p>
+        <p>{{ persona.genero == 'M' ? 'MASCULINO' : 'FEMENINO' }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">FECHA NACIMIENTO:</p>
+        <p>{{ persona.fechaNacimiento | date: 'dd/MM/yyyy' }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">CUENTA:</p>
+        <p>{{ persona.cuenta }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">FECHA DE INGRESO:</p>
+        <p>{{ persona.fechaIngreso | date: 'dd/MM/yyyy' }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">TIPO CONTRATO:</p>
+        <p>{{ persona.tipoContrato.descripcion }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">TIPO CARGO:</p>
+        <p>{{ persona.tipoCargo.descripcion }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">SUELDO BASE:</p>
+        <p>{{ persona.sueldoBase | currency:'BOB':'symbol':'1.2-2' }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">SUCURSAL:</p>
+        <p>{{ persona.sucursal.nombre }}</p>
+      </div>
+  
+      <div >
+        <p class="font-semibold">TOTAL VACACIONES:</p>
+        <p  class="bg-slate-200 p-2 rounded-xl shadow-sm">
+          {{ persona.totalVacacion == null ? 0 : persona.totalVacacion }} días
+        </p>
+      </div>
+
+      <div>
+        <p class="font-semibold">BONO ANTIGUEDAD:</p>
+        <p>{{ persona.bonoAntiguedad }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">AÑOS ANTIGUEDAD:</p>
+        <p>{{ persona.aniosAtiguedad == null ? 0 : persona.aniosAtiguedad }}años {{ persona.mesesAtiguedad == null ? 0 : persona.mesesAtiguedad }}:meses {{ persona.diasAtiguedad == null ? 0 : persona.diasAtiguedad }}:dias </p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">NACIONALIDAD:</p>
+        <p>{{ persona.nacionalidad.descripcion }}</p>
+      </div>
+
+      <div>
+        <p class="font-semibold">CAJA DE SALUD:</p>
+        <p>{{ persona.cajaSalud.descripcion }}</p>
+      </div>
+  
+      <div>
+        <p class="font-semibold">APORTES:</p>
+        <p>{{ persona.aporteAfp.descripcion }}</p>
+      </div>
+    </div>
+  </div>
+  

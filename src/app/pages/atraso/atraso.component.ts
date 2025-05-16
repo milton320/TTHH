@@ -9,7 +9,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
 import { JustificativoAtrasoService } from '../../services/justificativo-atraso.service';
-import { forkJoin, switchMap } from 'rxjs';
+import { concatMap, forkJoin, from, switchMap, tap } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -25,6 +25,8 @@ export class AtrasoComponent implements OnInit{
   atraso!:Atraso[];
   atraso2:Atraso
   loading:Boolean
+  isLoading = false; // Variable para controlar el estado del botón
+  progressValue = 0; // Control del progreso
 
   
   constructor(
@@ -46,11 +48,19 @@ export class AtrasoComponent implements OnInit{
           this.loading=true
         } 
       }
+
+      
     //   result=>console.log(result),
     //   error=>{
     //       this.atrasoService.setMessageChange('ERROR!');
     // }
   )
+
+  this.atrasoService.findAllOtherAtraso().subscribe( data =>{
+      
+    }
+  )
+  
     
     this.atrasoService.getMessageChange().subscribe(data=>{
       if(data == 'CREATED')
@@ -88,39 +98,84 @@ export class AtrasoComponent implements OnInit{
       }
     )
   }
-  ngOnChange(){
-    this.atraso2 = {...this.atraso2}
-  }
 
+
+ /*  //REGISTRAR SERVICIO EXTERNO
   registrrarAtrasos() {
+    this.progressValue = 0; // Reiniciar el progreso
+    this.isLoading = true; // Deshabilita el botón
     // Crear una lista de observables de las solicitudes de guardado
-    const saveObservables = this.atraso.map(element => 
+    const saveObservables = this.atraso.map((element, index) => 
       this.atrasoService
         .saveOtherAtraso(element)
-        .pipe(switchMap(() => this.atrasoService.findAllOtherAtraso()))
+        .pipe(switchMap(() => this.atrasoService.findAllOtherAtraso()),
+        // Simular progreso por cada elemento procesado
+        switchMap(response => {
+          this.progressValue = Math.floor(((index + 1) / this.atraso.length) * 100);
+          //this.progressValue = ((index + 1) / this.atraso.length) * 100;
+          console.log(this.progressValue + "PRGRESVlues");
+          return response;
+        })
+      )
     );
   
     // Ejecutar todas las solicitudes en paralelo y esperar a que todas terminen
     forkJoin(saveObservables).subscribe({
       next: (responses) => {
         // `responses` contiene todos los resultados de las solicitudes
-        console.log(responses);
         this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
       },
       error: (error) => {
         // Manejo de errores si alguna de las solicitudes falla
         this.messageService.add({ severity: 'error', summary: 'ERROR', detail: 'Ocurrió un error al registrar los atrasos' });
-        console.error(error);
+        
+      },
+      complete: () => {
+        this.isLoading = false; // Habilita el botón cuando todo termine
+        this.progressValue = 100; // Completa la barra de progreso
       }
     });
-  }
+  } */
+    registrrarAtrasos() {
+      this.progressValue = 0; // Reiniciar el progreso
+      this.isLoading = true; // Deshabilita el botón
+    
+      from(this.atraso).pipe(
+        concatMap((element, index) => 
+          this.atrasoService.saveOtherAtraso(element).pipe(
+            tap(() => {
+              // Actualizar progreso después de cada solicitud
+              this.progressValue = Math.floor(((index + 1) / this.atraso.length) * 100);
+            })
+          )
+        )
+      ).subscribe({
+        next: () => {         
+        },
+        error: (err) => {
+          if (err.error && err.error.message) {
+            // Si el backend envía un mensaje específico, lo mostramos
+            this.messageService.add({ severity: 'error', summary: 'ERROR', detail: err.error.message });
+          } else {
+            // Si no hay un mensaje específico, se muestra un error genérico
+            this.messageService.add({ severity: 'error', summary: 'ERROR', detail: 'Ocurrió un error al registrar los atrasos' });
+          }
+        },
+        complete: () => {
+          this.isLoading = false; // Habilitar botón
+          this.progressValue = 100; // Completar barra de progreso
+          this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
+        }
+      });
+    }
+    
 
   
   insertar(){
     this.atrasoService.saveExterno()
     .pipe(switchMap(()=>this.atrasoService.findAllOtherAtraso()))
       .subscribe(data=>{
-        console.log(data);
+        
       })
 
   }

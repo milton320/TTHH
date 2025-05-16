@@ -1,6 +1,9 @@
 export class TempPlanilla{
     idTempPlanilla:number;
     idPersona:number;
+    extencion:String;
+    ci:String;
+    nacionalidad:String;
     nombreCompleto:String;
     sueldoBase:number;
     cargo:string;

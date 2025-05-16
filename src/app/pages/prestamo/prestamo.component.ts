@@ -88,8 +88,6 @@ export class PrestamoComponent {
         icon: 'pi pi-info-circle',
         acceptButtonStyleClass: 'p-button-danger p-button-sm',
         accept: () => {
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
-            console.log(idPrestamo);
             this.delete(idPrestamo)
         },
         reject: () => {

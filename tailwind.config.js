@@ -4,7 +4,15 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        ruddy:{
+          ligth:'#3AB0FF',
+          default: '#007BFF',
+          dark:'0056B3'
+        }
+      }
+    },
   },
   plugins: [],
 }

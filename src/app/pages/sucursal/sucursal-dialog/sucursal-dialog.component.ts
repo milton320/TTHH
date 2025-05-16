@@ -8,16 +8,24 @@ import { FormsModule } from '@angular/forms';
 import { SucursalService } from '../../../services/sucursal.service';
 import { switchMap } from 'rxjs';
 import moment from 'moment';
+import { Message } from 'primeng/api';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-sucursal-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule],
+  imports: [MaterialModule,CommonModule,FormsModule],
   templateUrl: './sucursal-dialog.component.html',
   styleUrl: './sucursal-dialog.component.css'
 })
 export class SucursalDialogComponent implements OnInit {
+  username: string;
+  role: string;
+  idPersona:number;
+  
   sucursal: Sucursal;
+  messages: Message[] | undefined;
 
   constructor( 
     public ref: DynamicDialogRef, 
@@ -28,12 +36,22 @@ export class SucursalDialogComponent implements OnInit {
   {}
 
   ngOnInit(): void {
-    console.log("~ this.dialogConfig.data:", this.config.data)
+    /*** USUARIO  */
+    const helper = new JwtHelperService();
+    const token = sessionStorage.getItem(environment.TOKEN_NAME);
+    const decodedToken = helper.decodeToken(token);
+
+    this.username = decodedToken.sub;
+    this.role = decodedToken.role;
+    this.idPersona = decodedToken.idPersona;
+    /***FIN */
+
+
     this.sucursal = {...this.config.data}
 
 
     if(this.sucursal != null && this.sucursal.idSucursal > 0){
-      console.log('UPDATE')
+      console.log('')
     }
     else
     {
@@ -48,6 +66,7 @@ export class SucursalDialogComponent implements OnInit {
     
     if(this.sucursal !=null && this.sucursal.idSucursal >0 ){
       //UPDATE
+      this.sucursal.usuario = this.username;
       this.sucursalService
       .update(this.sucursal.idSucursal, this.sucursal)
       .pipe(switchMap(()=>this.sucursalService.findAll()))
@@ -57,16 +76,23 @@ export class SucursalDialogComponent implements OnInit {
       })
     }
     else{
-    //INSERT
-    console.log(this.sucursal);
-    this.sucursalService
-    .save(this.sucursal)
-    .pipe(switchMap(()=>this.sucursalService.findAll()))
-    .subscribe(data=>{
-      this.sucursalService.setSucursalChange(data);
-      this.sucursalService.setMessageChange('CREATED');
+      //INSERT
+      if(!this.sucursal.nombre){
+        this.messages = [{ severity: 'error', detail: 'LLENAR CAMPOS' }];
+        return
+      }
+      else{
+        this.sucursal.usuario = this.username;
+        this.sucursalService
+        .save(this.sucursal)
+        .pipe(switchMap(()=>this.sucursalService.findAll()))
+        .subscribe(data=>{
+          this.sucursalService.setSucursalChange(data);
+          this.sucursalService.setMessageChange('CREATED');
+    
+        });
 
-    });
+      } 
     
     }
     this.close();

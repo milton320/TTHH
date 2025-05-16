@@ -12,12 +12,13 @@ import { DietaService } from '../../../services/dieta.service';
 import { switchMap } from 'rxjs';
 import moment from 'moment';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { Message } from 'primeng/api';
 
 
 @Component({
   selector: 'app-dieta-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule],
+  imports: [MaterialModule,CommonModule,FormsModule,FloatLabelModule],
   templateUrl: './dieta-dialog.component.html',
   styleUrl: './dieta-dialog.component.css'
 })
@@ -25,6 +26,8 @@ export class DietaDialogComponent implements OnInit, AfterViewInit {
   persona:Persona[]
   filtrarPersonas: any[] | undefined;
   dieta:Dieta
+  messages: Message[] | undefined;
+  montoEstado:boolean = true;
 
 
   constructor( 
@@ -41,18 +44,17 @@ export class DietaDialogComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log("~ this.dialogConfig.data:", this.config.data)
     this.dieta = {...this.config.data}
     
     if(this.dieta != null && this.dieta.idDieta > 0){
-      console.log('UPDATE')
+      console.log('')
     }
     else
     {
       this.dieta.fechaRegistro = moment().format('YYYY-MM-DDTHH:mm:ss');
     }
     this.personaService.findAll().subscribe(data =>{ this.persona = data });
-    console.log(this.dieta,"DIETA ONITIN");
+
   }
 
   
@@ -60,28 +62,35 @@ export class DietaDialogComponent implements OnInit, AfterViewInit {
        /**REGISTRAR ACTUALIZAR */ 
   operate()
   {
-    console.log('update');
+    
     if(this.dieta !=null && this.dieta.idDieta >0 ){
       //UPDATE
       this.dietaService
       .update(this.dieta.idDieta, this.dieta)
       .pipe(switchMap(()=>this.dietaService.findAll()))
       .subscribe(data=>{
+        error=>console.log(error);
         this.dietaService.setDietaChange(data);
         this.dietaService.setMessageChange("UPDATE!")
       })
     }
     else{
     //INSERT
-    console.log(this.dieta, "DIETA");
-    this.dietaService
-    .save(this.dieta)
-    .pipe(switchMap(()=>this.dietaService.findAll()))
-    .subscribe(data=>{
-      this.dietaService.setDietaChange(data);
-      this.dietaService.setMessageChange('CREATED');
+      if(!this.dieta.bono || !this.dieta.persona){
+        this.messages = [{ severity: 'error', detail: 'LLENAR CAMPOS' }];
+        this.montoEstado = false
+        return
+      }
+      else{
+        this.dietaService
+        .save(this.dieta)
+        .pipe(switchMap(()=>this.dietaService.findAll()))
+        .subscribe(data=>{
+          this.dietaService.setDietaChange(data);
+          this.dietaService.setMessageChange('CREATED');
+        });
+      }
       
-    });
     }
     this.close();
   }

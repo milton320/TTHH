@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MaterialModule } from '../../../material/material.module';
 import { Persona } from '../../../model/persona';
@@ -17,7 +16,7 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 @Component({
   selector: 'app-prestamo-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule],
+  imports: [MaterialModule,CommonModule,FormsModule,FloatLabelModule],
   templateUrl: './prestamo-dialog.component.html',
   styleUrl: './prestamo-dialog.component.css'
 })
@@ -37,12 +36,11 @@ export class PrestamoDialogComponent implements OnInit{
   {}
   ngOnInit(): void {
     this.messages = [{ severity: 'error', detail: 'EL ANTICIPO DEBE SER MENOR QUE EL SUELDO ACTUAL' }];
-    console.log("~ this.dialogConfig.data:", this.config.data)
+    
     this.prestamo = {...this.config.data}
 
     if(this.prestamo != null && this.prestamo.idPrestamo > 0){
-      console.log('UPDATE')
-      
+      console.log('')
     }
     else
     {
@@ -82,7 +80,6 @@ export class PrestamoDialogComponent implements OnInit{
   } 
   /** FILTRAR POR NOMBRES */
   filterPersonas(event: AutoCompleteCompleteEvent){
-
     let filtered: any[] = [];
     let query = event.query;
     for (let i = 0; i < (this.persona as any[]).length; i++) {
@@ -93,5 +90,4 @@ export class PrestamoDialogComponent implements OnInit{
     }
     this.filtrarPersonas = filtered;
   }
-
 }

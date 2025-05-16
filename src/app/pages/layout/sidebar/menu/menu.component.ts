@@ -31,7 +31,7 @@ export class MenuComponent implements OnInit{
     
     this.model = [
       {
-        label: 'Home',
+        label: 'Principal',
         items: [
           { label: 'Principal', icon: 'pi pi-fw pi-home', routerLink: ['/pages/dashboard'] },
         ],
@@ -66,7 +66,7 @@ export class MenuComponent implements OnInit{
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/falta'],
           }, */
-          /* {
+         /*  {
             label: 'Justificativo Atraso',
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/justificativo'],
@@ -78,7 +78,7 @@ export class MenuComponent implements OnInit{
             routerLink: ['/pages/permiso'],
           },
           {
-            label: 'Prestamo',
+            label: 'Prestamos/Deudas',
             icon: 'pi pi-fw pi-check-square',
             routerLink: ['/pages/prestamo'],
           },
@@ -108,6 +108,11 @@ export class MenuComponent implements OnInit{
             routerLink: ['/pages/report'],
           },
           {
+            label: 'Usuarios',
+            icon: 'pi pi-fw pi-user',
+            routerLink: ['/pages/usuario'],
+          },
+          {
             label: 'Parametros',
             icon: 'pi pi-fw pi-file',
             routerLink: ['/pages/parametros'],
@@ -121,7 +126,7 @@ export class MenuComponent implements OnInit{
   getMenu(){
     this.menuService.getMenuChange().subscribe(data => {
       this.menus = data
-      console.log(this.menus);
+      
       
     });
   }

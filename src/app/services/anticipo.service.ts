@@ -22,6 +22,11 @@ export class AnticipoService extends GenericService<Anticipo> {
     return this.http.get<Anticipo[]>(`${this.url}/nroAnticipos?id_persona=${idPersona}`)
   }
 
+  anticiposPorPersona(useraname:String){
+    return this.http.get(`${this.url}/anticiposPorPersonas?username=${useraname}`)
+  }
+  
+
   /************************** */
 
 

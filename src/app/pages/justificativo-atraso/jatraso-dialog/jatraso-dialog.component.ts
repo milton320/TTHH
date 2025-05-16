@@ -36,7 +36,7 @@ export class JatrasoDialogComponent {
     this.jusAtraso = {...this.config.data}
 
     if(this.jusAtraso != null && this.jusAtraso.idAtraso > 0){
-      console.log('UPDATE')
+      console.log('')
       
     }
     else
@@ -60,11 +60,7 @@ export class JatrasoDialogComponent {
       })
     }
     else{
-    //INSERT
-    console.log(this.jusAtraso);
-  
-    
-        
+    //INSERT    
         this.justAtrasoService
         .save(this.jusAtraso)
         .pipe(switchMap(()=>this.justAtrasoService.findAll()))

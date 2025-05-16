@@ -1,25 +1,52 @@
 <div class="grid grid-cols-4 gap-3 mt-10 mb-44" >
     <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
-            <input pInputText id="pnombre" [(ngModel)]="persona.primerNombre" oninput="this.value = this.value.toUpperCase()" [required]/>
+            <input pInputText 
+                id="pnombre" 
+                [(ngModel)]="persona.primerNombre" 
+                oninput="this.value = this.value.toUpperCase()" 
+                [required]
+                [ngClass]="{'ng-invalid ng-dirty': persona.primerNombre?.trim() === ''}"
+                
+                />
+                <!-- (input)="onChangeClass($event)" -->
             <label for="pnombre">P. Nombre</label>
         </p-floatLabel>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="snombre" [(ngModel)]="persona.segundoNombre" oninput="this.value = this.value.toUpperCase()" />
+            <input 
+                pInputText 
+                id="snombre" 
+                [(ngModel)]="persona.segundoNombre" 
+                oninput="this.value = this.value.toUpperCase()"
+                [ngClass]="{'ng-invalid ng-dirty': persona.segundoNombre?.trim() === ''}"
+                
+            />
             <label for="snombre">S. Nombre</label>
         </p-floatLabel>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="papellido" [(ngModel)]="persona.primerApellido" oninput="this.value = this.value.toUpperCase()" />
+            <input 
+                pInputText 
+                id="papellido" 
+                [(ngModel)]="persona.primerApellido" 
+                oninput="this.value = this.value.toUpperCase()" 
+                [ngClass]="{'ng-invalid ng-dirty': persona.primerApellido?.trim() === ''}"
+            />
             <label for="papellido">P. Apellido</label>
         </p-floatLabel>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="sapellido" [(ngModel)]="persona.segundoApellido" oninput="this.value = this.value.toUpperCase()" />
+            <input 
+                pInputText 
+                id="sapellido" 
+                [(ngModel)]="persona.segundoApellido" 
+                oninput="this.value = this.value.toUpperCase()" 
+                [ngClass]="{'ng-invalid ng-dirty': persona.segundoApellido?.trim() === ''}"
+            />
             <label for="sapellido">S. Apellido</label>
         </p-floatLabel>
     </div>
@@ -37,6 +64,7 @@
                 [(ngModel)]="persona.fechaNacimiento" 
                 dateFormat="dd/mm/yy"
                 [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+                [ngClass]="{'ng-invalid ng-dirty': persona.fechaNacimiento === ''}"
                  
             />
             @if( persona.fechaNacimiento == null){
@@ -62,6 +90,7 @@
             <p-calendar
                 [(ngModel)]="persona.fechaIngreso"
                 dateFormat="dd/mm/yy"  
+                
             />
             @if( persona.fechaIngreso == null){
                 <label for="F.Ingreso" class="font-bold block mb-2" >F.Ingreso </label>
@@ -71,80 +100,52 @@
             }
         </p-floatLabel>
     </div>
-    <!-- <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-            
-            <p-calendar 
-                [(ngModel)]="persona.fechaRetiro" 
-                dateFormat="dd/mm/yy"
-            />
-            @if( persona.fechaRetiro == null){
-                <label for="F.Retiro" class="font-bold block mb-2" >F.Retiro </label>
-            }
-            @else{
-                <label for="F.Retiro" class="font-bold block mb-2" >{{persona.fechaRetiro | fechas }}</label>
-            }
-        </p-floatLabel>
-    </div> -->
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="ci" [(ngModel)]="persona.ci" />    
+            <input 
+                pInputText id="ci" 
+                [(ngModel)]="persona.ci"
+                [ngClass]="{'ng-invalid ng-dirty': persona.ci?.trim() === ''}"
+            />    
             <label for="ci">CI</label>
         </p-floatLabel>
     </div>
 
-    <div class="flex align-items-center gap-3 mb-3">
+    
+    <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
-            <input pInputText id="cuenta" [(ngModel)]="persona.cuenta" oninput="this.value = this.value.toUpperCase()" />
-            <label for="cuenta">Cuenta</label>
+            <p-dropdown 
+                [options]="documentoIdentidad" 
+                [(ngModel)]="persona.documentoIdentidad" 
+                optionLabel="abreviacionCI"
+                placeholder="EXP"  
+            />
+            <label for="pnombre">EXP</label>
         </p-floatLabel>
     </div>
 
-    <!-- <div class="flex align-items-center gap-3 mb-3">
-        <label for="pnombre">Tipo Contrato</label>
-        <p-dropdown 
-            [options]="tipoContrato" 
-            [(ngModel)]="persona.tipoContrato" 
-            optionLabel="tipo"
-            placeholder="TIPO CONTRATO" />
-    </div>-->
-    <!-- <div class="flex align-items-center gap-3 mb-3">
-        <label for="carg">Tipo Cargo</label>
-        <p-dropdown 
-            [options]="tipoCargo" 
-            [(ngModel)]="persona.cargo" 
-            optionLabel="tipo"
-            placeholder="TIPO CARGO" />
-    </div>  -->
-    <!-- <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-            <input pInputText id="tipoContrato" [(ngModel)]="persona.tipoContrato" oninput="this.value = this.value.toUpperCase()" />
-            <label for="tipoContrato">tipoContrato</label>
-        </p-floatLabel>
-    </div> -->
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
             <p-dropdown 
                 [options]="tipoContrato" 
                 [(ngModel)]="persona.tipoContrato" 
                 optionLabel="descripcion"
-                placeholder="CONTRATO" />
+                placeholder="CONTRATO" 
+                [ngClass]="{'ng-invalid ng-dirty': persona.cuenta?.trim() === ''}"
+            />
             <label for="descripcion">CONTRATO</label>
         </p-floatLabel>
     </div>
-    <!-- <div class="flex align-items-center gap-3 mb-3">
-        <p-floatLabel>
-            <input pInputText id="cargo" [(ngModel)]="persona.cargo" oninput="this.value = this.value.toUpperCase()" />
-            <label for="cargo">Cargo</label>
-        </p-floatLabel>
-    </div> -->
+
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
             <p-dropdown 
                 [options]="tipoCargo" 
                 [(ngModel)]="persona.tipoCargo" 
                 optionLabel="descripcion"
-                placeholder="CARGO" />
+                placeholder="CARGO" 
+                
+                />
             <label for="descripcion">CARGO</label>
         </p-floatLabel>
     </div>
@@ -154,34 +155,82 @@
                 [options]="sucursal" 
                 [(ngModel)]="persona.sucursal" 
                 optionLabel="nombre"
-                placeholder="TIPO SUCURSAL" />
+                placeholder="TIPO SUCURSAL"
+                
+            />
+                
             <label for="pnombre">Tipo Sucursal</label>
         </p-floatLabel>
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="sueldo" [(ngModel)]="persona.sueldoBase" />
+            <input 
+                pInputText 
+                id="sueldo" 
+                [(ngModel)]="persona.sueldoBase" 
+                [ngClass]="{'ng-invalid ng-dirty': persona.sueldoBase === 0}"
+            />
             <label for="sueldo">Sueldo</label>
         </p-floatLabel>
     </div>
-    <div class="flex align-items-center gap-3 mb-2">
+    <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="nacionalidad" [(ngModel)]="persona.nacionalidad" oninput="this.value = this.value.toUpperCase()" value="BOLIVIANA" />
-            <label for="nacionalidad">Nacionalidad</label>
+            <p-dropdown 
+                [options]="nacionalidad" 
+                [(ngModel)]="persona.nacionalidad" 
+                optionLabel="descripcion"
+                placeholder="NACIONALIDAD"
+                
+            />
+                
+            <label for="pnombre">Nacionalidad</label>
         </p-floatLabel>
     </div>
-<!--     <div class="flex align-items-center gap-3 mb-3">
+    <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText id="sueldo" [(ngModel)]="persona.genero" />        
-            <label for="genero">GENERO</label>
+            <p-dropdown 
+                [options]="cajaSalud" 
+                [(ngModel)]="persona.cajaSalud" 
+                optionLabel="descripcion"
+                placeholder="CAJA DE SALUD"
+                
+            />
+                
+            <label for="pnombre">Caja de Salud</label>
         </p-floatLabel>
-    </div> -->
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-dropdown 
+                [options]="aporteAfp" 
+                [(ngModel)]="persona.aporteAfp" 
+                optionLabel="descripcion"
+                placeholder="APORTE AFP"
+                
+            />
+                
+            <label for="pnombre">Aporte AFP</label>
+        </p-floatLabel>
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <input 
+                pInputText 
+                id="cuenta" 
+                [(ngModel)]="persona.cuenta" 
+                oninput="this.value = this.value.toUpperCase()"
+                [ngClass]="{'ng-invalid ng-dirty': persona.cuenta?.trim() === ''}"
+            />
+            <label for="cuenta">Cuenta</label>
+        </p-floatLabel>
+    </div>
     <div class="flex flex-wrap gap-3">
         <div class="flex align-items-center">
             <p-radioButton 
                 name="F" 
                 value="F" 
                 [(ngModel)]="persona.genero" 
+                
                 />
             <label for="ingredient1" class="ml-2">
                 F
@@ -198,11 +247,22 @@
                 M
             </label>
         </div>
+        
     </div>
-
-    
+<!--     <div class="flex align-items-center gap-3 mb-2">
+        <p-floatLabel>
+            <input pInputText 
+                id="totalVacacion" 
+                [(ngModel)]="persona.totalVacacion" 
+                [required]
+            />
+               
+            <label for="totalVacacion">TotalVacaciones</label>
+        </p-floatLabel>
+    </div> -->
 </div>
 
+<p-messages  [(value)]="messages" [enableService]="false"></p-messages>
 <div class="flex justify-content-end gap-2 mt-50">
     <p-button label="CANCELAR" severity="secondary" (click)="close()" />
     <p-button label="PROCESAR" (click)="operate()" />

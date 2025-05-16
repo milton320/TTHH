@@ -14,13 +14,25 @@ export class TempPlanillaService extends GenericService<TempPlanilla>{
     super(http, `${environment.HOST}/tempPlanillas`)
   }
   
-  insertarTempPlaniia(){
+ /*  insertarTempPlaniia(){
     return this.http.get(`${this.url}/insertarPlanilla`)
+  } */
+
+  getCantidadFaltas(){
+    return this.http.get<any>(`${this.url}/personasMasFaltas`);
+  }
+  getCantidadAtraso(){
+    return this.http.get(`${this.url}/personasMasAtrasos`);
+  }
+
+  insertarTempPlaniia(){
+    return this.http.post(`${this.url}/insertarPlanilla`, {},{ responseType: 'text' as 'json' }); // Enviar un body vacío
   }
   
   setPlanillaChange(data: TempPlanilla[]){
     this.planillaChange.next(data);
   }
+  
 
   getPlanilla(){
     return this.planillaChange.asObservable();

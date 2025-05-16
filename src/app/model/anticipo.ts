@@ -5,6 +5,7 @@ export class Anticipo{
     monto:number;
     descripcion:String;
     fechaRegistro:string;
+    /* fechaAnticipo:string; */
     persona: Persona;
     estado:boolean;
 }

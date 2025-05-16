@@ -2,18 +2,42 @@
 <p-confirmPopup />
 <router-outlet></router-outlet>
 <div [hidden]="chekChildren()">    
-    <div class="card grid grid-cols-4 gap-4">
-        <div class="col-start-1">
-            <p>
-                <input pInputText type="text" placeholder="Buscar..."  (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
-            </p>
-        </div>
-        <div class="col-end-7">
-            <p-button icon="pi pi-plus" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
-        </div>
-        
+    <div class="card p-4">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+    <!-- Buscador -->
+    <div class="w-full md:w-1/2">
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-search"></i>
+        <input pInputText 
+               type="text" 
+               class="w-full"
+               placeholder="Buscar..." 
+               (input)="dt2.filterGlobal($any($event.target).value, 'contains')" />
+      </span>
     </div>
-    
+
+    <!-- Botones -->
+    <div class="flex gap-3">
+      <!-- Botón: Nuevo -->
+      <p-button icon="pi pi-user-plus"
+                label="Nuevo"
+                [rounded]="true"
+                severity="primary"
+                (click)="showDialog()">
+      </p-button>
+
+      <!-- Botón: Incremento Salarial -->
+      <p-button icon="pi pi-percentage"
+                label="Incremento Salarial"
+                severity="success"
+                (click)="incrementoSlarial()">
+      </p-button>
+    </div>
+
+  </div>
+</div>
+
     <div class="card">
         <p-table 
             #dt2
@@ -30,46 +54,50 @@
         >
             <ng-template pTemplate="header" >
                 <tr>
-                    <th pSortableColumn="idPersona" style="width:20%">
+                    <th pSortableColumn="idPersona">
                         NRO <p-sortIcon field="idPersona" />
                     </th>
                     <th>P.NOMBRE</th>
-                    <th>S.NOMBRE</th>
-                    <th>P.APELLIDO</th>
-                    <th>S.APELLIDO</th>
                     <th>CI</th>
-                    <th>GENERO</th>
-                    <th>F. NAC.</th>
-                    <th>CUENTA</th>
                     <th>F.INGRESO</th>
                     <th>TIPO CONTRATO</th>
                     <th>TIPO CARGO</th>
                     <th>SUELDO</th>
+                    
                     <th>SUCURSAL</th>
-                    <th>ACCION</th>
+                    <th colspan="3" ><p class="text-center">ACCION</p></th>
+                    
                     
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-persona>
+            <ng-template pTemplate="body" let-persona let-rowIndex="rowIndex">
                 <tr>
-                    <td>{{ persona.idPersona }}</td>
-                    <td>{{ persona.primerNombre }}</td>
-                    <td>{{ persona.segundoNombre }}</td>
-                    <td>{{ persona.primerApellido }}</td>
-                    <td>{{ persona.segundoApellido }}</td>
-                    <td>{{ persona.ci }}</td>
-                    <td>{{ persona.genero }}</td>
-                    <td>{{ persona.fechaNacimiento | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ persona.cuenta }}</td>
+                    <td>{{ rowIndex + 1 }}</td>
+                    <td>{{ persona.primerNombre }} {{ persona.segundoNombre }} {{ persona.primerApellido }} {{ persona.segundoApellido }} </td>
+                    <td>{{ persona.ci }} {{ persona.documentoIdentidad.abreviacionCI }}</td>
                     <td>{{ persona.fechaIngreso | date: 'dd/MM/yyyy'}}</td>
                     <td>{{ persona.tipoContrato.descripcion }}</td>
                     <td>{{ persona.tipoCargo.descripcion }}</td>
-                    <td>{{ persona.sueldoBase }}</td>
+                    <td>{{ persona.sueldoBase | number : '1.2-2' }}</td>
                     <td>{{ persona.sucursal.nombre }}</td>
                     <td>
                         <div class="flex justify-content-center flex-wrap gap-3 mb-4">
-                            <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(persona)"></p-button>
+                            <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(persona)"></p-button>                        
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex justify-content-center flex-wrap gap-3 mb-4">                     
                             <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="confirm2($event,persona.idPersona)" ></p-button>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="flex justify-content-center flex-wrap gap-3 mb-4">   
+                            <p-button 
+                                icon="pi pi-eye" 
+                                [rounded]="true" 
+                                severity="info" 
+                                (click)="infoPersona(persona)">
+                            </p-button>
                         </div>
                     </td>
                 </tr>

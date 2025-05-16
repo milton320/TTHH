@@ -28,7 +28,7 @@
                 <th>NRO</th>
                 <th>F. DESDE</th>
                 <th>F. HASTA</th>
-                <th>F. REINTEGRO</th>
+                <th>DESCRIPCION</th>
                 <th>DIAS VACACION</th>
                 <th>PERSONA</th>
                 <th>ACCION</th>
@@ -41,14 +41,14 @@
                 <td>{{ vacacion.fechaDesde | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ vacacion.fechaHasta | date: 'dd/MM/yyyy' }}</td>
                 <td>{{ vacacion.descripcion }}</td>
-                <td>{{ vacacion.diasVacacionUsados  }}</td>
-                <td>{{ vacacion.persona.primerNombre }}</td>
+                <td>{{ vacacion.diasVacacion  }}</td>
+                <td>{{ vacacion.persona.primerNombre }} {{ vacacion.persona.segundoNombre }} {{ vacacion.persona.primerApellido }} {{ vacacion.persona.segundoApellido }} </td>
                 
 
                 <td>
                     <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                         <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(vacacion)"></p-button>
-                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger"  (click)="confirm2($event,vacacion.idVacacion)"></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger"  (click)="confirm2($event,vacacion.idVacacion, vacacion)"></p-button>
                     </div>
                 </td>
             </tr>

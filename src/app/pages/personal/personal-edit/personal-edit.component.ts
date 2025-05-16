@@ -117,7 +117,6 @@ export class PersonalEditComponent implements OnInit {
   operate()
   {
     const persona:Persona = new Persona();
-    console.log(persona);
     persona.primerNombre = this.form.value['primerNombre']
     persona.segundoNombre = this.form.value['segundoNombre']
     persona.primerApellido = this.form.value['primerApellido']

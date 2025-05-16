@@ -2,23 +2,24 @@ import { Component, computed, effect, OnInit, signal } from '@angular/core';
 import { Permiso } from '../../../model/permiso';
 import { MaterialModule } from '../../../material/material.module';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PersonaService } from '../../../services/persona.service';
-import { SucursalService } from '../../../services/sucursal.service';
 import { Persona } from '../../../model/persona';
 import { switchMap } from 'rxjs';
 import { PermisoService } from '../../../services/permiso.service';
 import  moment from 'moment';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { FechasPipe } from '../../../pipes/fechas.pipe';
+import { PermisoLista } from '../../../model/permisoLista';
+import { PermisolistaService } from '../../../services/permisolista.service';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-permiso-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterLink,FormsModule,FloatLabelModule,FechasPipe],
+  imports: [MaterialModule,CommonModule,FormsModule,FloatLabelModule,FechasPipe],
   templateUrl: './permiso-dialog.component.html',
   styleUrl: './permiso-dialog.component.css'
 })
@@ -26,27 +27,29 @@ export class PermisoDialogComponent implements OnInit{
 
   permiso: Permiso
   persona:Persona[];
+  permisoLista:PermisoLista[];
+  cantidadDePropiedades = signal(0)
+  nombrePerson:string 
+  messages: Message[] | undefined;
+  
+
   filtrarPersonas: any[] | undefined;
   fechaIn:string
   fechaFn:string
   fechaReintegro: string
-  valorTipo = 'SI'
+
 
     // Signals para las fechas
     fechaDesde = signal<Date | null>(null); // Fecha inicial
     fechaHasta = signal<Date | null>(null); // Fecha final
-    minDate = new Date(2023, 0, 1);  // Fecha mínima permitida
-    maxDate = new Date(2024, 11, 31); // Fecha máxima permitida
 
-      // Validación de la relación entre las dos fechas
+    // Validación de la relación entre las dos fechas
     rangoFechasInvalido = computed(() => {
       const desde = this.fechaDesde();
       const hasta = this.fechaHasta();
-
       if (!desde || !hasta) {
-        return 'Ambas fechas son obligatorias.';
+        return ''
       }
-
       if (desde > hasta) {
         return 'La fecha "Desde" no puede ser posterior a la fecha "Hasta".';
       }
@@ -56,12 +59,10 @@ export class PermisoDialogComponent implements OnInit{
   diasHabiles = computed(() => {
     const desde = this.fechaDesde();
     const hasta = this.fechaHasta();
-
     // Verificar que ambas fechas están seleccionadas
     if (!desde || !hasta) {
       return 0;
     }
-
     // Contar los días hábiles excluyendo los domingos
     return this.contarDiasHabiles(desde, hasta);
   });
@@ -71,46 +72,50 @@ export class PermisoDialogComponent implements OnInit{
     public config: DynamicDialogConfig,
     private personaService: PersonaService,
     private permisoService: PermisoService,
-    
+    private permisoListaService: PermisolistaService
   )
   {
     this.permiso = new Permiso(0)
   
      // Efecto para hacer algo cuando cambia la fecha
-     effect(() => {
+    /* effect(() => {
       console.log('Fecha Desde:', this.fechaDesde(), 'Fecha Hasta:', this.fechaHasta());
     });
     // Efecto para observar los cambios en los días hábiles
     effect(() => {
       console.log('Días hábiles entre las fechas:', this.diasHabiles());
-    });
+    }); */
   }
   ngOnInit(): void {
-    console.log("~ this.dialogConfig.data:", this.config.data)
+
+    this.permisoListaService.findAll().subscribe(data=>{
+      this.permisoLista = data
+    });
     this.permiso = {...this.config.data}
-
+    this.cantidadDePropiedades.set (Object.keys(this.permiso).length);
     
-
-    this.personaService.findAll().subscribe(data =>{this.persona = data});
-
+    this.personaService.findAll().subscribe(data =>{
+      this.persona = data
+    });
   }
 
-    // Métodos para manejar el cambio de las fechas
-    onFechaDesdeChange(event: Date | null) {
-      this.fechaDesde.set(event);
-    }
-  
-    onFechaHastaChange(event: Date | null) {
-      this.fechaHasta.set(event);
-    }
+  // Métodos para manejar el cambio de las fechas
+  onFechaDesdeChange(event: Date | null) {
+    this.fechaDesde.set(event);
+  }
+
+  onFechaHastaChange(event: Date | null) {
+    this.fechaHasta.set(event);
+  }
 
   /**REGISTRAR ACTUALIZAR */ 
   operate()
   {
-    console.log('save');
+    
     if(this.permiso !=null && this.permiso.idPermiso >0 ){
       //UPDATE
       this.permiso.diasFalta = this.diasHabiles()
+      this.permiso.monto = this.montoPorDias()
       this.permisoService
       .update(this.permiso.idPermiso, this.permiso)
       .pipe(switchMap(()=>this.permisoService.findAll()))
@@ -120,68 +125,70 @@ export class PermisoDialogComponent implements OnInit{
       })
     }
     else{
-    //INSERT
-    /* console.log(this.permiso.fechaDesde ,"FECHA desde");
-    let ts = this.diferenciaEntreDiasEnDias(this.permiso.fechaDesde, this.permiso.fechaHasta);
-    this.permiso.diasFalta = parseInt(ts.toString()) + 1; 
-    console.log(ts.toString());*/
-    this.fechaIn = this.permiso.fechaDesde
-    this.fechaFn = this.permiso.fechaHasta
-    
-
-
-    if(this.valorTipo == 'SI'){
-      const permisF={
-        idPermiso: this.permiso.idPermiso,
-        persona:this.permiso.persona,
-        tipoPermiso:this.permiso.tipoPermiso,
-        fechaDesde:moment(this.permiso.fechaDesde).format('YYYY-MM-DDTHH:mm:ss'),
-        fechaHasta:moment(this.permiso.fechaHasta).format('YYYY-MM-DDTHH:mm:ss'),
-        /* fechaReintegro:moment(this.permiso.fechaReintegro).format('YYYY-MM-DDTHH:mm:ss'), */
-  
-        /* diasFalta:moment(this.fechaFn).diff(this.fechaIn, 'days', true), */
-        tipoFechaHora: 'dias',
-        diasFalta: this.diasHabiles(),
-        /* estadoPermiso:this.permiso.estadoPermiso, */
-        motivo:this.permiso.motivo,
-        monto:this.permiso.monto,
-        fechaRegistro:moment(new Date()).format('YYYY-MM-DDTHH:mm:ss')
+      //INSERT
+      if(!this.permiso.persona || 
+        !this.permiso.fechaDesde ||
+        !this.permiso.fechaHasta ||
+        !this.permiso.motivo ||
+        !this.permiso.permisosLaboralesLista
+      
+      ){
+        this.messages = [{ severity: 'error', detail: 'LLENAR CAMPOS' }];
+        return
       }
-      this.permisoService
-    .save(permisF)
-    .pipe(switchMap(()=>this.permisoService.findAll()))
-    .subscribe(data=>{
-      this.permisoService.setPermisoChange(data);
-      this.permisoService.setMessageChange('CREATED');
-    });
-    }
-    else{
-      const permisF={
-        idPermiso: this.permiso.idPermiso,
-        persona:this.permiso.persona,
-        tipoPermiso:this.permiso.tipoPermiso,
-        fechaDesde:moment(this.permiso.fechaDesde).format('YYYY-MM-DDTHH:mm:ss'),
-        fechaHasta:moment(this.permiso.fechaHasta).format('YYYY-MM-DDTHH:mm:ss'),
-        /* fechaReintegro:moment(this.permiso.fechaReintegro).format('YYYY-MM-DDTHH:mm:ss'), */
-        tipoFechaHora: 'horas',
-        diasFalta:moment(this.fechaFn).diff(this.fechaIn, 'hours', true) , 
-        
-        /* diasFalta: this.diasLaborales(this.fechaIn,this.fechaFn), */
-        /* estadoPermiso:this.permiso.estadoPermiso, */
-        motivo:this.permiso.motivo,
-        monto:this.permiso.monto
-        
+      else{
+        this.montoPorDias()
+        this.fechaIn = this.permiso.fechaDesde
+        this.fechaFn = this.permiso.fechaHasta
+        if(!this.permiso.fechaHoraEstado){
+          const permisF={
+            idPermiso: this.permiso.idPermiso,
+            persona:this.permiso.persona,
+            tipoPermiso:this.permiso.tipoPermiso,
+            fechaDesde:moment(this.permiso.fechaDesde).format('YYYY-MM-DDTHH:mm:ss'),
+            fechaHasta:moment(this.permiso.fechaHasta).format('YYYY-MM-DDTHH:mm:ss'),
+            tipoFechaHora: 'dias',
+            diasFalta: this.diasHabiles(),
+            /* estadoPermiso:this.permiso.estadoPermiso, */
+            motivo:this.permiso.motivo,
+            monto:this.montoPorDias(),
+            permisosLaboralesLista:this.permiso.permisosLaboralesLista,
+            fechaRegistro:moment(new Date()).format('YYYY-MM-DDTHH:mm:ss'),
+            fechaHoraEstado:this.permiso.fechaHoraEstado
+          }
+          
+          this.permisoService
+          .save(permisF)
+          .pipe(switchMap(()=>this.permisoService.findAll()))
+          .subscribe(data=>{
+            this.permisoService.setPermisoChange(data);
+            this.permisoService.setMessageChange('CREATED');
+          });
+        }
+        else{
+          const permisF={
+            idPermiso: this.permiso.idPermiso,
+            persona:this.permiso.persona,
+            tipoPermiso:this.permiso.tipoPermiso,
+            fechaDesde:moment(this.permiso.fechaDesde).format('YYYY-MM-DDTHH:mm:ss'),
+            fechaHasta:moment(this.permiso.fechaHasta).format('YYYY-MM-DDTHH:mm:ss'),
+            tipoFechaHora: 'horas',
+            diasFalta:moment(this.fechaFn).diff(this.fechaIn, 'hours', true),
+            motivo:this.permiso.motivo,
+            permisosLaboralesLista:this.permiso.permisosLaboralesLista,
+            monto:this.montoPorDias(),
+            fechaHoraEstado:this.permiso.fechaHoraEstado
+            
+          }
+          this.permisoService
+          .save(permisF)
+          .pipe(switchMap(()=>this.permisoService.findAll()))
+          .subscribe(data=>{
+            this.permisoService.setPermisoChange(data);
+            this.permisoService.setMessageChange('CREATED');
+          });
+        }
       }
-      this.permisoService
-    .save(permisF)
-    .pipe(switchMap(()=>this.permisoService.findAll()))
-    .subscribe(data=>{
-      this.permisoService.setPermisoChange(data);
-      this.permisoService.setMessageChange('CREATED');
-    });
-    }
-    console.log(moment(this.fechaFn).diff(this.fechaIn, 'hours'), 'Dias de diferencias');
-    
     }
     this.close();
   }
@@ -231,14 +238,37 @@ export class PermisoDialogComponent implements OnInit{
       // Contar solo si es de lunes a sábado (excluir domingo que es 0)
       if (dayOfWeek >= 1 && dayOfWeek <= 6) {
         contador++;
+        
       }
 
       // Mover al siguiente día
       currentDate.setDate(currentDate.getDate() + 1);
     }
-
+    
     return contador;
   }
 
+  
+
+  nombrePersona(event:any):void{
+    this.nombrePerson = event.target.value;
+  }
+  
+  montoPorDias(){  
+      if(this.permiso.tipoPermiso == true){
+        if(!this.permiso.fechaHoraEstado ){
+          if(this.diasHabiles() == 1){
+            return 100
+          }else {
+            return 200 
+          }  
+        }else{
+          return 50
+        }
+      }else{
+        return 0
+      }
+     
+  }
 
 }

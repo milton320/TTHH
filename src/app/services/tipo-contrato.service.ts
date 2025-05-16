@@ -16,6 +16,10 @@ export class TipoContratoService extends GenericService<TipoContrato>{
     super(http, `${environment.HOST}/tipoContrato`)
   }
 
+  getCantidadContratos(){
+    return this.http.get<any>(`${this.url}/cantidadContratos`)
+  }
+
   setTipoContratoChange(data: TipoContrato[]){
     this.tipoContratoChange.next(data);
   }

@@ -1,3 +1,4 @@
+import { PermisoLista } from "./permisoLista";
 import { Persona } from "./persona";
 
 export class Permiso{
@@ -11,6 +12,8 @@ export class Permiso{
     diasFalta:any;
     motivo:string;
     monto:number;
+    permisosLaboralesLista:PermisoLista;
+    fechaHoraEstado:boolean;
     fechaRegistro?:string;
     fechaModificacion?:string;
     fechaElliminacion?:string;

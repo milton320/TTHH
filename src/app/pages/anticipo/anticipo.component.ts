@@ -15,6 +15,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AnticipoDialogComponent } from './anticipo-dialog/anticipo-dialog.component';
 import { switchMap } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-anticipo',
@@ -25,9 +27,15 @@ import { switchMap } from 'rxjs';
   styleUrl: './anticipo.component.css'
 })
 export class AnticipoComponent implements OnInit {
+  username: string
+  role: string
+  idPersona: number
   anticipo!: Anticipo[]
   loading: boolean = true;
   ref: DynamicDialogRef
+  anticipoPorPersona:any;
+  mostrarAcciones = false;
+
   
 
   constructor(
@@ -41,10 +49,22 @@ export class AnticipoComponent implements OnInit {
 
   ngOnInit(): void 
   {  
+    const helper = new JwtHelperService();
+    const token = sessionStorage.getItem(environment.TOKEN_NAME);
+    const decodedToken = helper.decodeToken(token);
+
+    this.username = decodedToken.sub;
+    this.role = decodedToken.role;
+    this.idPersona = decodedToken.idPersona;
+    
     this.anticipoService.findAll().subscribe(data =>
     {
       this.anticipo = data
     });
+
+    this.anticipoService.anticiposPorPersona(this.username).subscribe(data=>{
+      this.anticipoPorPersona = data
+    })
 
     this.anticipoService.getMessageChange().subscribe(data=>
     {
@@ -71,7 +91,10 @@ export class AnticipoComponent implements OnInit {
       }
     
     })        
+    
+    
   }
+
   
   updateTable(){
     this.anticipoService.findAll().subscribe(data => {
@@ -92,7 +115,7 @@ export class AnticipoComponent implements OnInit {
   confirm2(event: Event, idAnticipo:any) {
     this.confirmationService.confirm({
         target: event.target as EventTarget,
-        message: '¿Quieres Elminar este registro?',
+        message: '¿Quieres Eliminar este registro?',
         icon: 'pi pi-info-circle',
         acceptButtonStyleClass: 'p-button-danger p-button-sm',
         accept: () => {

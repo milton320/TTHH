@@ -17,7 +17,7 @@ import moment from 'moment';
 @Component({
   selector: 'app-anticipo-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule],
+  imports: [MaterialModule,CommonModule,FormsModule,FloatLabelModule],
   templateUrl: './anticipo-dialog.component.html',
   styleUrl: './anticipo-dialog.component.css'
 })
@@ -42,14 +42,13 @@ export class AnticipoDialogComponent implements OnInit {
   {}
 
   ngOnInit(): void {
-    this.messages = [{ severity: 'error', detail: 'EL ANTICIPO DEBE SER MENOR QUE EL SUELDO ACTUAL' }];
+    
     this.anticipo = {...this.config.data}
     
     this.totalAnticipo = this.anticipo.monto
     
     if(this.anticipo != null && this.anticipo.idAnticipo > 0){
-      console.log('UPDATE')
-      
+      console.log('')
     }
     else
     {
@@ -57,36 +56,45 @@ export class AnticipoDialogComponent implements OnInit {
       this.anticipo.estado = true
     }
     this.personaService.findAll().subscribe(data =>{this.persona = data});
-
   }
   operate() {
-    // Verificar si el monto del anticipo es menor al sueldo base de la persona
-    if (this.anticipo.monto < this.anticipo.persona.sueldoBase) {
-      console.log('save');
-      
-      // Actualización (UPDATE)
-      if (this.anticipo != null && this.anticipo.idAnticipo > 0) {
-        this.updateAnticipo(); // Extraer la lógica de actualización en un método separado
-      } 
-      // Inserción (INSERT)
-      else {
-        this.anticipoService.nroAnticipos(this.anticipo.persona.idPersona).subscribe({
-          next: (anticiposExistentes) => {
-            if (anticiposExistentes.length > 0) {
-              this.messages = [{ severity: 'error', detail: 'La persona ya tiene un anticipo registrado' }];
-              this.sueldoEstado = false;
-            } else {
-              this.insertAnticipo(); // Extraer la lógica de inserción en un método separado
-            }
-          },
-          error: (e) => {
-            this.messages = [{ severity: 'error', detail: 'Error al verificar anticipos existentes' }];
-          }
-        });
-      }
+    
+    if (this.anticipo != null && this.anticipo.idAnticipo > 0) {
+      this.updateAnticipo(); // Extraer la lógica de actualización en un método separado
     } 
-    else {
-      this.sueldoEstado = false;
+    // Inserción (INSERT)
+    else {     
+      //verificamos si en el input esta vacio
+
+      if(!this.anticipo.persona || !this.anticipo.monto || !this.anticipo.descripcion) {
+        this.messages = [{ severity: 'error', detail: 'LLENAR CAMPOS' }];
+        return
+      }else{
+        // Verificar si el monto del anticipo es menor al sueldo base de la persona
+        if (this.anticipo.monto < this.anticipo.persona.sueldoBase) 
+          {
+            this.anticipoService.nroAnticipos(this.anticipo.persona.idPersona).subscribe({
+              next: (anticiposExistentes) => {
+                if (anticiposExistentes.length > 0) {
+                  this.messages = [{ severity: 'error', detail: 'La persona ya tiene un anticipo registrado' }];
+                  this.sueldoEstado = false;
+                } else {
+                  this.insertAnticipo(); // Extraer la lógica de inserción en un método separado
+                }
+              },
+              error: (e) => {
+                this.messages = [{ severity: 'error', detail: 'Error al verificar anticipos existentes' }];
+              }
+            });
+            
+            
+            // Actualización (UPDATE)
+          } 
+        else {
+          /* this.sueldoEstado = false; */
+          this.messages = [{ severity: 'error', detail: 'EL ANTICIPO DEBE SER MENOR QUE EL SUELDO ACTUAL' }];
+        }
+      }
     }
   }
   
@@ -103,6 +111,7 @@ export class AnticipoDialogComponent implements OnInit {
           this.close(); // Cerrar después de la actualización
         },
         error: (e) => {
+          
           this.anticipoService.setMessageChange('ERROR!');
         }
       });

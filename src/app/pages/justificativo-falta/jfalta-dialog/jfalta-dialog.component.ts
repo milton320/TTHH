@@ -46,7 +46,7 @@ export class JfaltaDialogComponent implements OnInit{
     }
     else{
     //INSERT
-    console.log(this.justFalta);
+    
     this.justificativoService
     .save(this.justFalta)
     .pipe(switchMap(()=>this.justificativoService.findAll()))

@@ -6,9 +6,9 @@ export class Vacacion{
     fechaDesde:string;
     fechaHasta:string;
     descripcion:string;
-    diasVacacionAcumulados?:number;
-    diasVacacionUsados?:number;
-    diasVacacionDisponibles?:number;
-    diasFalta: number;
+    /* diasVacacionAcumulados?:number;
+    diasVacacionUsados?:number;*/
+    diasVacacionActualizacion?:number;
+    diasVacacion: number;
     fechaRegistro?:string;
 }

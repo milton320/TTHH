@@ -73,14 +73,12 @@ export class AppLayoutService {
       if (this.state.overlayMenuActive) {
         this.overlayOpen.next(null);
       }
+      console.log('object');
     }
-
     if (this.isDesktop()) {
-      this.state.staticMenuDesktopInactive =
-        !this.state.staticMenuDesktopInactive;
+      this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
     } else {
       this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
-
       if (this.state.staticMenuMobileActive) {
         this.overlayOpen.next(null);
       }
@@ -99,10 +97,12 @@ export class AppLayoutService {
   }
 
   isOverlay() {
+    
     return this.config().menuMode === 'overlay';
   }
 
   isDesktop() {
+    
     return window.innerWidth > 991;
   }
 

@@ -25,6 +25,10 @@ export class SucursalService extends GenericService<Sucursal>{
     return this.http.get(`${this.url}/sucursalReport`, { responseType:'blob' }); 
   }
 
+  cantidaPersonalSucursal(){
+    return this.http.get(`${this.url}/cantidadPersonal`); 
+  }
+
 
 
   /************************** */

@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
@@ -15,6 +15,8 @@ import { Permiso } from '../../model/permiso';
 import { PermisoService } from '../../services/permiso.service';
 import { switchMap } from 'rxjs';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { PermisolistaService } from '../../services/permisolista.service';
+import { PermisoLista } from '../../model/permisoLista';
 
 @Component({
   selector: 'app-permiso',
@@ -26,9 +28,11 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 })
 export class PermisoComponent implements OnInit {
   permiso!: Permiso[]
+  permisoListaM!: PermisoLista[]
 
   //loading: boolean = true;
   ref: DynamicDialogRef 
+  es: any;
   constructor(
     private personaService: PersonaService,
     private permisoService: PermisoService,
@@ -36,11 +40,19 @@ export class PermisoComponent implements OnInit {
     public dialogService: DialogService,
     private messageService: MessageService,
     private route: ActivatedRoute,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private permisoListaService: PermisolistaService,
+    private primengConfig: PrimeNGConfig
     ){}
 
     ngOnInit(): void 
     {  
+
+      this.permisoListaService.findAll().subscribe(data=>{
+        this.permisoListaM = data
+        
+      })
+      
       this.permisoService.findAll().subscribe(data =>
       {
         this.permiso = data
@@ -48,7 +60,7 @@ export class PermisoComponent implements OnInit {
   
       this.permisoService.getMessageChange().subscribe(data=>
       {
-        console.log(data);
+        
         if(data == 'CREATED')
         {
           this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
@@ -64,7 +76,18 @@ export class PermisoComponent implements OnInit {
           this.updateTable()
         }
       
-      })        
+      })    
+      this.es = {
+        firstDayOfWeek: 1,
+        dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+        dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+        dayNamesMin: [ "D","L","M","X","J","V","S" ],
+        monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+        monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ],
+        today: 'Hoy',
+        clear: 'Borrar'
+      }
+      this.primengConfig.setTranslation(this.es)    
     }
     updateTable(){
       this.permisoService.findAll().subscribe(data => {
@@ -91,7 +114,8 @@ export class PermisoComponent implements OnInit {
         this.ref = this.dialogService.open(PermisoDialogComponent, {
           header: 'ACTUALIZAR PERMISO',
           data: permiso,
-          modal:true
+          modal:true,
+          maximizable:true,
         })  
       }
     }
@@ -102,8 +126,7 @@ export class PermisoComponent implements OnInit {
           icon: 'pi pi-info-circle',
           acceptButtonStyleClass: 'p-button-danger p-button-sm',
           accept: () => {
-              this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
-              console.log(idPermiso);
+              
               this.delete(idPermiso)
           },
           reject: () => {

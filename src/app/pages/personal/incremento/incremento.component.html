@@ -1,0 +1,50 @@
+<p-toast />
+<div class="card p-4 shadow-sm border border-gray-200 rounded-lg bg-white mt-6 mb-20 text-sm">
+
+  <!-- Título y descripción -->
+  <div class="mb-4">
+    <p class="font-medium text-gray-700">Incremento Salarial</p>
+    <p class="text-gray-500">
+      Solo se aplica a empleados con contrato tipo <strong>"PERMANENTE"</strong>.
+    </p>
+  </div>
+
+  <!-- Campo de entrada + botón en una sola línea -->
+  <div class="flex flex-col sm:flex-row items-center gap-3">
+    
+    <!-- Input porcentaje -->
+    <div class="w-full sm:w-1/3">
+      <p-floatLabel>
+        <input 
+          pInputText 
+          id="incremento" 
+          type="number"
+          [(ngModel)]="incremento" 
+          placeholder="%" 
+          min="0"
+          class="w-full text-sm"
+          [required]="true"
+        />
+        <label for="incremento">Porcentaje (%)</label>
+      </p-floatLabel>
+    </div>
+
+    <!-- Botón aplicar -->
+    <p-button 
+      icon="pi pi-check" 
+      label="Aplicar" 
+      severity="success" 
+      (click)="operate(incremento)"
+      
+      styleClass="text-sm">
+    </p-button>
+        <!-- Botón Cancelar -->
+    <p-button 
+      icon="pi pi-times" 
+      label="Cancelar" 
+      severity="secondary" 
+      (click)="cancel()"
+      styleClass="text-sm">
+    </p-button>
+  </div>
+</div>

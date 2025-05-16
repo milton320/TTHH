@@ -29,6 +29,7 @@
                 <th>NRO</th>
                 <th>MONTO</th>
                 <th>PERSONA</th>
+                <th>CARGO</th>
                 <th>ACCION</th>
                 
             </tr>
@@ -37,9 +38,10 @@
             <tr>
                 <td>{{ dieta.idDieta }}</td>
                 <td>{{ dieta.bono }}</td>
-                <td>{{ dieta.persona.primerNombre }}</td>
-                
-
+                <td>{{ dieta.persona.primerNombre + ' ' + dieta.persona.primerApellido }}</td>
+                <td>
+                    {{ dieta.persona.tipoCargo.descripcion }}
+                </td>
                 <td>
                     <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                         <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(dieta)"></p-button>

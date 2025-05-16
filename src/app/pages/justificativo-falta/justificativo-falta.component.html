@@ -21,6 +21,14 @@
         <!-- <p-button icon="pi pi-bookmark" severity="success" label="CALCULAR" (click)="calcularAtrasos()"></p-button> -->
         <!-- <p-button label="REGISTRAR" (click)="operate()" /> -->
         <p-toast />
+<!--         <p-calendar 
+            [(ngModel)]="date" 
+            view="month" 
+            dateFormat="mm/yy" 
+            [readonlyInput]="true" 
+            [maxDate]="maxMonth"
+            /> -->
+            <p>MES: {{ mesEscrito }} AÑO: {{ anioAtraso }}</p>
         <p-confirmPopup>
             <ng-template pTemplate="content" let-message>
                 <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
@@ -29,7 +37,7 @@
                 </div>
             </ng-template>
         </p-confirmPopup>
-        <p-button icon="pi pi-sort-alt" [rounded]="true" severity="primary" label="Registrar" (onClick)="confirm($event)" />
+        <p-button icon="pi pi-sort-alt" [rounded]="true" severity="primary" label="Registrar" (onClick)="confirm($event, date)" />
     </div>
     
 </div>
@@ -51,6 +59,7 @@
                 <th>SUCURSAL</th>
                 <th>F. FALTA</th>
                 <th>FECHA_MES</th>
+                <th>ESTADO</th>
                 <th>ESTADO</th>
                 <th>MES</th>
                 <th>ANIO</th>
@@ -88,6 +97,7 @@
                     }
                     
                 </td>                
+                <td>{{ justFalta.estadoActivo }}</td>                
                 <td>{{ justFalta.mes }}</td>                
                 <td>{{ justFalta.anio }}</td>
                 <td>{{ justFalta.minutosAtraso }}</td>

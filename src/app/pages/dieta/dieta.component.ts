@@ -46,7 +46,7 @@ export class DietaComponent implements OnInit {
 
     this.dietaService.getMessageChange().subscribe(data=>
     {
-      console.log(data);
+      
       if(data == 'CREATED')
       {
         this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
@@ -85,7 +85,7 @@ export class DietaComponent implements OnInit {
         acceptButtonStyleClass: 'p-button-danger p-button-sm',
         accept: () => {
             this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
-            console.log(idDieta);
+            
             this.delete(idDieta)
         },
         reject: () => {

@@ -22,6 +22,20 @@ export class PersonaService extends GenericService<Persona>{
 
   }
 
+  personaVacacion(idPersona:number){
+    return this.http.get<Persona[]>(`${this.url}/personaVacacion/${idPersona}`)
+  }
+
+  cantidadGenero(){
+    return this.http.get(`${this.url}/cantidadGenero`)
+  }
+
+  postIncrementoSalaraial(porcentaje:number){
+    return this.http.post(`${this.url}/incremento-salarial?porcentaje=${porcentaje}`,{},{
+      responseType:'text'
+    })
+  }
+
   /*constructor(private http: HttpClient) { }
 
   findAll(){

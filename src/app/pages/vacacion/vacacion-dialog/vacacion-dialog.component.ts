@@ -16,11 +16,12 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import moment from 'moment';
 import { FechasPipe } from '../../../pipes/fechas.pipe';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-vacacion-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule,FechasPipe],
+  imports: [MaterialModule,CommonModule,FormsModule,FloatLabelModule,FechasPipe],
   templateUrl: './vacacion-dialog.component.html',
   styleUrl: './vacacion-dialog.component.css'
 })
@@ -30,13 +31,15 @@ export class VacacionDialogComponent {
   filtrarPersonas: any[] | undefined;
   fechaIn:string
   fechaFn:string
+  // Signals para las fechas
+  fechaDesde = signal<Date | null>(null); // Fecha inicial
+  fechaHasta = signal<Date | null>(null); // Fecha final
+  minDate = new Date(2023, 0, 1);  // Fecha mínima permitida
+  maxDate = new Date(2025, 11, 31); // Fecha máxima permitida
 
-
-// Signals para las fechas
-fechaDesde = signal<Date | null>(null); // Fecha inicial
-fechaHasta = signal<Date | null>(null); // Fecha final
-minDate = new Date(2023, 0, 1);  // Fecha mínima permitida
-maxDate = new Date(2024, 11, 31); // Fecha máxima permitida
+  personaVacacion:any 
+  cantidadVacacion:any = 0
+  vacacionAntigua:number = 0
 
   // Validación de la relación entre las dos fechas
 rangoFechasInvalido = computed(() => {
@@ -72,37 +75,33 @@ constructor(
   public config: DynamicDialogConfig,
   private personaService: PersonaService,
   private vacacionService: VacacionService,
+  private messageService: MessageService
   
 )
-{
-  // Efecto para hacer algo cuando cambia la fecha
-  effect(() => {
-    console.log('Fecha Desde:', this.fechaDesde(), 'Fecha Hasta:', this.fechaHasta());
-  });
-  // Efecto para observar los cambios en los días hábiles
-  effect(() => {
-    console.log('Días hábiles entre las fechas:', this.diasHabiles());
-  });
-}
+{}
 
 ngOnInit(): void {
   console.log("~ this.dialogConfig.data:", this.config.data)
   this.vacacion = {...this.config.data}
+  this.vacacionAntigua = this.vacacion.diasVacacion
 
 
   if(this.vacacion != null && this.vacacion.idVacacion > 0){
-    console.log('UPDATE')
+    console.log('')
   }
   else
   {
     //this.vacacion.fechaRegistro = new Date();
   }
-
-
-
   this.personaService.findAll().subscribe(data =>{this.persona = data});
-
   
+  /* this.personaService.personaVacacion(91).subscribe(
+    data =>{
+      this.personaVacacion = data
+      console.log(data);
+    }
+  ) */
+
 } 
 
   /* operate()
@@ -202,54 +201,56 @@ ngOnInit(): void {
     }
      */
     operate() {
-      console.log('save');
+      this.personaService.personaVacacion(this.vacacion.persona.idPersona).subscribe(diasPersona => {
+        this.cantidadVacacion = diasPersona[0]?.vacacionPersona ?? 0;
     
-      // Verificamos los días disponibles antes de proceder
-      this.vacacionService.calcularDiasDisponibles(this.vacacion.persona.idPersona).subscribe(diasDisponibles => {
-        const diasHabilesCalculados = this.diasHabiles(); // Calculamos los días hábiles
+        const diasCalculados = this.diasHabiles();
     
-        if (diasHabilesCalculados > diasDisponibles) {
-          // Si los días hábiles exceden los días disponibles, mostrar un mensaje de error
-          this.vacacionService.setMessageChange('No tiene suficientes días disponibles');
-          return; // Cancelar la operación si no tiene suficientes días
+        // Validación: no puede usar más días de los que tiene
+        if (diasCalculados > this.cantidadVacacion) {
+          this.messageService.add({
+            severity: 'error',
+
+            detail: `Solo tiene ${this.cantidadVacacion} día(s) disponible(s), pero seleccionó ${diasCalculados}.`,
+          });
+          this.close();
+          return;
         }
     
-        // Crear el objeto de vacación para enviar al backend
-        const vacacionF = {
-          idVacacion: this.vacacion.idVacacion ? this.vacacion.idVacacion : null, // Si idVacacion existe, es actualización; si no, es creación
-          persona: this.vacacion.persona, // Asignar la persona
-          fechaDesde: moment(this.vacacion.fechaDesde).format('YYYY-MM-DDTHH:mm:ss'), // Formato de fecha
-          fechaHasta: moment(this.vacacion.fechaHasta).format('YYYY-MM-DDTHH:mm:ss'), // Formato de fecha
-          descripcion: this.vacacion.descripcion, // Descripción de la vacación
-          diasFalta: diasHabilesCalculados, // Asignar los días hábiles calculados
-          diasVacacionUsados: diasHabilesCalculados, // Asignar los días hábiles calculados
-          fechaRegistro: this.vacacion.idVacacion ? this.vacacion.fechaRegistro : moment(new Date()).format('YYYY-MM-DDTHH:mm:ss'), // Mantener la fecha de registro o asignar una nueva
-          fechaActualizacion: this.vacacion.idVacacion ? moment(new Date()).format('YYYY-MM-DDTHH:mm:ss') : null // Fecha de actualización si es un update
+        const fechaRegistro = moment().format('YYYY-MM-DDTHH:mm:ss');
+    
+        const vacacionF: any = {
+          idVacacion: this.vacacion.idVacacion,
+          persona: this.vacacion.persona,
+          fechaDesde: moment(this.vacacion.fechaDesde).format('YYYY-MM-DDTHH:mm:ss'),
+          fechaHasta: moment(this.vacacion.fechaHasta).format('YYYY-MM-DDTHH:mm:ss'),
+          descripcion: this.vacacion.descripcion,
+          diasVacacion: diasCalculados,
+          fechaRegistro: fechaRegistro
         };
     
-        // Si tiene suficientes días, procedemos
-        if (this.vacacion.idVacacion && this.vacacion.idVacacion > 0) {
-          // UPDATE
-          this.vacacionService.update(this.vacacion.idVacacion, vacacionF)
-            .pipe(switchMap(() => this.vacacionService.findAll())) // Actualizar la lista después del update
-            .subscribe(data => {
-              this.vacacionService.setVacionChange(data); // Actualizar la lista en la vista
-              this.vacacionService.setMessageChange('UPDATE!'); // Mostrar mensaje de éxito
-            });
+        if (this.vacacion?.idVacacion > 0) {
+          vacacionF.diasVacacionActualizacion = this.vacacionAntigua;
     
-        } else {
-          // INSERT
-          this.vacacionService.registroVacaciones(vacacionF)
-            .pipe(switchMap(() => this.vacacionService.findAll())) // Actualizar la lista después del insert
+          this.vacacionService.update(this.vacacion.idVacacion, vacacionF)
+            .pipe(switchMap(() => this.vacacionService.findAll()))
             .subscribe(data => {
-              this.vacacionService.setVacionChange(data); // Actualizar la lista en la vista
-              this.vacacionService.setMessageChange('CREATED'); // Mostrar mensaje de éxito
+              this.vacacionService.setVacionChange(data);
+              this.vacacionService.setMessageChange('UPDATE!');
+              this.close();
+            });
+        } else {
+          this.vacacionService.save(vacacionF)
+            .pipe(switchMap(() => this.vacacionService.findAll()))
+            .subscribe(data => {
+              this.vacacionService.setVacionChange(data);
+              this.vacacionService.setMessageChange('CREATED');
+              this.close();
             });
         }
-    
-        this.close(); // Cerrar el formulario o modal después de guardar
       });
     }
+    
     
     
 
@@ -314,5 +315,9 @@ ngOnInit(): void {
 
   onFechaHastaChange(event: Date | null) {
     this.fechaHasta.set(event);
+  }
+
+  idPersonaFunction(event: number){
+    console.log(event);
   }
 }

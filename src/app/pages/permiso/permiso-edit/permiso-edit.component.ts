@@ -8,6 +8,7 @@ import { Permiso } from '../../../model/permiso';
 import { Persona } from '../../../model/persona';
 import { PersonaService } from '../../../services/persona.service';
 import { PermisoService } from '../../../services/permiso.service';
+import { PermisoLista } from '../../../model/permisoLista';
 
 @Component({
   selector: 'app-permiso-edit',
@@ -22,14 +23,17 @@ export class PermisoEditComponent  implements OnInit{
   isEdit: boolean;
   valorTipo = 'SI'
   permiso: Permiso
-
   persona:Persona[];
+  permisoListaM!: PermisoLista[];
+
+
   constructor(
 
   private route:ActivatedRoute,
   private router:Router,
   private personaService: PersonaService,
   private permisoService: PermisoService,
+  
 
  ){
   

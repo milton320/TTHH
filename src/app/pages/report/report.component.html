@@ -1,46 +1,86 @@
-<div class="card ">
-    
-    <p-divider align="left" type="solid">
-        <b>Reportes</b>
-        
-    </p-divider>
-    <div class="">
-        <p>SUCURSALES</p>
-        <p-button label="SUCURSALES PDF" (click)="downloadReport('bar')"/>        
-    </div>
+<div class="grid md:grid-cols-2 gap-4 mt-4">
+    @if (role == 'ADMIN' || role == 'GERENCIA') {
+        <!-- Planilla Permanente -->
+        <p-card header="Planilla Permanente" subheader="Exportación disponible">
+            <div class="flex gap-2 flex-wrap justify-content-start">
+            <p-button 
+                label="XLS" 
+                icon="pi pi-file-excel" 
+                (click)="planillatXls('PERMANENTE')"
+                severity="success">
+            </p-button>
+            <p-button 
+                label="PDF" 
+                icon="pi pi-file-pdf" 
+                (click)="planillatPdf('PERMANENTE')"
+                severity="warning">
+            </p-button>
+            </div>
+        </p-card>
+        <!-- Planilla Eventuales -->
+        <p-card header="Eventuales / Externos" subheader="Solo PDF disponible">
+            <p-button 
+            label="PDF" 
+            icon="pi pi-file-pdf" 
+            class="w-full" 
+            (click)="planillatPdfEventual('EVENTUAL')" 
+            severity="info">
+            </p-button>
+        </p-card>
+        <!-- Reporte TXT -->
+        <p-card header="Planilla TXT" subheader="Formato texto plano">
+            <p-button 
+            label="Generar TXT" 
+            icon="pi pi-file" 
+            class="w-full" 
+            (click)="generateReportTxt('TXT')" 
+            severity="secondary">
+            </p-button>
+        </p-card>
+        <!-- Aguinaldo -->
+        <p-card header="Aguinaldo" subheader="Reporte anual">
+            <p-button 
+            label="Aguinaldo PDF" 
+            icon="pi pi-file-pdf" 
+            class="w-full" 
+            (click)="aguinaldoReportpdf('AGUINALDO')" 
+            severity="danger">
+            </p-button>
+        </p-card>
+    }
+    <!-- Boletas de Pago -->
+    <p-card header="Boletas de Pago" subheader="Buscar por C.I. para generar PDF">
+        <div class="flex flex-column gap-3">
+            @if (role == 'ADMIN' || role == 'GERENCIA') {
+                <p-floatLabel>
+                    <p-autoComplete 
+                    [(ngModel)]="planilla" 
+                    [suggestions]="filtrarPersonas" 
+                    (completeMethod)="filterPersonas($event)"
+                    field="ci" 
+                    inputId="pnombre" />
+                    <label for="pnombre">Buscar por C.I.</label>
+                </p-floatLabel>
+            
+            
+            <p-button 
+                label="Descargar Boleta PDF" 
+                icon="pi pi-download" 
+                (click)="generateReportBoleta('descargar', planilla)" 
+                severity="primary">
+            </p-button>
+            
+            }@else{
+                <!-- {{ infoPersona?.id_persona}} -->
+                <p-button 
+                    label="Descargar Boleta PDF" 
+                    icon="pi pi-download" 
+                    (click)="generatePersonalBoleta('descargar', infoPersona.id_persona)" 
+                    severity="primary">
+                </p-button>
+            }
 
-    <p-divider align="left" type="solid">
-        <b>Reportes</b>
-    </p-divider>
-    
-    <div class="">
-        <p>PLANILLA DE SUELDOS PLANTEL PERMANENTE XLS</p>
-        <p-button label="Planilla XLS" (click)="planillatXls('bar')"/>        
-    </div>
-    <div class="">
-        <p>PLANILLA DE SUELDOS PLANTEL PERMANENTE PDF</p>
-        <p-button label="Planilla PDF" (click)="planillatPdf('bar')"/>        
-    </div>
-    <div class="">
-        <p>PLANILLA TXT REPORT</p>
-        <p-button label="PLANILLA TXT" (click)="generateReportTxt('bar')"/>        
-    </div>
-    <p-divider align="left" type="solid">
-        <b>BOLETAS DE PAGO</b>
-    </p-divider>
-    <div class="">
-        <p>AGUINALDO REPORT </p>
-        <p-button label="AGUINALDO PDF" (click)="generateReportBoleta('bar')"/>        
-    </div>
-    <p-divider align="left" type="solid">
-        <b>AGUINALDO</b>
-    </p-divider>
-    <div class="">
-        <p>AGUINALDO REPORT </p>
-        <p-button label="AGUINALDO PDF" (click)="aguinaldoReportpdf('bar')"/>        
-    </div>
-        
+        </div>
+    </p-card>
 </div>
-
-
 

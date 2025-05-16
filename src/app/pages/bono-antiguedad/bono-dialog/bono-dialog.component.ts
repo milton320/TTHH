@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs';
 @Component({
   selector: 'app-bono-dialog',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,FormsModule,FloatLabelModule],
+  imports: [MaterialModule,CommonModule,FormsModule,FloatLabelModule],
   templateUrl: './bono-dialog.component.html',
   styleUrl: './bono-dialog.component.css'
 })
@@ -34,7 +34,7 @@ export class BonoDialogComponent implements OnInit{
   /**REGISTRAR ACTUALIZAR */ 
   operate()
   {
-    console.log('update');
+  
     if(this.bono !=null && this.bono.idBoleta >0 ){
       //UPDATE
       this.bonoAntiguedadService
@@ -47,7 +47,7 @@ export class BonoDialogComponent implements OnInit{
     }
     else{
     //INSERT
-    console.log(this.bono, "DIETA");
+    
     this.bonoAntiguedadService
     .save(this.bono)
     .pipe(switchMap(()=>this.bonoAntiguedadService.findAll()))

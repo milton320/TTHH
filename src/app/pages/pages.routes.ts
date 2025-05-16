@@ -20,9 +20,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { cetGuard } from '../guard/cert.guard';
 import { Not403Component } from './not-403/not-403.component';
 import { BonoAntiguedadComponent } from './bono-antiguedad/bono-antiguedad.component';
-
-
-
+import { UsuarioComponent } from './usuario/usuario.component';
 
 export const pagesRoutes: Routes = [
       { path: 'dashboard',component: DashboardComponent, canActivate: [cetGuard] },
@@ -56,6 +54,7 @@ export const pagesRoutes: Routes = [
       { path: 'planilla', component:PlanillaComponent, canActivate: [cetGuard]},
       { path: 'prestamo', component:PrestamoComponent, canActivate: [cetGuard]},
       { path: 'vacacion', component:VacacionComponent, canActivate: [cetGuard]},
+      { path: 'usuario', component:UsuarioComponent, canActivate: [cetGuard]},
       { path: 'report', component:ReportComponent, canActivate: [cetGuard]},
       { path: 'parametros', component:BonoAntiguedadComponent, canActivate: [cetGuard]},
       { path: 'not-403', component:Not403Component}

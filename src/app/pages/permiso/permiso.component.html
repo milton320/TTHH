@@ -36,10 +36,10 @@
                     <th>F.HASTA</th>
                     <!-- <th>F.REINTEGRO</th> -->
                     <th>DIAS/HRS FALTA</th>
-                    
+                    <th>DESCRIPCION</th>
                     <th>MOTIVO</th>
                     <th>MONTO</th>
-                    
+                    <th>HORA/FECHA</th>
                     <th>ACCION</th>
                     
                 </tr>
@@ -47,7 +47,7 @@
             <ng-template pTemplate="body" let-permiso>
                 <tr>
                     <td>{{ permiso.idPermiso }}</td>
-                    <td>{{ permiso.persona.primerNombre }}</td>
+                    <td>{{ permiso.persona.primerNombre  }} {{ permiso.persona.primerApellido }}</td>
                     @if(permiso.tipoPermiso == true ){
                         <td>SIN GOCE</td>
                     }
@@ -56,12 +56,11 @@
                     }    
                     <td>{{ permiso.fechaDesde | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
                     <td>{{ permiso.fechaHasta | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
-                    <!-- <td>{{ permiso.fechaReintegro | date: 'dd/MM/yyyy HH:mm:ss'}}</td> -->
                     <td>{{ permiso.diasFalta | number : '1.2-2' }} {{ permiso.tipoFechaHora}}</td>
-                    
+                    <td>{{ permiso.permisosLaboralesLista.descripcion | uppercase }}
                     <td>{{ permiso.motivo }}</td>
                     <td>{{ permiso.monto }}</td>
-    
+                    <td>{{ permiso.fechaHoraEstado == true ? 'HORA' : 'FECHA' }}</td>
                     <td>
                         <div class="flex justify-content-center flex-wrap gap-3 mb-4">
                             <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(permiso)"></p-button>

@@ -4,15 +4,17 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { MaterialModule } from '../../material/material.module';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { JustificativoFalta } from '../../model/justificativoFalta';
 import { FaltaService } from '../../services/falta.service';
 import { DialogModule } from 'primeng/dialog';
 import { switchMap } from 'rxjs';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 import { JfaltaDialogComponent } from './jfalta-dialog/jfalta-dialog.component';
+import { AtrasoService } from '../../services/atraso.service';
+import { Atraso } from '../../model/atraso';
 
 interface MesAnio{
   mes:string,
@@ -22,7 +24,7 @@ interface MesAnio{
 @Component({
   selector: 'app-justificativo-falta',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,ToastModule,RippleModule,ReactiveFormsModule],
+  imports: [MaterialModule,CommonModule,ToastModule,RippleModule,ReactiveFormsModule,FormsModule],
   providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './justificativo-falta.component.html',
   styleUrl: './justificativo-falta.component.css'
@@ -34,6 +36,13 @@ export class JustificativoFaltaComponent implements OnInit{
   justFalta!: JustificativoFalta[];
   ref: DynamicDialogRef;
   formGroup: FormGroup | undefined;
+  date:any
+  es: any;
+  maxMonth: Date;
+  astraso: Atraso[];
+  mesAtraso:number
+  anioAtraso:number
+  mesEscrito:String
   
   
   
@@ -42,11 +51,12 @@ export class JustificativoFaltaComponent implements OnInit{
     private _dialog :DialogModule,
     public dialogService: DialogService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private primengConfig: PrimeNGConfig,
+    private atrasoService: AtrasoService
 
-  ){}
-
-  ngOnInit(): void {
+  ){
+    
     this.mesAnios = [
       { mes: 'ENERO', cod: 1 },
       { mes: 'FEBRERO', cod: 2 },
@@ -61,10 +71,49 @@ export class JustificativoFaltaComponent implements OnInit{
       { mes: 'NOVIEMBRE', cod: 11 },
       { mes: 'DICIEMBRE', cod: 12 }
     ];
+    this.atrasoService.findMesAnioAtraso().subscribe(data =>{
+      
+      this.astraso = data;
+      this.mesAtraso = this.astraso[0].mes;
+      this.anioAtraso = this.astraso[0].anio
+      this.mesAnios.forEach(element => {
+        if(element.cod == this.mesAtraso){
+            this.mesEscrito = element.mes
+        }
+      });
+    
+    })
+    // Obtener el último día del mes actual con Moment.js
+    const lastMonth = moment().subtract(1, 'months'); // Obtiene el mes anterior
+    this.date = lastMonth.toDate(); // Establece el mes anterior como valor inicial
+    this.maxMonth = lastMonth.toDate(); // Restringe la selección al mes anterior
+  }
+
+  ngOnInit(): void {
+    
+
+
+    
+    this.es = {
+      firstDayOfWeek: 1,
+      dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+      dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+      dayNamesMin: [ "D","L","M","X","J","V","S" ],
+      monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+      monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ],
+      today: 'Hoy',
+      clear: 'Borrar'
+    }
+    this.primengConfig.setTranslation(this.es) 
+
     this.justificativoService.findAll().subscribe(data=>{
       this.justFalta = data
-      console.log(data);
+
     })
+
+
+
+
     this.formGroup = new FormGroup({
       selectedMeses: new FormControl<MesAnio | null>(null),
     });
@@ -93,6 +142,7 @@ export class JustificativoFaltaComponent implements OnInit{
   updateTable(){
     this.justificativoService.findAll().subscribe(data => {
       this.justFalta = data
+      
     });
   }
 
@@ -108,7 +158,7 @@ export class JustificativoFaltaComponent implements OnInit{
   delete(idAtraso:any){
 
   }
-  meses(){
+/*   meses(){
     this.justificativoService.mesesAnios(8,2024)
     .pipe(switchMap(()=>this.justificativoService.findAll()))
     .subscribe(
@@ -119,12 +169,9 @@ export class JustificativoFaltaComponent implements OnInit{
     )
 
     
-  }
+  } */
 
-  calcularAtrasos(){
-    
-  }
-  confirm(event: Event) {
+  confirm(event: Event, date: Date) {
     this.confirmationService.confirm({
         target: event.target as EventTarget,
         message: 'Verifique los datos de AÑO y MES',
@@ -136,8 +183,7 @@ export class JustificativoFaltaComponent implements OnInit{
         rejectButtonStyleClass: 'p-button-outlined p-button-sm',
         acceptButtonStyleClass: 'p-button-sm',
         accept: () => {
-            this.messageService.add({ severity: 'info', summary: 'Confirmar', detail: 'aceptado', life: 3000 });
-            this.operate()
+            this.operate(date)
         },
         reject: () => {
             this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'Rechazado', life: 3000 });
@@ -145,22 +191,36 @@ export class JustificativoFaltaComponent implements OnInit{
     });
     
   }
-  operate() {
-    /* let { mes, cod } = mesRe; */
-    let mesResta
-
-    mesResta = moment().format('MM')
-    let anio =moment().format('YYYY');
+  operate(date) {
     
-    console.log(parseInt(mesResta)-2, parseInt(anio));
-    this.justificativoService.mesesAnios(parseInt(mesResta)-2, parseInt(anio))
-    .pipe(switchMap(()=>this.justificativoService.findAll()))
-    .subscribe(
-      data =>{
-          console.log(data);
-          this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
-      }
-    )
+    if(date != null ){
+        /* let { mes, cod } = mesRe; *//* 
+      const month = moment(date).month() + 1
+      const year = moment(date).year() 
+      let mesResta
+      console.log(month + " " + year);
+      
+      mesResta = moment().format('MM')
+      let anio = moment().format('YYYY'); */
+    
+      //console.log(parseInt(mesResta)-1, parseInt(anio));
+      
+      this.justificativoService.mesesAnios(this.mesAtraso, this.anioAtraso)
+      
+      .pipe(switchMap(()=>this.justificativoService.findAll()))
+      .subscribe(
+        data =>{
+            this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
+            this.updateTable();
+        }
+      )
+    }
+    else{
+      this.messageService.add({ severity: 'error', summary: 'DATOS VACIOS', detail: 'SELECCIONAR FECHA', life: 3000 });
+    }
+    
+
+    
   }
 
   

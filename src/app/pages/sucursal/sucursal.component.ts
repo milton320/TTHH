@@ -11,26 +11,31 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
-import { switchMap } from 'rxjs';
+import { switchMap, Observable, Observer } from 'rxjs';
 import { MenuService } from '../../services/menu.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../../environments/environment.development';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-sucursal',
   standalone: true,
-  imports: [MaterialModule,CommonModule,RouterOutlet,RouterLink,ToastModule,RippleModule],
+  imports: [MaterialModule,CommonModule,ToastModule,RippleModule],
   providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './sucursal.component.html',
   styleUrl: './sucursal.component.css',
   
 })
 export class SucursalComponent  implements OnInit{
-  username: string
+  username: string;
+  role: string;
+  idPersona:number;
 
   sucursal!: Sucursal[];
   loading: boolean = true;
   ref: DynamicDialogRef 
+
+
 
   constructor(
       private sucursalService: SucursalService,
@@ -38,7 +43,7 @@ export class SucursalComponent  implements OnInit{
       public dialogService: DialogService,
       private messageService: MessageService,
       private menuService: MenuService,
-      private confirmationService: ConfirmationService
+      private confirmationService: ConfirmationService,
   ){}
 
   ngOnInit(): void {
@@ -48,10 +53,10 @@ export class SucursalComponent  implements OnInit{
     const decodedToken = helper.decodeToken(token);
 
     this.username = decodedToken.sub;
-
+    this.role = decodedToken.role;
     this.menuService.getMenuByUser(this.username).subscribe(data=>this.menuService.setMenuChange(data)); 
     
-    /***FON */
+    /***FIN */
 
 
     this.sucursalService.findAll().subscribe(data => {
@@ -59,7 +64,7 @@ export class SucursalComponent  implements OnInit{
     });
 
     this.sucursalService.getMessageChange().subscribe(data=>{
-      console.log(data);
+      
       if(data == 'CREATED'){
         this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
         this.updateTable()
@@ -74,7 +79,7 @@ export class SucursalComponent  implements OnInit{
       }
       
     })
-  
+
   } 
   updateTable(){
     this.sucursalService.findAll().subscribe(data => {
@@ -82,11 +87,11 @@ export class SucursalComponent  implements OnInit{
     });
   }
   applyFilter(event: any){
-    console.log(event)
+    
 
   }
   openDialog(){
-    console.log('save');
+    
   }
 
   visible: boolean = false;

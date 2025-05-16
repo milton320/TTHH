@@ -6,9 +6,11 @@
             <input pInputText type="text" placeholder="Buscar..."  (input)="dt2.filterGlobal($any($event.target).value, 'contains')"/>
         </p>
     </div>
+    @if (this.role == 'ADMIN') {
     <div class="col-end-7">
-        <p-button icon="pi pi-bookmark" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
+        <p-button icon="pi pi-plus" [rounded]="true" severity="success" (click)="showDialog()"></p-button>
     </div>
+    }
     
 </div>
 <div class="card">
@@ -26,21 +28,30 @@
             <tr>
                 <th>NRO</th>
                 <th>SUCURSAL</th>
-                <th>ACCION</th>
-                
+                <th>DIRECCION</th>
+                <th>TELEFONO</th>
+                <th>CODIGO</th>
+                @if (this.role == 'ADMIN') {
+                    <th>ACCION</th>             
+                }   
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-sucursal>
+        <ng-template pTemplate="body" let-sucursal let-rowIndex="rowIndex">
             <tr>
-                <td>{{ sucursal.idSucursal }}</td>
+                <td>{{ rowIndex + 1 }}</td>
                 <td>{{ sucursal.nombre }}</td>
+                <td>{{ sucursal.direccion }}</td>
+                <td>{{ sucursal.telefono }}</td>
+                <td>{{ sucursal.codigo }}</td>
+                @if (this.role == 'ADMIN') {
                 <td>
                     <div class="flex flex-wrap gap-3 justify-content-center">
-                        <p-button icon="pi pi-check" [rounded]="true" (click)="showDialog(sucursal)"></p-button>
+                        <p-button icon="pi pi-pencil" [rounded]="true" (click)="showDialog(sucursal)"></p-button>
                         
-                        <p-button icon="pi pi-times" [rounded]="true" severity="danger" (click)="confirm2($event,sucursal.idSucursal)"></p-button>
+                        <p-button icon="pi pi-trash" [rounded]="true" severity="danger" (click)="confirm2($event,sucursal.idSucursal)"></p-button>
                     </div>
                 </td>
+                }
             </tr>
         </ng-template>
     </p-table>

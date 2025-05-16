@@ -11,7 +11,7 @@
     </div>  
     <div class="flex align-items-center gap-3 mb-2">
         <p-floatLabel>
-            <input pInputText id="monto" [(ngModel)]="anticipo.monto" oninput="this.value = this.value.toUpperCase()" />
+            <p-inputNumber id="monto" [(ngModel)]="anticipo.monto" mode="decimal"  [useGrouping]="false" />
             <label for="monto">Monto</label>
         </p-floatLabel>
     </div>
@@ -21,11 +21,19 @@
             <label for="descripcion">Descripcion</label>
         </p-floatLabel>
     </div>
-        
-      
+    <!-- <div class="flex align-items-center gap-3 mb-3">
+        <p-floatLabel>
+            <p-calendar  
+                [(ngModel)]="anticipo.fechaAnticipo" 
+                view="month" 
+                dateFormat="mm/yy" 
+                [showWeek]="true" />
+        </p-floatLabel>
+    </div> -->
     <p-divider align="left" type="solid">
         <b>DATOS PERSONA</b>
     </p-divider>
+    
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
             <p-dropdown 
@@ -42,7 +50,7 @@
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
             <p-dropdown 
-                [loading]="true"
+                [loading]="anticipo"
                 [options]="persona" 
                 [(ngModel)]="anticipo.persona" 
                 optionLabel="sueldoBase"
@@ -54,18 +62,14 @@
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <p-floatLabel>
-            <input pInputText [disabled]="true"  id="totalAnticipo" [(ngModel)]="totalAnticipo" oninput="this.value = this.value.toUpperCase()" />
-            
+            <input pInputText [disabled]="true"  id="totalAnticipo" [(ngModel)]="totalAnticipo"/>
         </p-floatLabel>
     </div>
-    @if(sueldoEstado==false){
-        <p-messages 
-        [(value)]="messages" 
-        [enableService]="false" 
-         />
-    }
+    
+    
     
 </div>
+<p-messages  [(value)]="messages" [enableService]="false"></p-messages>
 <div class="flex justify-content-end gap-2 mt-20">
     <p-button label="CANCELAR" severity="secondary" (click)="close()" />
     <p-button label="PROCESAR" (click)="operate()" />

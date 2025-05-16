@@ -3,7 +3,7 @@ import { Planilla } from '../../model/planilla';
 import { PersonaService } from '../../services/persona.service';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -31,6 +31,12 @@ export class PlanillaComponent implements OnInit{
   persona! : Persona[]
   planilla!: Planilla[]
   visible: boolean = false;
+  
+ // Variable para controlar si el primer paso se ha completado
+ step1Completed: boolean = false;
+
+ // Esta variable controla el paso activo
+ activeIndex: number = 0;
 
 
   constructor(
@@ -41,10 +47,7 @@ export class PlanillaComponent implements OnInit{
     private tempPlanillaService: TempPlanillaService,
     private confirmationService: ConfirmationService, 
     private messageService: MessageService
-  ){
-
-  }
-  
+  ){}
   ngOnInit(): void {
 
     this.planillaService.findAll().subscribe(data =>
@@ -56,10 +59,18 @@ export class PlanillaComponent implements OnInit{
     this.tempPlanillaService.findAll().subscribe(data=>{
       this.planillaTemp = data
     })
-    
+
   }
   updateTable(){
-    
+    this.tempPlanillaService.findAll().subscribe(data=>{
+      this.planillaTemp = data
+    })
+  }
+  updateTablePlanilla(){
+    this.planillaService.findAll().subscribe(data =>
+      {
+        this.planilla = data
+      });
   }
   
   showDialog(){
@@ -72,25 +83,46 @@ export class PlanillaComponent implements OnInit{
     
   }
   registrarTempPlanilla(){
-    console.log('REGISTRO EXITOSO')
+
 
   }
 
   personalNuevo(){
     this.tempPlanillaService.findAll().subscribe(data=>{
-      console.log(data);
+      
     })
   }
 
-  insertProcedure(){
+  /* insertProcedure(){
     this.personalNuevo()
-    for(let i = 0; i<2;i++){
+    for(let i = 0; i<1;i++){
       this.tempPlanillaService.insertarTempPlaniia().subscribe(data=>{
         console.log(data);
       })
     }
     window.location.reload();
-  }
+    window.location.reload();
+  } */
+
+    insertProcedure() {
+      this.tempPlanillaService.insertarTempPlaniia().subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'info', summary: 'ACTUALIZACION', detail: 'Actualizado Correctamente', life: 3000 });
+          this.updateTable()
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo insertar la planilla'
+          });
+        },
+        complete: () => {
+          console.log("✔️ Procedimiento de inserción completado.");
+        }
+      });
+    }
+
   confirm2() {
     this.confirmationService.confirm({
         header: 'Confirmacion',
@@ -100,6 +132,7 @@ export class PlanillaComponent implements OnInit{
         rejectButtonStyleClass: 'p-button-sm',
         acceptButtonStyleClass: 'p-button-outlined p-button-sm',
         accept: () => {
+            this.callPlanilla();
             this.messageService.add({ severity: 'info', summary: 'Confirmar', detail: 'Registrado', life: 3000 });
         },
         reject: () => {
@@ -107,5 +140,35 @@ export class PlanillaComponent implements OnInit{
         }
     });
 }
+
+callPlanilla(){
+  this.planillaService.callPlanilla().subscribe({
+    next:(data)=>{
+      this.updateTablePlanilla();
+    },
+    error:(e)=>{
+      
+    },
+    complete:()=>{
+      
+    }
+
+  })
+}
+
+
+ // Método que se llama cuando se confirma el primer paso
+ onCompleteStep1() {
+   this.step1Completed = true;
+   this.activeIndex = 1; // Cambia al siguiente paso si el primero está completado
+ }
+
+ // Método para ir al paso 1 (cuando se hace clic en el primer paso)
+ onActiveIndexChange(event: any) {
+   if (event === 1 && !this.step1Completed) {
+     // Si el paso 1 no está completado, no permitir cambiar al paso 2
+     this.activeIndex = 0;
+   }
+ }
 
 }

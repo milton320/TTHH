@@ -2,8 +2,15 @@ import { Persona } from "./persona";
 
 export class JusAtraso{
     idAtraso:number;
-    persona: Persona;
-    minuto:number;
+    persona: number;
+    fecha:string;
     justificado:boolean;
-    fechaRegistro:string;
+    estado:boolean;
+    mes:number;
+    anio:number;
+    hora:number;
+    minuto:number;
+    minutosAtrasado:number;
+    dia:number;
+    
 }

@@ -5,7 +5,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Persona } from '../../model/persona';
 import { PersonaService } from '../../services/persona.service';
@@ -16,10 +16,12 @@ import { PersonalDialogComponent } from './personal-dialog/personal-dialog.compo
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { TempPlanillaService } from '../../services/temp-planilla.service';
+import { PersonalInfoComponent } from './personal-info/personal-info.component';
+import { IncrementoComponent } from './incremento/incremento.component';
 @Component({
   selector: 'app-personal',
   standalone: true,
-  imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule,RouterOutlet,RouterLink  ],
+  imports: [MaterialModule,CommonModule, InputTextModule, ButtonModule, InputTextareaModule, FormsModule, ToastModule,RouterOutlet],
   providers: [DialogService,DynamicDialogRef,MessageService,ConfirmationService],
   templateUrl: './personal.component.html',
   styleUrl: './personal.component.css'
@@ -28,7 +30,8 @@ export class PersonalComponent implements OnInit {
   persona!: Persona[]
   loading: boolean = true;
   ref: DynamicDialogRef 
-
+  es: any;
+  
   constructor(
     private personaService: PersonaService,
     private sucursalService: SucursalService,
@@ -37,7 +40,8 @@ export class PersonalComponent implements OnInit {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private tempPlanillaService:TempPlanillaService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private primengConfig: PrimeNGConfig
     ){}
 
     ngOnInit(): void 
@@ -53,7 +57,7 @@ export class PersonalComponent implements OnInit {
   
       this.personaService.getMessageChange().subscribe(data=>
       {
-        console.log(data);
+       
         if(data == 'CREATED')
         {
           this.messageService.add({ severity: 'success', summary: 'REGISTRADO', detail: 'Agregado Correctamente' });
@@ -65,7 +69,18 @@ export class PersonalComponent implements OnInit {
           this.updateTable()
         }
       
-      })        
+      })
+      this.es = {
+        firstDayOfWeek: 1,
+        dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+        dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+        dayNamesMin: [ "D","L","M","X","J","V","S" ],
+        monthNames: [ "enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+        monthNamesShort: [ "ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic" ],
+        today: 'Hoy',
+        clear: 'Borrar'
+      }
+      this.primengConfig.setTranslation(this.es)        
     }
     updateTable(){
       this.personaService.findAll().subscribe(data => {
@@ -80,11 +95,28 @@ export class PersonalComponent implements OnInit {
         maximizable:true
       })  
     }
+    infoPersona(persona: Persona){
+      this.ref = this.dialogService.open(PersonalInfoComponent,{
+        header: 'INFORMACION PERSONA',
+        data: persona,
+        modal: true,
+        maximizable:true
+      })
+
+    }
+
+    incrementoSlarial(){
+      this.ref = this.dialogService.open(IncrementoComponent,{
+        header: 'INCREMENTO SALARIAL',
+        modal: true,
+        maximizable:true
+      })
+
+    }
 
     chekChildren(){
       return this.route.children.length>0;
     }
-
     
     confirm2(event: Event, idPersona:any) {
       this.confirmationService.confirm({
@@ -93,8 +125,6 @@ export class PersonalComponent implements OnInit {
           icon: 'pi pi-info-circle',
           acceptButtonStyleClass: 'p-button-danger p-button-sm',
           accept: () => {
-              this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Eliminado correctamente', life: 3000 });
-              console.log(idPersona);
               this.delete(idPersona)
           },
           reject: () => {
