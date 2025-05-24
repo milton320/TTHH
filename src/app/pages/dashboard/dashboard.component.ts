@@ -56,6 +56,7 @@ export class DashboardComponent implements OnInit{
     
     this.loginService.userInformacion(this.username).subscribe(data=>{
       this.infoPersona = data[0];
+      console.log(this.username);
        
     })
 
